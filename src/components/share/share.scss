@@ -1,3 +1,33 @@
 .indigo{
   background-color: red!important;
 }
+.footer{
+  .footer-row-1 {
+    padding: 50px 0px 100px 0px;
+    background-color: rgba(#000, 0.4);
+    .title{
+      color: blue;
+    }
+    .footer-item {
+      text-align: left;
+      i{
+        margin-right: 5px;
+        color: white;
+      }
+      .text{
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+      }
+    }
+  }
+  .footer-row-2{
+    padding: 70px 0px 120px 0px;
+    background-color: rgba(#000, 0.8);
+  }
+  .footer-row-3{
+    padding: 30px 0px;
+    background-color: #000;
+    color: white;
+  }
+}

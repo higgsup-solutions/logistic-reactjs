@@ -16,6 +16,8 @@ import NotFound from "./components/notfound/notfound.component";
 import {ROLE_ADMIN, ROLE_MANAGER} from "./App.constant";
 import {BOOKING, BOOKING_HISTORY} from "./App.url";
 import Authorization from "./components/authorizaton/authorization";
+import 'font-awesome/css/font-awesome.min.css';
+
 i18n.use(locale);
 
 class App extends Component {
