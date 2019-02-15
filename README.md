@@ -68,6 +68,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
 ### --------------------------------------------------------------start----------------------------------------------------------------
+### this app use element-react theme
+ - https://elemefe.github.io/element-react/#/en-US
 ### overview structure
  - components folder will contain all component in app.
  - each screen is a subfolder in component folder.
@@ -192,7 +194,98 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
                         return res.data;
                     })
                 }
+ ### sample form follow element-react theme
  
+            <Form className="en-US" model={this.state.form} labelWidth="120" onSubmit={this.onSubmit.bind(this)}>
+                  <Form.Item label="Activity name">
+                    <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')}></Input>
+                  </Form.Item>
+                  <Form.Item label="Activity zone">
+                    <Select value={this.state.form.region} placeholder="Please select your zone">
+                      <Select.Option label="Zone 1" value="shanghai"></Select.Option>
+                      <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Activity time">
+                    <Layout.Col span="11">
+                      <Form.Item prop="date1" labelWidth="0px">
+                        <DatePicker
+                          value={this.state.form.date1}
+                          placeholder="Pick a date"
+                          onChange={this.onChange.bind(this, 'date1')}
+                        />
+                      </Form.Item>
+                    </Layout.Col>
+                    <Layout.Col className="line" span="2">-</Layout.Col>
+                    <Layout.Col span="11">
+                      <Form.Item prop="date2" labelWidth="0px">
+                        <TimePicker
+                          value={this.state.form.date2}
+                          selectableRange="18:30:00 - 20:30:00"
+                          placeholder="Pick a time"
+                          onChange={this.onChange.bind(this, 'date2')}
+                        />
+                      </Form.Item>
+                    </Layout.Col>
+                  </Form.Item>
+                  <Form.Item label="Instant delivery">
+                    <Switch
+                      onText=""
+                      offText=""
+                      value={this.state.form.delivery}
+                      onChange={this.onChange.bind(this, 'delivery')}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Activity type">
+                    <Checkbox.Group value={this.state.form.type} onChange={this.onChange.bind(this, 'type')}>
+                      <Checkbox label="Online activities" name="type"></Checkbox>
+                      <Checkbox label="Promotion activities" name="type"></Checkbox>
+                      <Checkbox label="Offline activities" name="type"></Checkbox>
+                      <Checkbox label="Simple brand exposure" name="type"></Checkbox>
+                    </Checkbox.Group>
+                  </Form.Item>
+                  <Form.Item label="Resources">
+                    <Radio.Group value={this.state.form.resource}>
+                      <Radio value="Sponsor"></Radio>
+                      <Radio value="Venue"></Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                  <Form.Item label="Activity form">
+                    <Input type="textarea" value={this.state.form.desc} onChange={this.onChange.bind(this, 'desc')}></Input>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" nativeType="submit">Create</Button>
+                    <Button>Cancel</Button>
+                  </Form.Item>
+                </Form>
+                
+  ### when not found component for invalid url it will redirect to component NOTFOUND (done)
+  ### resource allocate in assets folder:
+  
+            use in component:
+            - import [image-name] from 'url';
+            <img src={image-name}
+            
+            example:
+            
+            
+            import React, { Component } from "react";
+            import './booking-history.scss';
+            import image1 from './../../assets/image1.jpg';
+            
+            class BookingHistory extends Component {
+                render() {
+                    return (
+                        <h1>
+                            <img src={image1} width="200" height="200" alt="image1" />
+                        </h1>
+                    );
+                }
+            }
+            
+            export default BookingHistory;
+
+  
  
 
 
