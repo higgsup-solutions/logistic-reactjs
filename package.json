@@ -7,6 +7,7 @@
     "axios": "^0.18.0",
     "element-react": "^1.4.32",
     "element-theme-default": "^1.4.13",
+    "font-awesome": "^4.7.0",
     "i18next": "^14.0.1",
     "i18next-browser-languagedetector": "^2.2.4",
     "node-sass": "^4.11.0",
