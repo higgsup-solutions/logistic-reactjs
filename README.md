@@ -1,3 +1,7 @@
+# React Higgsup Logistics
+
+<a href="https://web.higgsup.com/"><img src="higgsup-logo.png"></a>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -70,7 +74,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### --------------------------------------------------------------start----------------------------------------------------------------
 ### this app use element-react theme
  - https://elemefe.github.io/element-react/#/en-US
-### overview structure
+### Overview structure
  - components folder will contain all component in app.
  - each screen is a subfolder in component folder.
  - child component of screen will is a file *.component.js in folder screen.
@@ -82,7 +86,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
             export const BUYSALE = '/buy-sale';
             export const DASHBOARD = '/dashboard';
   
-  - all string url endpoint to call ajax will write in file intergrate.endpoint.js
+  - all string url endpoint to call ajax will write in file integrate.endpoint.js
   example: 
     
              export const API_ROOT = 'http://api.ico.href.vn';
@@ -111,7 +115,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
               },
           };
 
-### create new screen:
+### Create new screen:
  - create a folder in folder components.  (same as buy-sale folder, dashboard folder....)
  - create a file *.scss and a file *.component.js, (same as dashboard.component.js and dashboard.scss)
     if that component have multi child component then each child component will is a file *.component.js in that folder. 
@@ -161,39 +165,58 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
                     console.log(params.get('detail'))
                     console.log(this.props.location.dataObject)
     
-### create new component:
+### Create new component:
  - create new component re-use will create file *.component.js in folder share and style in share.scss
  (same as popup-confirm.component.js, footer.component.js...)
  - all text need translate in template of component will write <FormattedMessage id="[key]"> (key write in ./i18n/en.js | vn.js ...)
  - all text need translate in code js will write this.props.intl.formatMessage({id: 'base.pass'}) in code.
  
-### call API:
- - init data for component call in function componentWillMount()
-    example: 
+### Call API:
+
+ - `integrate.js` file defines axios instance, interceptors for request, response 
+ and catch error for all request to backend
  
-            componentWillMount() {
-                    buysale.get().then(res => {
-                        console.log(res);
-                        let newState = this.state;
-                        newState.listSchool = res;
-                        this.setState(newState);
-                    });
-            }
+  - Each screen has a file `<screen-name>.js` in `integrate` folder. 
+  E.g: `auth.js`, `dashboard.js`, `buy-sale.js`, ...
+  
+  - In that file, each action was displayed by a function which uses `integrate` 
+  to call api. In that, we have to defines `url`, `method`, `data` in request.
+  
+  Example for `auth.js`
+  ```js
+     import integrate from './integrate';
+     import {LOGIN} from "./integrate.endpoint";
+     
+     export const login = (data) => {
+     
+         return integrate.makeRequest({
+             url: LOGIN,
+             method: 'POST',
+             data
+         });
+     };
+ ```
  
- - each screen will create a file [screen-name].js in folder intergrate. (same as dashboard.js, buy-sale.js...)
- - each event call API will write a function and return function (get, post, put, delete) these wrote in file intergrate
-    and we will pass data and url.
- - about process error common will write at function (get, post, put, delete) in intergrate.js.
- - in event of component will only process when response is success. (redirect, alert, update state ....).
- - example: => intergrate/dashboard.js
-               
-               get: () => {
-                    let filterUrl = `?limit=10&offset=0`;
-            
-                    return intergrate.request.get(`${API_ROOT}${DASHBOARD}${filterUrl}`).then(res => {
-                        return res.data;
-                    })
-                }
+  - There are 2 functions which were exported by `integrate.js`: 
+  `makeRequest` calls api without token in header, while `makeAuthRequest` injects
+   token to request backend.
+   
+  - How to use that api?
+  
+  ```
+  login(data).then(res => {
+      if (res.success) {
+          localStorage.setItem('authentication', `Bearer ${res.data.accessToken}`);
+          navigate(`/`);
+      } else {
+          alert('username or password is invalid');
+      }
+  })
+  ```
+   
+ - **Best practice**: In order to init data for component, we should call api 
+ in function componentWillMount()
+ 
  ### sample form follow element-react theme
  
             <Form className="en-US" model={this.state.form} labelWidth="120" onSubmit={this.onSubmit.bind(this)}>
