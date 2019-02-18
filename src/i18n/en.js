@@ -7,6 +7,9 @@ export const ENGLISH = {
     "menu.bookingHistory": "Booking History",
     "menu.setting": "Setting",
     "base.user": "Username",
-    "base.pass": "Password"
+    "base.pass": "Password",
+    "menu.supplies": "Supplies",
+    "menu.invoices": "Invoices",
+    "menu.help": "Help",
   }
 };

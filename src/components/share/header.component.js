@@ -14,6 +14,9 @@ class HeaderComponent extends Component {
                 {index: '1', url: BOOKING, label: 'menu.booking'},
                 {index: '2', url: BOOKING_HISTORY, label: 'menu.bookingHistory'},
                 {index: '3', url: SETTING, label: 'menu.setting'},
+                {index: '4', url: SETTING, label: 'menu.supplies'},
+                {index: '5', url: SETTING, label: 'menu.invoices'},
+                {index: '6', url: SETTING, label: 'menu.help'},
             ],
             activeLink: '1'
         }
