@@ -45,51 +45,6 @@ class FooterComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="footer-row-2">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-3">
-                                <p>Ut enim ad minim veriam, quis nostrud cution ullamco laboris nisi ut aliquip</p>
-                                <h5>Working Hours</h5>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                            </div>
-                            <div className="col-xs-12 col-sm-3">
-                                <p>Ut enim ad minim veriam, quis nostrud cution ullamco laboris nisi ut aliquip</p>
-                                <h5>Working Hours</h5>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                            </div>
-                            <div className="col-xs-12 col-sm-3">
-                                <p>Ut enim ad minim veriam, quis nostrud cution ullamco laboris nisi ut aliquip</p>
-                                <h5>Working Hours</h5>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                            </div>
-                            <div className="col-xs-12 col-sm-3">
-                                <p>Ut enim ad minim veriam, quis nostrud cution ullamco laboris nisi ut aliquip</p>
-                                <h5>Working Hours</h5>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                                <p>Monday - Friday : 8AM - 6PM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="footer-row-3">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-6 text-left">
-                                @Designed by Higgsup
-                            </div>
-                            <div className="col-xs-12 col-sm-6 text-right">
-                                <i className="fa fa-facebook-square mr-2"></i>
-                                <i className="fa fa-facebook-square mr-2"></i>
-                                <i className="fa fa-facebook-square mr-2"></i>
-                                <i className="fa fa-facebook-square"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     }

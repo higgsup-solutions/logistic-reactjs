@@ -37,7 +37,7 @@ class App extends Component {
             <div className="App">
                 <Select value={this.state.language}
                         onChange={this.onChangeLanguage}
-                        className="float-right z-index-9 mt-2 mr-2">
+                        className="language-block z-index-9 mr-2">
                     <Select.Option label="English" value="en"></Select.Option>
                     <Select.Option label="Vietnamese" value="vn"></Select.Option>
                 </Select>

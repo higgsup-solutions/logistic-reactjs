@@ -4,6 +4,7 @@ import {Menu} from "element-react";
 import {navigate} from '@reach/router';
 import {FormattedMessage, injectIntl} from "react-intl";
 import {LOGIN, REGISTER} from "../../App.url";
+import logo from './../../assets/logo.png';
 
 class PublicHeaderComponent extends Component {
     constructor(props) {
@@ -32,10 +33,13 @@ class PublicHeaderComponent extends Component {
 
     render() {
         return (
-            <div>
-                <Menu theme="dark" defaultActive={this.state.activeLink} className="el-menu-demo" mode="horizontal"
+            <div className="public-header">
+                <img src={logo} alt="logo" className="logo" />
+                <Menu theme="dark" defaultActive={this.state.activeLink}
+                      className="el-menu-demo"
+                      mode="horizontal"
                       onSelect={this.onSelect.bind(this)}>
-                    {this.state.menu.map(item => <Menu.Item key={item.index} index={item.index}><FormattedMessage id={item.label}/></Menu.Item>)}
+                    {this.state.menu.map(item => <Menu.Item className="float-right" key={item.index} index={item.index}><FormattedMessage id={item.label}/></Menu.Item>)}
                 </Menu>
             </div>
         );
