@@ -1,5 +1,6 @@
 import axios from "axios"
-import {API_ROOT} from "./intergrate.endpoint";
+import {API_ROOT} from "./integrate.endpoint";
+import { Notification } from 'element-react';
 
 const _getAppVersion = () => {
     return '1.0.0';
@@ -21,7 +22,7 @@ _request.interceptors.request.use(
         //     // add header ...
         // };
         // config.headers = {...config.headers, header};
-        console.log(`before sending request...`);
+        // console.log(`before sending request...`);
         return config
     },
     error => {
@@ -34,11 +35,15 @@ _request.interceptors.request.use(
 // response interceptor
 _request.interceptors.response.use(
     response => {
-        console.log(`before receiving response...`);
+        // console.log(`before receiving response...`);
         return response
     },
     error => {
         console.log('err' + error); // for debug
+        Notification.error({
+            title: 'Error',
+            message: `${error}`
+        });
         return Promise.reject(error)
     }
 );

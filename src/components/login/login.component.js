@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './login.scss';
-import intergrate from './../../intergrate/intergrate';
-import {login} from './../../intergrate/auth';
+import {login} from '../../integrate/auth';
 import { navigate } from "@reach/router";
 import {Form, Input, Button} from 'element-react';
 
