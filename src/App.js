@@ -14,9 +14,10 @@ import Booking from "./components/booking/booking.component";
 import BookingHistory from "./components/booking-history/booking-history.component";
 import NotFound from "./components/notfound/notfound.component";
 import {ROLE_ADMIN, ROLE_MANAGER} from "./App.constant";
-import {BOOKING, BOOKING_HISTORY} from "./App.url";
+import {BOOKING, BOOKING_HISTORY, LOGIN_URL, PUBLIC, REGISTER_URL} from "./App.url";
 import Authorization from "./components/authorizaton/authorization";
 import 'font-awesome/css/font-awesome.min.css';
+import {LOGIN} from "./App.url";
 
 i18n.use(locale);
 
@@ -43,15 +44,15 @@ class App extends Component {
                 </Select>
                 <Router>
                     <PrivateRoute component={LayoutComponent} path="/" >
-                        <Redirect exact from="/" to="booking" noThrow />
+                        <Redirect exact from="/" to={BOOKING} noThrow />
                         <Authorization component={Booking} allowedRoles={ROLE_ADMIN} path={BOOKING}/>
                         <Authorization component={BookingHistory} allowedRoles={ROLE_MANAGER} path={BOOKING_HISTORY} />
                         <NotFound default />
                     </PrivateRoute>
-                    <PublicLayoutComponent path="/public">
-                        <Redirect from="/" to="public/login" noThrow />
-                        <LoginComponent path="/login" />
-                        <RegisterComponent path="/register" />
+                    <PublicLayoutComponent path={PUBLIC}>
+                        <Redirect from="/" to={LOGIN} noThrow />
+                        <LoginComponent path={LOGIN_URL} />
+                        <RegisterComponent path={REGISTER_URL} />
                         <NotFound default />
                     </PublicLayoutComponent>
                 </Router>
