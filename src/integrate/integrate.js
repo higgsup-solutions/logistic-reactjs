@@ -1,5 +1,6 @@
 import axios from "axios"
 import {API_ROOT} from "./integrate.endpoint";
+import { Notification } from 'element-react';
 
 const _getAppVersion = () => {
     return '1.0.0';
@@ -39,6 +40,10 @@ _request.interceptors.response.use(
     },
     error => {
         console.log('err' + error); // for debug
+        Notification.error({
+            title: 'Error',
+            message: `${error}`
+        });
         return Promise.reject(error)
     }
 );
