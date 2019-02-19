@@ -9,6 +9,14 @@ class Booking extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            listData:  [
+                { abbr: 'ADANIPORTS', name: 'Adani Ports & Special Economic Zone Ltd.' },
+                { abbr: 'ASIANPAINT', name: 'Asian Paints Ltd.' },
+                { abbr: 'AXISBANK', name: 'Axis Bank Ltd.' },
+                { abbr: 'BAJAJ-AUTO', name: 'Bajaj Auto Ltd.' },
+                { abbr: 'BAJFINANCE', name: 'Bajaj Finance' },
+                { abbr: 'BAJAJFINSV', name: 'Bajaj Finserv Ltd.' },
+                { abbr: 'BPCL', name: 'Bharat Petroleum Corporation Ltd.' }],
             sender: {
                 company: '',
                 phone: '',
@@ -58,7 +66,7 @@ class Booking extends Component {
             <div className="booking">
                 <Layout.Row>
                     <Layout.Col span="12">
-                        <SenderAddress name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
+                        <SenderAddress data={this.state.listData} name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
                         <SenderAddress name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </Layout.Col>
                     <Layout.Col span="12">

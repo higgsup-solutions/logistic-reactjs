@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import './booking.scss';
-import {Form, Input, Button, Card, Layout, Checkbox} from 'element-react';
+import {Form, Input, Button, Card, Layout, Checkbox, Select as SelectEl} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
+import Autocomplete from 'react-autocomplete';
 
 class SenderAddress extends Component {
     constructor(props) {
@@ -28,6 +29,29 @@ class SenderAddress extends Component {
         this.setState({countrySelected: selectedOption});
     };
 
+    onSearchCity = (query) => {
+        if (query !== '') {
+            this.setState({
+                loading: true
+            });
+
+            setTimeout(() => {
+                this.setState({
+                    loading: false,
+                    options: this.state.states.map(item => {
+                        return { value: item, label: item };
+                    }).filter(item => {
+                        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+                    })
+                });
+            }, 200);
+        } else {
+            this.setState({
+                options: []
+            });
+        }
+    };
+
     render() {
 
         return (
@@ -38,7 +62,25 @@ class SenderAddress extends Component {
                         <Layout.Col span="12" className="pr-2">
                             <div className="label"><FormattedMessage id='booking.company'/><span
                                 className="required ml-2">*</span></div>
-                            <Input/>
+                            <div className="autocomplete-wrap">
+                                <Autocomplete
+                                    value={ this.state.value }
+                                    inputProps={{ id: 'states-autocomplete' }}
+                                    wrapperStyle={{ position: 'relative', display: 'inline-block' }}
+                                    items={this.props.data }
+                                    getItemValue={ item => item.abbr }
+                                    shouldItemRender= {(item, value) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1}
+                                    onChange={(event, value) => this.setState({ value }) }
+                                    onSelect={ value => this.setState({ value }) }
+                                    renderMenu={ children => <div className="dropdown-autocomplete">{children}</div>}
+                                    renderItem={ (item, isHighlighted) => (
+                                        <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
+                                            key={ item.abbr } >
+                                            { item.name } --- {item.abbr}
+                                        </div>
+                                    )}
+                                />
+                            </div>
                         </Layout.Col>
                         <Layout.Col span="12" className="pl-2">
                             <div className="label"><FormattedMessage id='booking.phone'/><span
@@ -91,7 +133,16 @@ class SenderAddress extends Component {
                         <Layout.Col span="8">
                             <div className="label"><FormattedMessage id='booking.city'/><span
                                 className="required ml-2">*</span></div>
-                            <Input/>
+                            {/*<SelectEl value={this.props.}*/}
+                                      {/*filterable={true}*/}
+                                      {/*remote={true}*/}
+                                      {/*remoteMethod={this.onSearchCity}>*/}
+                                {/*{*/}
+                                    {/*this.state.options.map(el => {*/}
+                                        {/*return <Select.Option key={el.value} label={el.label} value={el.value} />*/}
+                                    {/*})*/}
+                                {/*}*/}
+                            {/*</SelectEl>*/}
                         </Layout.Col>
                         <Layout.Col span="8" className="pl-3 pr-3">
                             <div className="label"><FormattedMessage id='booking.postalCode'/></div>
