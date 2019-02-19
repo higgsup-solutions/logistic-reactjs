@@ -7,6 +7,9 @@ export const VIETNAMESE = {
         "menu.bookingHistory": "Lich su dat hang",
         "menu.setting": "Cai dat",
         "base.user": "ten nguoi dung",
-        "base.pass": "Mat khau"
+        "base.pass": "Mat khau",
+        "menu.supplies": "Nha Cung Cap",
+        "menu.invoices": "Hoa don",
+        "menu.help": "Giup Do",
     }
 };
