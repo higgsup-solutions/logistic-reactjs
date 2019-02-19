@@ -8,65 +8,11 @@ class PackageShipment extends Component {
         super(props);
         this.state = {
             contents: 'Documents',
-            columns: [
-                {
-                    label: "Row",
-                    prop: "row",
-                    width: 80
-                },
-                {
-                    label: "Weight (Kgs)*",
-                    prop: "weight",
-                    width: 120,
-                },
-                {
-                    label: "",
-                    prop: "empty",
-                    width: 180,
-                },
-                {
-                    label: "Dimensions (cm)",
-                    prop: "dimensions",
-                    subColumns: [
-                        {
-                            label: "L",
-                            prop: "l",
-                            width: 90
-                        },
-                        {
-                            label: "W",
-                            prop: "w",
-                            width: 90
-                        },
-                        {
-                            label: "H",
-                            prop: "h",
-                            width: 90
-                        }
-                    ]
-                },
-                {
-                    label: "Non-standard packages",
-                    prop: "nonStandard",
-                    width: 180,
-                }
-            ],
-            data: [{
-                row: 1,
-                weight: <Input size="small" />,
-                l: <Input size="small" />,
-                w: <Input size="small" />,
-                h: <Input size="small" />,
-                empty: <Select>
 
-                </Select>,
-                nonStandard: <Checkbox checked>Option</Checkbox>,
-            }]
         }
     }
 
     onChange = (input) => (e) => {
-        console.log(e);
         this.setState({contents: e})
     };
 
@@ -126,15 +72,37 @@ class PackageShipment extends Component {
                             </Radio.Group>
                         </Layout.Col>
                     </Layout.Row>
-                    <Table
-                        className="mb-3"
-                        style={{width: '100%'}}
-                        columns={this.state.columns}
-                        data={this.state.data}
-                        border={true}
-                        height={250}
-                    />
-                    <Layout.Row className="mb-3">
+                    <div className="table-wrap">
+                        {this.state.contents === 'Parcel' ? <div className="cover"></div> : ''}
+                        <table className="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th rowSpan="2">Row</th>
+                                <th rowSpan="2">Weights (Kgs)*</th>
+                                <th rowSpan="2"></th>
+                                <th colSpan="3">Dimensions(cm)</th>
+                                <th rowSpan="2">Quantity*</th>
+                            </tr>
+                            <tr>
+                                <th>L</th>
+                                <th>W</th>
+                                <th>H</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <Layout.Row className="mt-3">
                         <Layout.Col span="24" className="text-left">
                             <Checkbox>Dangerous Goods</Checkbox>
                         </Layout.Col>

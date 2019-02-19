@@ -29,6 +29,8 @@
     background-image: $background-gradient;
     .el-menu-item{
       color: white;
+      font-weight: bold;
+      font-size: 15px;
       &:hover{
         background-color: transparent!important;
         color: $active-link;
@@ -53,8 +55,9 @@
     float: right;
     position: relative;
     top: -40px;
+    color: white;
     &:hover{
-      color: white;
+      color: $active-link;
     }
   }
 }

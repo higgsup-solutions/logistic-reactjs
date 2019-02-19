@@ -1,3 +1,6 @@
+import {Button} from "element-react";
+import React from "react";
+
 export const ENGLISH = {
     lang: "en",
     messages: {
@@ -32,5 +35,7 @@ export const ENGLISH = {
         "booking.shippingDate": "Shipping Date",
         "booking.contents": "Contents",
         "booking.packageShipment": "Package and Shipment Details",
+        "booking.continueBooking": "Continue Booking",
+        "booking.quote": "Quote",
     }
 };

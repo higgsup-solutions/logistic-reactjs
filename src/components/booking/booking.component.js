@@ -30,8 +30,8 @@ class Booking extends Component {
                     <Layout.Col span="12">
                         <PackageShipment/>
                         <div className="text-right pr-3">
-                            <Button type="primary" onClick={this.onQuote}>Quote</Button>
-                            <Button type="primary" onClick={this.onContinueBooking}>Continue Booking</Button>
+                            <Button type="primary" onClick={this.onQuote}><FormattedMessage id='booking.quote'/></Button>
+                            <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage id='booking.continueBooking'/></Button>
                         </div>
                     </Layout.Col>
                 </Layout.Row>
