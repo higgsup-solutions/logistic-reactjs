@@ -1,0 +1,25 @@
+@import '../../style/style';
+
+.mycard {
+  padding: 20px;
+  .el-card{
+    overflow: unset;
+  }
+  .el-card__header {
+    background-image: $background-gradient;
+    color: white;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+  .label{
+    margin-bottom: 5px;
+    text-align: left;
+    .required{
+      margin-left: 10px;
+      color: red;
+    }
+  }
+}
+.package{
+  padding-top: 0;
+}
