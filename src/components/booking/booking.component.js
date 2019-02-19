@@ -8,6 +8,40 @@ import PackageShipment from "./package-shipment";
 class Booking extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            sender: {
+                company: '',
+                phone: '',
+                contactName: '',
+                emailAddress: '',
+                country: {
+                    id: 288, country_name: 'Viet Nam'
+                },
+                address: '',
+                address2: '',
+                city: {
+                    cityId: 0, cityName: ''
+                },
+                postalCode: 0,
+                stateProvince: ''
+            },
+            recipient: {
+                company: '',
+                phone: '',
+                contactName: '',
+                emailAddress: '',
+                country: {
+                    id: 288, country_name: 'Viet Nam'
+                },
+                address: '',
+                address2: '',
+                city: {
+                    cityId: 0, cityName: ''
+                },
+                postalCode: 0,
+                stateProvince: ''
+            },
+        }
     }
 
     onContinueBooking = (e) => {
