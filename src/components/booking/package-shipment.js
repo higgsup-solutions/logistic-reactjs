@@ -87,6 +87,7 @@ class PackageShipment extends Component {
                                 <th rowSpan="2"></th>
                                 <th colSpan="3">Dimensions(cm)</th>
                                 <th rowSpan="2">Quantity*</th>
+                                <th rowSpan="2"></th>
                             </tr>
                             <tr>
                                 <th>L</th>
@@ -96,6 +97,7 @@ class PackageShipment extends Component {
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

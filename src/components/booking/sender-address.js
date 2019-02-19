@@ -1,14 +1,32 @@
 import React, {Component} from "react";
 import './booking.scss';
-import {Form, Input, Button, Card, Layout, Select, Checkbox} from 'element-react';
+import {Form, Input, Button, Card, Layout, Checkbox} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 import {LIST_COUNTRY} from "../../App.constant.country";
+import Select from 'react-select';
 
 class SenderAddress extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props.intl.formatMessage({id: 'booking.senderAddress'}))
+        this.state = {
+            listCountry: [],
+            countrySelected: { label: "Viet Nam", value: 288 }
+        }
     }
+
+    componentWillMount() {
+        let newState = this.state;
+        for (let i = 0; i < LIST_COUNTRY.length; i++) {
+            newState.listCountry.push({
+                value: LIST_COUNTRY[i].id, label: LIST_COUNTRY[i].country_name
+            });
+        }
+        this.setState(newState);
+    }
+
+    onChangeCountry = (selectedOption) => {
+        this.setState({countrySelected: selectedOption});
+    };
 
     render() {
 
@@ -43,24 +61,13 @@ class SenderAddress extends Component {
                         <Layout.Col span="24">
                             <div className="label"><FormattedMessage id='booking.country'/><span
                                 className="required ml-2">*</span></div>
-                            <Select className="w-100" placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
-                                <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                            </Select>
+                            <div className="dropdown-wrap">
+                                <span className="icon"><i className="fa fa-caret-down"></i></span>
+                                <Select value={this.state.countrySelected}
+                                        onChange={this.onChangeCountry}
+                                        options={this.state.listCountry}
+                                />
+                            </div>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
@@ -76,7 +83,8 @@ class SenderAddress extends Component {
                     </Layout.Row>
                     <Layout.Row className="mb-3">
                         <Layout.Col span="24" className="text-left">
-                            <Checkbox label={this.props.intl.formatMessage({id: 'booking.saveToAddressBook'})}></Checkbox>
+                            <Checkbox
+                                label={this.props.intl.formatMessage({id: 'booking.saveToAddressBook'})}></Checkbox>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">

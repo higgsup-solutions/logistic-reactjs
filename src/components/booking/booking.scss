@@ -20,6 +20,35 @@
     }
   }
 }
+.sender {
+  .el-checkbox__input{
+    z-index: 0;
+  }
+  .dropdown-wrap{
+    position: relative;
+    .icon{
+      position: absolute;
+      right: 3px;
+      top: 1px;
+      width: 40px;
+      height: 96%;
+      background-color: white;
+      border-radius: 4px;
+      z-index: 9;
+      padding-top: 6px;
+      i{
+        color: #bfcbd9;
+        font-size: 20px;
+      }
+    }
+  }
+  .css-10nd86i{
+    .css-2o5izw{
+      border: 1px solid rgba(#000, 0.5);
+      box-shadow: none;
+    }
+  }
+}
 .package{
   padding-top: 0;
 }
