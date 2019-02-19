@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import './booking.scss';
 import {Form, Input, Button, Card, Layout, Select, Checkbox} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
+import {LIST_COUNTRY} from "../../App.constant.country";
 
 class SenderAddress extends Component {
     constructor(props) {

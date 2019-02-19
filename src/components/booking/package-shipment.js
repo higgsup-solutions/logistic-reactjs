@@ -16,6 +16,10 @@ class PackageShipment extends Component {
         this.setState({contents: e})
     };
 
+    onChangeShippingDate = (date) => {
+        console.log(date);
+    };
+
     render() {
 
         return (
@@ -25,8 +29,9 @@ class PackageShipment extends Component {
                     <Layout.Row className="mb-3">
                         <Layout.Col span="12" className="text-left">
                             <div className="label"><FormattedMessage id='booking.shippingDate'/></div>
-                            <DatePicker
-                                placeholder={this.props.intl.formatMessage({id: 'booking.chooseOneShippingDate'})}
+                            <DatePicker disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+                                        onChange={this.onChangeShippingDate}
+                                        placeholder={this.props.intl.formatMessage({id: 'booking.chooseOneShippingDate'})}
                             />
                         </Layout.Col>
                     </Layout.Row>
