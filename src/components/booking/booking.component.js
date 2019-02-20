@@ -4,6 +4,7 @@ import SenderAddress from "./sender-address";
 import {Button, Layout} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
+import { Notification } from 'element-react';
 
 class Booking extends Component {
     constructor(props) {
@@ -55,7 +56,17 @@ class Booking extends Component {
     };
 
     onContinueBooking = (e) => {
-
+        let newState = this.state;
+        newState.senderErrors.push('email');
+        newState.recipientErrors.push('city');
+        this.setState(newState);
+        Notification.error({
+            title: <h5 className="text-danger text-bold">Error</h5>,
+            message: <div className="text-danger">
+                        <div>email invalid</div>
+                        <div>company is required</div>
+                    </div>,
+        });
     };
 
     onQuote = (e) => {

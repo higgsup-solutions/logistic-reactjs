@@ -126,7 +126,7 @@ class SenderAddress extends Component {
                             <div className="autocomplete-wrap">
                                 <Autocomplete
                                     value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-company', class: this.checkErrorField('company') }}
+                                    inputProps={{ id: 'states-autocomplete-company', className: this.checkErrorField('company') }}
                                     wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.data }
                                     getItemValue={ item => item.abbr }
@@ -151,7 +151,7 @@ class SenderAddress extends Component {
                             <div className="autocomplete-wrap">
                                 <Autocomplete
                                     value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-contact', class: this.checkErrorField('contact') }}
+                                    inputProps={{ id: 'states-autocomplete-contact', className: this.checkErrorField('contact') }}
                                     wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.data }
                                     getItemValue={ item => item.abbr }
@@ -205,7 +205,7 @@ class SenderAddress extends Component {
                             <div className="autocomplete-wrap">
                                 <Autocomplete
                                     value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-city', class: this.checkErrorField('city') }}
+                                    inputProps={{ id: 'states-autocomplete-city', className: this.checkErrorField('city') }}
                                     wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.data }
                                     getItemValue={ item => item.abbr }
