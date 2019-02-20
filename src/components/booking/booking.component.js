@@ -1,37 +1,92 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import './booking.scss';
 import SenderAddress from "./sender-address";
 import {Button, Layout} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
-import { Notification } from 'element-react';
+import {Notification} from 'element-react';
+import {REGEX_EMAIL} from "../../App.constant";
 
 class Booking extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listData: [
-                {abbr: 'ADANIPORTS', name: 'Adani Ports & Special Economic Zone Ltd.'},
-                {abbr: 'ASIANPAINT', name: 'Asian Paints Ltd.'},
-                {abbr: 'AXISBANK', name: 'Axis Bank Ltd.'},
-                {abbr: 'BAJAJ-AUTO', name: 'Bajaj Auto Ltd.'},
-                {abbr: 'BAJFINANCE', name: 'Bajaj Finance'},
-                {abbr: 'BAJAJFINSV', name: 'Bajaj Finserv Ltd.'},
-                {abbr: 'BPCL', name: 'Bharat Petroleum Corporation Ltd.'}],
+                {
+                    id: 1,
+                    countryId: 1,
+                    cityId: 1,
+                    userType: 'S',
+                    company: 'higgsup',
+                    contactName: 'tiepnm',
+                    senderDefault: true,
+                    recipientDefault: true,
+                    phone: '0942426999',
+                    emailAddress: 'cuongleanh91@gmail.com',
+                    address1: '72 tran dang ninh',
+                    address2: '',
+                    cityName: 'hanoi',
+                    countryName: 'Viet Nam',
+                    postalCode: '100000',
+                    stateProvince: null
+                },
+                {
+                    id: 2,
+                    countryId: 2,
+                    cityId: 1,
+                    userType: 'S',
+                    company: 'bo tai chinh',
+                    contactName: 'tiepnm',
+                    senderDefault: false,
+                    recipientDefault: false,
+                    phone: '0942426999',
+                    emailAddress: 'cuongleanh91@gmail.com',
+                    address1: '47 pham van dong',
+                    address2: '',
+                    cityName: 'hanoi',
+                    countryName: 'Ha Lan',
+                    postalCode: '200000',
+                    stateProvince: null
+                },
+                {
+                    id: 3,
+                    countryId: 3,
+                    cityId: 1,
+                    userType: 'S',
+                    company: 'vietlot',
+                    contactName: 'hungnh',
+                    senderDefault: false,
+                    recipientDefault: false,
+                    phone: '0942426999',
+                    emailAddress: 'cuongleanh91@gmail.com',
+                    address1: '13 hai ba trung',
+                    address2: '',
+                    cityName: 'hanoi',
+                    countryName: 'Dan Mach',
+                    postalCode: '100022',
+                    stateProvince: null
+                }
+            ],
+            listCity: [
+                {id: 1, cityName: 'Ha Noi', postalCode: '100000', stateProvince: null},
+                {id: 2, cityName: 'Ha Nam', postalCode: '200000', stateProvince: null},
+                {id: 3, cityName: 'Ha Tay', postalCode: '300000', stateProvince: null},
+                {id: 4, cityName: 'Ha Dong', postalCode: '400000', stateProvince: null},
+            ],
             sender: {
                 company: '',
                 phone: '',
                 contactName: '',
                 emailAddress: '',
                 country: {
-                    id: 288, country_name: 'Viet Nam'
+                    label: "Viet Nam", value: 288
                 },
-                address: '',
+                address1: '',
                 address2: '',
-                city: {
-                    cityId: 0, cityName: ''
-                },
-                postalCode: 0,
+                saveToAddressBook: false,
+                cityId: null,
+                cityName: '',
+                postalCode: null,
                 stateProvince: ''
             },
             recipient: {
@@ -40,19 +95,39 @@ class Booking extends Component {
                 contactName: '',
                 emailAddress: '',
                 country: {
-                    id: 288, country_name: 'Viet Nam'
+                    label: "Viet Nam", value: 288
                 },
-                address: '',
+                address1: '',
                 address2: '',
-                city: {
-                    cityId: 0, cityName: ''
-                },
-                postalCode: 0,
+                saveToAddressBook: false,
+                cityId: null,
+                cityName: '',
+                postalCode: null,
                 stateProvince: ''
             },
             senderErrors: [],
-            recipientErrors: []
+            recipientErrors: [],
+            da: ''
         }
+    };
+
+    componentWillMount() {
+
+    }
+
+    onChangeFieldInput = (name) => (inputName, value) => {
+        let newState = this.state;
+        if (inputName == 'phone') {
+
+        }
+        if(inputName == 'country') {
+            newState[name].cityName = '';
+            newState[name].cityId = -1;
+            newState[name].postalCode = '';
+            newState[name].stateProvince = '';
+        }
+        newState[name][inputName] = value;
+        this.setState(newState);
     };
 
     onContinueBooking = (e) => {
@@ -63,14 +138,34 @@ class Booking extends Component {
         Notification.error({
             title: <h5 className="text-danger text-bold">Error</h5>,
             message: <div className="text-danger">
-                        <div>email invalid</div>
-                        <div>company is required</div>
-                    </div>,
+                <div>email invalid</div>
+                <div>company is required</div>
+            </div>,
         });
     };
 
-    onQuote = (e) => {
+    onSelectCity = (who) => (id) => {
 
+    };
+
+    onSelectAuto = (who) => (id) => {
+        let newState = this.state;
+        for (let i = 0; i < this.state.listData.length; i++) {
+            if (this.state.listData[i].id == id) {
+                newState[who] = this.state.listData[i];
+                newState[who].country = {
+                    label: this.state.listData[i].countryName, value: this.state.listData[i].countryId
+                };
+                break;
+            }
+        }
+        this.setState(newState);
+    };
+
+    onQuote = (e) => {
+        let newState = this.state;
+        newState.sender.company = 'le anh cuong';
+        this.setState(newState);
     };
 
     render() {
@@ -79,18 +174,32 @@ class Booking extends Component {
             <div className="booking">
                 <Layout.Row>
                     <Layout.Col span="12">
-                        <SenderAddress data = {this.state.listData}
-                                       fieldErrors = {this.state.senderErrors}
-                                       name = {this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
-                        <SenderAddress data = {this.state.listData}
-                                       fieldErrors = {this.state.recipientErrors}
-                                       name = {this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
+                        <SenderAddress data={this.state.listData}
+                                       listCity = {this.state.listCity}
+                                       form={this.state.sender}
+                                       changeField={this.onChangeFieldInput('sender')}
+                                       selectCity = {this.onSelectCity('sender')}
+                                       selectContactName = {this.onSelectAuto('sender')}
+                                       selectCompany = {this.onSelectAuto('sender')}
+                                       fieldErrors={this.state.senderErrors}
+                                       name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
+                        <SenderAddress data={this.state.listData}
+                                       listCity = {this.state.listCity}
+                                       form={this.state.recipient}
+                                       changeField={this.onChangeFieldInput('recipient')}
+                                       selectCity = {this.onSelectCity('recipient')}
+                                       selectContactName = {this.onSelectAuto('recipient')}
+                                       selectCompany = {this.onSelectAuto('recipient')}
+                                       fieldErrors={this.state.recipientErrors}
+                                       name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </Layout.Col>
                     <Layout.Col span="12">
                         <PackageShipment/>
                         <div className="text-right pr-3">
-                            <Button type="primary" onClick={this.onQuote}><FormattedMessage id='booking.quote'/></Button>
-                            <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage id='booking.continueBooking'/></Button>
+                            <Button type="primary" onClick={this.onQuote}><FormattedMessage
+                                id='booking.quote'/></Button>
+                            <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage
+                                id='booking.continueBooking'/></Button>
                         </div>
                     </Layout.Col>
                 </Layout.Row>

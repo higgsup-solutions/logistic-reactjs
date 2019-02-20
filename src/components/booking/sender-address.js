@@ -5,17 +5,13 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
 import Autocomplete from 'react-autocomplete';
-import { debounce } from "throttle-debounce";
 
 class SenderAddress extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listCountry: [],
-            countrySelected: { label: "Viet Nam", value: 288 }
         };
-        this.autocompleteSearchDebounced = debounce(500, this.autocompleteSearch);
-        console.log(this.props.fieldErrors);
     }
 
     componentWillMount() {
@@ -29,25 +25,14 @@ class SenderAddress extends Component {
     }
 
     onChangeCountry = (selectedOption) => {
-        this.setState({countrySelected: selectedOption});
-    };
-
-    autocompleteSearch = q => {
-        this._fetch(q);
-    };
-
-
-    _fetch = q => {
-        console.log(q);
-        const _searches = this.state._searches || [];
-        _searches.push(q);
-        this.setState({ _searches });
+        this.props.changeField('country', selectedOption);
     };
 
     renderItemDropdownCity = (item, isHighlighted) => {
-        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
-                            key={ item.abbr } >
-                    { item.name } --- {item.abbr}
+        return  <div className={`row ml-0 item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
+                    <div className="col-xs-12 col-sm-4">{item.cityName}</div>
+                    <div className="col-xs-12 col-sm-4">{item.postalCode}</div>
+                    <div className="col-xs-12 col-sm-4">{item.stateProvince}</div>
                 </div>
     };
 
@@ -56,19 +41,23 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCity = (item, value) => {
-        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        console.log('call should item render city');
+        return item.cityName.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
     onChangeCity = (event, value) => {
-        this.setState({ value });
-        this.autocompleteSearchDebounced(value);
+        this.props.changeField('city', value);
     };
 
     renderItemDropdownCompany = (item, isHighlighted) => {
-        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
-                     key={ item.abbr } >
-            { item.name } --- {item.abbr}
-        </div>
+        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
+                    <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
+                    <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
+                    <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
+                    <div>{item.address2}</div>
+                    <div>{item.cityName} - {item.postalCode}</div>
+                    <div>{item.countryName}</div>
+                </div>
     };
 
     renderMenuCompany = (children) => {
@@ -76,19 +65,23 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCompany = (item, value) => {
-        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        console.log('call should item render company');
+        return item.company.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
     onChangeCompany = (event, value) => {
-        this.setState({ value });
-        this.autocompleteSearchDebounced(value);
+        this.props.changeField('company', value);
     };
 
     renderItemDropdownContact = (item, isHighlighted) => {
-        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
-                     key={ item.abbr } >
-            { item.name } --- {item.abbr}
-        </div>
+        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
+                    <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
+                    <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
+                    <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
+                    <div>{item.address2}</div>
+                    <div>{item.cityName} - {item.postalCode}</div>
+                    <div>{item.countryName}</div>
+                </div>
     };
 
     renderMenuContact = (children) => {
@@ -96,17 +89,37 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderContact = (item, value) => {
-        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        console.log('call should item render contact');
+        return item.contactName.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
     onChangeContact = (event, value) => {
-        this.setState({ value });
-        this.autocompleteSearchDebounced(value);
+        this.props.changeField('contactName', value);
     };
 
     checkErrorField(fieldName) {
-        return this.props.fieldErrors.includes(fieldName)? 'invalid' : '';
+        return this.props.fieldErrors.includes(fieldName) ? 'invalid' : '';
     }
+
+    onChangeCheckbox = (e) => {
+        this.props.changeField('saveToAddressBook', null)
+    };
+
+    onChangeCommonInput = (inputName) => (value) => {
+        this.props.changeField(inputName, value);
+    };
+
+    onSelectCompany = (value) => {
+        this.props.selectCompany(value);
+    };
+
+    onSelectContactName = (value) => {
+        this.props.selectContactName(value);
+    };
+
+    onSelectCity = (value) => {
+        this.props.selectCity(value);
+    };
 
     render() {
 
@@ -125,14 +138,17 @@ class SenderAddress extends Component {
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
                                 <Autocomplete
-                                    value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-company', className: this.checkErrorField('company') }}
+                                    value={this.props.form.company}
+                                    inputProps={{
+                                        id: 'company-autocomplete',
+                                        className: this.checkErrorField('company')
+                                    }}
                                     wrapperStyle={wrapStyleAutocomplete}
-                                    items={this.props.data }
-                                    getItemValue={ item => item.abbr }
-                                    shouldItemRender= {this.shouldItemRenderCompany}
+                                    items={this.props.data}
+                                    getItemValue={item => item.id.toString()}
+                                    shouldItemRender={this.shouldItemRenderCompany}
                                     onChange={this.onChangeCompany}
-                                    onSelect={ value => this.setState({ value }) }
+                                    onSelect={this.onSelectCompany}
                                     renderMenu={this.renderMenuCompany}
                                     renderItem={this.renderItemDropdownCompany}
                                 />
@@ -141,7 +157,8 @@ class SenderAddress extends Component {
                         <Layout.Col span="12" className="pl-2">
                             <div className="label"><FormattedMessage id='booking.phone'/><span
                                 className="required ml-2">*</span></div>
-                            <Input/>
+                            <Input value={this.props.form.phone}
+                                   onChange={this.onChangeCommonInput('phone')}/>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
@@ -150,14 +167,17 @@ class SenderAddress extends Component {
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
                                 <Autocomplete
-                                    value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-contact', className: this.checkErrorField('contact') }}
+                                    value={this.props.form.contactName}
+                                    inputProps={{
+                                        id: 'contact-autocomplete',
+                                        className: this.checkErrorField('contact')
+                                    }}
                                     wrapperStyle={wrapStyleAutocomplete}
-                                    items={this.props.data }
-                                    getItemValue={ item => item.abbr }
-                                    shouldItemRender= {this.shouldItemRenderContact}
+                                    items={this.props.data}
+                                    getItemValue={item => item.id.toString()}
+                                    shouldItemRender={this.shouldItemRenderContact}
                                     onChange={this.onChangeContact}
-                                    onSelect={ value => this.setState({ value }) }
+                                    onSelect={this.onSelectContactName}
                                     renderMenu={this.renderMenuContact}
                                     renderItem={this.renderItemDropdownContact}
                                 />
@@ -165,7 +185,9 @@ class SenderAddress extends Component {
                         </Layout.Col>
                         <Layout.Col span="12" className="pl-2">
                             <div className="label"><FormattedMessage id='booking.emailAddress'/></div>
-                            <Input className={this.checkErrorField('email')} />
+                            <Input className={this.checkErrorField('email')}
+                                   value={this.props.form.emailAddress}
+                                   onChange={this.onChangeCommonInput('emailAddress')}/>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
@@ -174,7 +196,7 @@ class SenderAddress extends Component {
                                 className="required ml-2">*</span></div>
                             <div className="dropdown-wrap">
                                 <span className="icon"><i className="fa fa-caret-down"></i></span>
-                                <Select value={this.state.countrySelected}
+                                <Select value={this.props.form.country}
                                         onChange={this.onChangeCountry}
                                         options={this.state.listCountry}
                                 />
@@ -185,17 +207,21 @@ class SenderAddress extends Component {
                         <Layout.Col span="12" className="pr-2">
                             <div className="label"><FormattedMessage id='booking.address'/><span
                                 className="required ml-2">*</span></div>
-                            <Input/>
+                            <Input value={this.props.form.address1}
+                                   onChange={this.onChangeCommonInput('address')}/>
                         </Layout.Col>
                         <Layout.Col span="12" className="pl-2">
                             <div className="label"><FormattedMessage id='booking.address2'/></div>
-                            <Input/>
+                            <Input value={this.props.form.address2}
+                                   onChange={this.onChangeCommonInput('address2')}/>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
                         <Layout.Col span="24" className="text-left">
-                            <Checkbox
-                                label={this.props.intl.formatMessage({id: 'booking.saveToAddressBook'})}></Checkbox>
+                            <Checkbox checked={this.props.form.saveToAddressBook}
+                                      onChange={this.onChangeCheckbox}
+                                      label={this.props.intl.formatMessage({id: 'booking.saveToAddressBook'})}>
+                            </Checkbox>
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
@@ -204,14 +230,17 @@ class SenderAddress extends Component {
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
                                 <Autocomplete
-                                    value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete-city', className: this.checkErrorField('city') }}
+                                    value={this.props.form.cityName}
+                                    inputProps={{
+                                        id: 'city-autocomplete',
+                                        className: this.checkErrorField('city')
+                                    }}
                                     wrapperStyle={wrapStyleAutocomplete}
-                                    items={this.props.data }
-                                    getItemValue={ item => item.abbr }
-                                    shouldItemRender= {this.shouldItemRenderCity}
+                                    items={this.props.listCity}
+                                    getItemValue={item => item.id.toString()}
+                                    shouldItemRender={this.shouldItemRenderCity}
                                     onChange={this.onChangeCity}
-                                    onSelect={ value => this.setState({ value }) }
+                                    onSelect={this.onSelectCity}
                                     renderMenu={this.renderMenuCity}
                                     renderItem={this.renderItemDropdownCity}
                                 />
@@ -219,11 +248,13 @@ class SenderAddress extends Component {
                         </Layout.Col>
                         <Layout.Col span="8" className="pl-3 pr-3">
                             <div className="label"><FormattedMessage id='booking.postalCode'/></div>
-                            <Input/>
+                            <Input value={this.props.form.postalCode}
+                                   onChange={this.onChangeCommonInput('postalCode')}/>
                         </Layout.Col>
                         <Layout.Col span="8">
                             <div className="label"><FormattedMessage id='booking.stateProvince'/></div>
-                            <Input/>
+                            <Input value={this.props.form.stateProvince}
+                                   onChange={this.onChangeCommonInput('stateProvince')}/>
                         </Layout.Col>
                     </Layout.Row>
                 </Card>

@@ -85,10 +85,30 @@
     padding: 3px 10px;
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
     &:focus{
-      border: 1px solid #20a0ff;
+      border: 1px solid $active-link;
     }
   }
   .item-dropdown{
+    border-bottom: 1px solid rgba($border-color, 0.3);
+    text-align: left;
+    div{
+      padding: 5px 15px;
+    }
+    .item-icon{
+      position: relative;
+      i{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: $active-link;
+        &.fa-building{
+          right: 8px;
+        }
+      }
+    }
+    &:last-of-type{
+      border-bottom: none;
+    }
     &--highlighted{
       background-color: rgba($active-link, 0.3);
     }
@@ -103,7 +123,7 @@
   border-radius: 4px;
   padding: 10px 0;
   background: white;
-  border: 1px solid #cccccc;
+  border: 1px solid rgba(#000, 0.3);
   &--city{
     width: 300%!important;
   }
