@@ -5,6 +5,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
 import Autocomplete from 'react-autocomplete';
+import { debounce } from "throttle-debounce";
 
 class SenderAddress extends Component {
     constructor(props) {
@@ -12,7 +13,9 @@ class SenderAddress extends Component {
         this.state = {
             listCountry: [],
             countrySelected: { label: "Viet Nam", value: 288 }
-        }
+        };
+        this.autocompleteSearchDebounced = debounce(500, this.autocompleteSearch);
+        console.log(this.props.fieldErrors);
     }
 
     componentWillMount() {
@@ -29,30 +32,88 @@ class SenderAddress extends Component {
         this.setState({countrySelected: selectedOption});
     };
 
-    onSearchCity = (query) => {
-        if (query !== '') {
-            this.setState({
-                loading: true
-            });
-
-            setTimeout(() => {
-                this.setState({
-                    loading: false,
-                    options: this.state.states.map(item => {
-                        return { value: item, label: item };
-                    }).filter(item => {
-                        return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
-                    })
-                });
-            }, 200);
-        } else {
-            this.setState({
-                options: []
-            });
-        }
+    autocompleteSearch = q => {
+        this._fetch(q);
     };
 
+
+    _fetch = q => {
+        console.log(q);
+        const _searches = this.state._searches || [];
+        _searches.push(q);
+        this.setState({ _searches });
+    };
+
+    renderItemDropdownCity = (item, isHighlighted) => {
+        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
+                            key={ item.abbr } >
+                    { item.name } --- {item.abbr}
+                </div>
+    };
+
+    renderMenuCity = (children) => {
+        return <div className="dropdown-autocomplete dropdown-autocomplete--city">{children}</div>;
+    };
+
+    shouldItemRenderCity = (item, value) => {
+        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+    };
+
+    onChangeCity = (event, value) => {
+        this.setState({ value });
+        this.autocompleteSearchDebounced(value);
+    };
+
+    renderItemDropdownCompany = (item, isHighlighted) => {
+        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
+                     key={ item.abbr } >
+            { item.name } --- {item.abbr}
+        </div>
+    };
+
+    renderMenuCompany = (children) => {
+        return <div className="dropdown-autocomplete">{children}</div>;
+    };
+
+    shouldItemRenderCompany = (item, value) => {
+        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+    };
+
+    onChangeCompany = (event, value) => {
+        this.setState({ value });
+        this.autocompleteSearchDebounced(value);
+    };
+
+    renderItemDropdownContact = (item, isHighlighted) => {
+        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
+                     key={ item.abbr } >
+            { item.name } --- {item.abbr}
+        </div>
+    };
+
+    renderMenuContact = (children) => {
+        return <div className="dropdown-autocomplete">{children}</div>;
+    };
+
+    shouldItemRenderContact = (item, value) => {
+        return item.name.toLowerCase().indexOf(value.toLowerCase()) > -1;
+    };
+
+    onChangeContact = (event, value) => {
+        this.setState({ value });
+        this.autocompleteSearchDebounced(value);
+    };
+
+    checkErrorField(fieldName) {
+        return this.props.fieldErrors.includes(fieldName)? 'invalid' : '';
+    }
+
     render() {
+
+        const wrapStyleAutocomplete = {
+            position: 'relative',
+            display: 'inline-block'
+        };
 
         return (
             <div className="mycard sender">
@@ -65,20 +126,15 @@ class SenderAddress extends Component {
                             <div className="autocomplete-wrap">
                                 <Autocomplete
                                     value={ this.state.value }
-                                    inputProps={{ id: 'states-autocomplete' }}
-                                    wrapperStyle={{ position: 'relative', display: 'inline-block' }}
+                                    inputProps={{ id: 'states-autocomplete-company', class: this.checkErrorField('company') }}
+                                    wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.data }
                                     getItemValue={ item => item.abbr }
-                                    shouldItemRender= {(item, value) => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1}
-                                    onChange={(event, value) => this.setState({ value }) }
+                                    shouldItemRender= {this.shouldItemRenderCompany}
+                                    onChange={this.onChangeCompany}
                                     onSelect={ value => this.setState({ value }) }
-                                    renderMenu={ children => <div className="dropdown-autocomplete">{children}</div>}
-                                    renderItem={ (item, isHighlighted) => (
-                                        <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
-                                            key={ item.abbr } >
-                                            { item.name } --- {item.abbr}
-                                        </div>
-                                    )}
+                                    renderMenu={this.renderMenuCompany}
+                                    renderItem={this.renderItemDropdownCompany}
                                 />
                             </div>
                         </Layout.Col>
@@ -92,11 +148,24 @@ class SenderAddress extends Component {
                         <Layout.Col span="12" className="pr-2">
                             <div className="label"><FormattedMessage id='booking.contactName'/><span
                                 className="required ml-2">*</span></div>
-                            <Input/>
+                            <div className="autocomplete-wrap">
+                                <Autocomplete
+                                    value={ this.state.value }
+                                    inputProps={{ id: 'states-autocomplete-contact', class: this.checkErrorField('contact') }}
+                                    wrapperStyle={wrapStyleAutocomplete}
+                                    items={this.props.data }
+                                    getItemValue={ item => item.abbr }
+                                    shouldItemRender= {this.shouldItemRenderContact}
+                                    onChange={this.onChangeContact}
+                                    onSelect={ value => this.setState({ value }) }
+                                    renderMenu={this.renderMenuContact}
+                                    renderItem={this.renderItemDropdownContact}
+                                />
+                            </div>
                         </Layout.Col>
                         <Layout.Col span="12" className="pl-2">
                             <div className="label"><FormattedMessage id='booking.emailAddress'/></div>
-                            <Input/>
+                            <Input className={this.checkErrorField('email')} />
                         </Layout.Col>
                     </Layout.Row>
                     <Layout.Row className="mb-3">
@@ -133,16 +202,20 @@ class SenderAddress extends Component {
                         <Layout.Col span="8">
                             <div className="label"><FormattedMessage id='booking.city'/><span
                                 className="required ml-2">*</span></div>
-                            {/*<SelectEl value={this.props.}*/}
-                                      {/*filterable={true}*/}
-                                      {/*remote={true}*/}
-                                      {/*remoteMethod={this.onSearchCity}>*/}
-                                {/*{*/}
-                                    {/*this.state.options.map(el => {*/}
-                                        {/*return <Select.Option key={el.value} label={el.label} value={el.value} />*/}
-                                    {/*})*/}
-                                {/*}*/}
-                            {/*</SelectEl>*/}
+                            <div className="autocomplete-wrap">
+                                <Autocomplete
+                                    value={ this.state.value }
+                                    inputProps={{ id: 'states-autocomplete-city', class: this.checkErrorField('city') }}
+                                    wrapperStyle={wrapStyleAutocomplete}
+                                    items={this.props.data }
+                                    getItemValue={ item => item.abbr }
+                                    shouldItemRender= {this.shouldItemRenderCity}
+                                    onChange={this.onChangeCity}
+                                    onSelect={ value => this.setState({ value }) }
+                                    renderMenu={this.renderMenuCity}
+                                    renderItem={this.renderItemDropdownCity}
+                                />
+                            </div>
                         </Layout.Col>
                         <Layout.Col span="8" className="pl-3 pr-3">
                             <div className="label"><FormattedMessage id='booking.postalCode'/></div>
