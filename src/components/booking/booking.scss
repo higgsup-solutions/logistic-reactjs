@@ -50,21 +50,25 @@
     }
   }
 }
-.package{
-  padding-top: 0;
-}
 .table-wrap{
   width: 100%;
   overflow: auto;
   position: relative;
   .cover{
     position: absolute;
+    min-width: 600px;
     width: 100%;
     height: 100%;
     background-color: rgba(#000, 0.2);
+    z-index: 9;
   }
   table{
     min-width: 600px;
+    .fa-times-circle{
+      color: $active-link;
+      font-size: 22px;
+      margin-top: 6px;
+    }
   }
 }
 .autocomplete-wrap{

@@ -29,11 +29,12 @@ class SenderAddress extends Component {
     };
 
     renderItemDropdownCity = (item, isHighlighted) => {
-        return  <div className={`row ml-0 item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
-                    <div className="col-xs-12 col-sm-4">{item.cityName}</div>
-                    <div className="col-xs-12 col-sm-4">{item.postalCode}</div>
-                    <div className="col-xs-12 col-sm-4">{item.stateProvince}</div>
-                </div>
+        return <div className={`row ml-0 item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`}
+                    key={item.id}>
+            <div className="col-xs-12 col-sm-4">{item.cityName}</div>
+            <div className="col-xs-12 col-sm-4">{item.postalCode}</div>
+            <div className="col-xs-12 col-sm-4">{item.stateProvince}</div>
+        </div>
     };
 
     renderMenuCity = (children) => {
@@ -41,7 +42,6 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCity = (item, value) => {
-        console.log('call should item render city');
         return item.cityName.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
@@ -50,14 +50,14 @@ class SenderAddress extends Component {
     };
 
     renderItemDropdownCompany = (item, isHighlighted) => {
-        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
-                    <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
-                    <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
-                    <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
-                    <div>{item.address2}</div>
-                    <div>{item.cityName} - {item.postalCode}</div>
-                    <div>{item.countryName}</div>
-                </div>
+        return <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
+            <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
+            <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
+            <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
+            <div>{item.address2}</div>
+            <div>{item.cityName} - {item.postalCode}</div>
+            <div>{item.countryName}</div>
+        </div>
     };
 
     renderMenuCompany = (children) => {
@@ -65,7 +65,6 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCompany = (item, value) => {
-        console.log('call should item render company');
         return item.company.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
@@ -74,14 +73,14 @@ class SenderAddress extends Component {
     };
 
     renderItemDropdownContact = (item, isHighlighted) => {
-        return  <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
-                    <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
-                    <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
-                    <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
-                    <div>{item.address2}</div>
-                    <div>{item.cityName} - {item.postalCode}</div>
-                    <div>{item.countryName}</div>
-                </div>
+        return <div className={`item-dropdown ${isHighlighted ? 'item-dropdown--highlighted' : ''}`} key={item.id}>
+            <div className="item-icon">{item.contactName} <i className="fa fa-user"></i></div>
+            <div className="item-icon">{item.company} <i className="fa fa-building"></i></div>
+            <div className="item-icon">{item.address1} <i className="fa fa-map-marker"></i></div>
+            <div>{item.address2}</div>
+            <div>{item.cityName} - {item.postalCode}</div>
+            <div>{item.countryName}</div>
+        </div>
     };
 
     renderMenuContact = (children) => {
@@ -89,7 +88,6 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderContact = (item, value) => {
-        console.log('call should item render contact');
         return item.contactName.toLowerCase().indexOf(value.toLowerCase()) > -1;
     };
 
@@ -132,8 +130,8 @@ class SenderAddress extends Component {
             <div className="mycard sender">
                 <Card className="box-card"
                       header={<div className="clearfix">{this.props.name}</div>}>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="12" className="pr-2">
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-6 pr-2">
                             <div className="label"><FormattedMessage id='booking.company'/><span
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
@@ -153,16 +151,16 @@ class SenderAddress extends Component {
                                     renderItem={this.renderItemDropdownCompany}
                                 />
                             </div>
-                        </Layout.Col>
-                        <Layout.Col span="12" className="pl-2">
+                        </div>
+                        <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.phone'/><span
                                 className="required ml-2">*</span></div>
-                            <Input value={this.props.form.phone}
+                            <Input value={this.props.form.phoneNumber}
                                    onChange={this.onChangeCommonInput('phone')}/>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="12" className="pr-2">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-6 pr-2">
                             <div className="label"><FormattedMessage id='booking.contactName'/><span
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
@@ -182,16 +180,16 @@ class SenderAddress extends Component {
                                     renderItem={this.renderItemDropdownContact}
                                 />
                             </div>
-                        </Layout.Col>
-                        <Layout.Col span="12" className="pl-2">
+                        </div>
+                        <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.emailAddress'/></div>
                             <Input className={this.checkErrorField('email')}
                                    value={this.props.form.emailAddress}
                                    onChange={this.onChangeCommonInput('emailAddress')}/>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="24">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-sm-12">
                             <div className="label"><FormattedMessage id='booking.country'/><span
                                 className="required ml-2">*</span></div>
                             <div className="dropdown-wrap">
@@ -201,31 +199,31 @@ class SenderAddress extends Component {
                                         options={this.state.listCountry}
                                 />
                             </div>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="12" className="pr-2">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-6 pr-2">
                             <div className="label"><FormattedMessage id='booking.address'/><span
                                 className="required ml-2">*</span></div>
                             <Input value={this.props.form.address1}
                                    onChange={this.onChangeCommonInput('address')}/>
-                        </Layout.Col>
-                        <Layout.Col span="12" className="pl-2">
+                        </div>
+                        <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.address2'/></div>
                             <Input value={this.props.form.address2}
                                    onChange={this.onChangeCommonInput('address2')}/>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="24" className="text-left">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 text-left pl-3">
                             <Checkbox checked={this.props.form.saveToAddressBook}
                                       onChange={this.onChangeCheckbox}
                                       label={this.props.intl.formatMessage({id: 'booking.saveToAddressBook'})}>
                             </Checkbox>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="8">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-4">
                             <div className="label"><FormattedMessage id='booking.city'/><span
                                 className="required ml-2">*</span></div>
                             <div className="autocomplete-wrap">
@@ -245,18 +243,18 @@ class SenderAddress extends Component {
                                     renderItem={this.renderItemDropdownCity}
                                 />
                             </div>
-                        </Layout.Col>
-                        <Layout.Col span="8" className="pl-3 pr-3">
+                        </div>
+                        <div className="col-xs-12 col-sm-4 pl-3 pr-3">
                             <div className="label"><FormattedMessage id='booking.postalCode'/></div>
                             <Input value={this.props.form.postalCode}
                                    onChange={this.onChangeCommonInput('postalCode')}/>
-                        </Layout.Col>
-                        <Layout.Col span="8">
+                        </div>
+                        <div className="col-xs-12 col-sm-4">
                             <div className="label"><FormattedMessage id='booking.stateProvince'/></div>
                             <Input value={this.props.form.stateProvince}
                                    onChange={this.onChangeCommonInput('stateProvince')}/>
-                        </Layout.Col>
-                    </Layout.Row>
+                        </div>
+                    </div>
                 </Card>
             </div>
         );

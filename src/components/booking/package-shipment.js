@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import './booking.scss';
-import {Layout, DatePicker, Input, Card, Select, Radio, Form, Table, Checkbox} from 'element-react';
+import {Layout, DatePicker, Input, Card, Select, Radio, Form, Table, Checkbox, Button} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 
 class PackageShipment extends Component {
@@ -8,112 +8,147 @@ class PackageShipment extends Component {
         super(props);
         this.state = {
             contents: 'Documents',
-
-        }
+        };
     }
 
-    onChange = (input) => (e) => {
-        this.setState({contents: e})
+    onChangeContent = (value) => {
+        this.props.changeField('contentType', value)
     };
 
     onChangeShippingDate = (date) => {
         console.log(date);
     };
 
+    onAddPiece = (e) => {
+        this.props.addPiece();
+    };
+
+    onChangeDangerous = (value) => {
+        this.props.changeField('dangerousGoods', value);
+    };
+
+    onDeleteRowDocument = (index) => (e) => {
+        this.props.deleteRowDocument(index);
+    };
+
     render() {
+
+        const domListDocument = this.props.form.documentInfos.map((item, key) =>
+            <tr key={key}>
+                <td>{key + 1}</td>
+                <td><Input/></td>
+                <td>
+                    <Select className="w-100"
+                            placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
+                        <Select.Option label="Zone 1" value="shanghai"></Select.Option>
+                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                    </Select>
+                </td>
+                <td>
+                    <Input/>
+                </td>
+                <td>
+                    <Input/>
+                </td>
+                <td>
+                    <Input/>
+                </td>
+                <td>
+                    <Input/>
+                </td>
+                <td>{key != 0 ? <i className="fa fa-times-circle"
+                                   onClick={this.onDeleteRowDocument(key)}></i> : ''}</td>
+            </tr>
+        );
+
 
         return (
             <div className="mycard package">
                 <Card className="box-card"
                       header={<div className="clearfix"><FormattedMessage id='booking.packageShipment'/></div>}>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="12" className="text-left">
+                    <div className="row mb-3 pl-3">
+                        <div className="col-xs-12 text-left">
                             <div className="label"><FormattedMessage id='booking.shippingDate'/></div>
                             <DatePicker disabledDate={time => time.getTime() < Date.now() - 8.64e7}
                                         onChange={this.onChangeShippingDate}
                                         placeholder={this.props.intl.formatMessage({id: 'booking.chooseOneShippingDate'})}
                             />
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="12" className="pr-2">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-6 pr-2">
                             <div className="label"><FormattedMessage id='booking.carrier'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
-                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
-                                <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                                    value={this.props.form.carrierId}
+                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCarrier'})}>
+                                {this.props.listCarrier.map(item => <Select.Option key={item.id} label={item.carrierType} value={item.id}></Select.Option>)}
                             </Select>
-                        </Layout.Col>
-                        <Layout.Col span="12" className="pl-2">
+                        </div>
+                        <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.serviceType'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
-                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
+                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOneService'})}>
                                 <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
+
                             </Select>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="24">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-sm-12 col-sm-6">
                             <div className="label"><FormattedMessage id='booking.packageType'/></div>
                             <Select className="w-100"
-                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
-                                <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                                <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                                    value={this.props.form.packageType}
+                                    placeholder={this.props.intl.formatMessage({id: 'booking.selectOnePackage'})}>
+                                {this.props.listPackageType.map(item => <Select.Option key={item.id} label={item.packageType} value={item.id}></Select.Option>)}
                             </Select>
-                        </Layout.Col>
-                    </Layout.Row>
-                    <Layout.Row className="mb-3">
-                        <Layout.Col span="24" className="text-left">
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div className="col-xs-12 col-sm-6 text-left">
                             <div className="label"><FormattedMessage id='booking.contents'/><span
                                 className="required ml-2">*</span></div>
-                            <Radio.Group value={this.state.contents} onChange={this.onChange('contents')}>
-                                <Radio value="Documents" checked={this.state.contents == 'Documents'}></Radio>
-                                <Radio value="Parcel" checked={this.state.contents == 'Parcel'}></Radio>
-                            </Radio.Group>
-                        </Layout.Col>
-                    </Layout.Row>
+                            <div>
+                                <Radio value="Documents" checked={this.props.form.contentType == 'Documents'}
+                                       onChange={this.onChangeContent}></Radio>
+                                <Radio value="Parcel" checked={this.props.form.contentType == 'Parcel'}
+                                       onChange={this.onChangeContent}></Radio>
+                            </div>
+                        </div>
+                    </div>
                     <div className="table-wrap">
-                        {this.state.contents === 'Parcel' ? <div className="cover"></div> : ''}
+                        {this.props.form.contentType == 'Parcel' ? <div className="cover"></div> : ''}
                         <table className="table table-bordered">
                             <thead>
                             <tr>
-                                <th rowSpan="2">Row</th>
-                                <th rowSpan="2">Weights (Kgs)*</th>
-                                <th rowSpan="2"></th>
+                                <th rowSpan="2" className="width-50">Row</th>
+                                <th rowSpan="2" className="width-100">Weights (Kgs)*</th>
+                                <th rowSpan="2" className="width-150"></th>
                                 <th colSpan="3">Dimensions(cm)</th>
-                                <th rowSpan="2">Quantity*</th>
-                                <th rowSpan="2"></th>
+                                <th rowSpan="2" className="width-100">Quantity*</th>
+                                <th rowSpan="2" className="width-50"></th>
                             </tr>
                             <tr>
-                                <th>L</th>
-                                <th>W</th>
-                                <th>H</th>
+                                <th className="width-100">L</th>
+                                <th className="width-100">W</th>
+                                <th className="width-100">H</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            {domListDocument}
                             </tbody>
                         </table>
                     </div>
-                    <Layout.Row className="mt-3">
-                        <Layout.Col span="24" className="text-left">
-                            <Checkbox>Dangerous Goods</Checkbox>
-                        </Layout.Col>
-                    </Layout.Row>
+                    <div className="text-left mt-1">
+                        <Button type="primary" size="small" onClick={this.onAddPiece}><FormattedMessage
+                            id='booking.addPiece'/></Button>
+                    </div>
+                    <div className="mt-3 text-left">
+                        <Checkbox checked={this.props.form.dangerousGoods}
+                                  onChange={this.onChangeDangerous}>Dangerous Goods</Checkbox>
+                    </div>
                 </Card>
             </div>
         );

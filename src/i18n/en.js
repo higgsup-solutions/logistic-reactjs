@@ -21,6 +21,9 @@ export const ENGLISH = {
         "booking.emailAddress": "Email Address",
         "booking.country": "Country",
         "booking.selectOneCountry": "Select One Country",
+        "booking.selectOneCarrier": "Select One Carrier",
+        "booking.selectOnePackage": "Select One Package",
+        "booking.selectOneService": "Select One Service",
         "booking.address": "Address",
         "booking.address2": "Address2",
         "booking.saveToAddressBook": "Save To Address Book",
@@ -37,5 +40,6 @@ export const ENGLISH = {
         "booking.packageShipment": "Package and Shipment Details",
         "booking.continueBooking": "Continue Booking",
         "booking.quote": "Quote",
+        "booking.addPiece": "Add Piece",
     }
 };
