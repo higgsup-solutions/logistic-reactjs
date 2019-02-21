@@ -90,7 +90,7 @@ class ShipmentDetail extends Component {
         super(props);
 
         this.state = {
-            dialogVisible: true,
+            dialogVisible: false,
             shipmentDetail: {}
         }
     }
@@ -143,8 +143,12 @@ class ShipmentDetail extends Component {
                                        data={this.packageInfoData}
                                 />
                                 <div className="text-right">
-                                    <Button type="primary">{'View'}</Button>
-                                    <Button type="primary">{'Track'}</Button>
+                                    <Button type="primary">
+                                        <FormattedMessage id='view'/>
+                                    </Button>
+                                    <Button type="primary">
+                                        <FormattedMessage id='sd.quoteDetail.alert'/>
+                                    </Button>
                                 </div>
                             </Layout.Col>
                         </Layout.Row>

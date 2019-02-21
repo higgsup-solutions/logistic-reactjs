@@ -1,6 +1,13 @@
 import React, {Component} from "react";
-import {Select, Table, Pagination} from "element-react";
-import {injectIntl} from "react-intl";
+import {
+    Table,
+    Pagination,
+    Layout,
+    Input,
+    Button
+} from "element-react";
+import {FormattedMessage, injectIntl} from "react-intl";
+import {getBookingHistory} from "../../integrate/booking-history";
 
 class BookingList extends Component {
 
@@ -58,67 +65,66 @@ class BookingList extends Component {
         },
     ];
 
-    fakeData = [
-        {
-            carierName: 'DHL Domestic',
-            senderContactName: 'DHL Domestic Express',
-            trackingNo: '2131234125',
-            pieces: '1',
-            actualWeight: '1.0kg(s)',
-            totalCharge: '12.68',
-            destCountry: 'VietNam',
-            shippingDate: '2016-05-03',
-        },
-        {
-            carierName: 'DHL Domestic',
-            senderContactName: 'DHL Domestic Express',
-            trackingNo: '2131234125',
-            pieces: '1',
-            actualWeight: '1.0kg(s)',
-            totalCharge: '12.68',
-            destCountry: 'VietNam',
-            shippingDate: '2016-05-03',
-        },
-        {
-            carierName: 'DHL Domestic',
-            senderContactName: 'DHL Domestic Express',
-            trackingNo: '2131234125',
-            pieces: '1',
-            actualWeight: '1.0kg(s)',
-            totalCharge: '12.68',
-            destCountry: 'VietNam',
-            shippingDate: '2016-05-03',
-        },
-        {
-            carierName: 'DHL Domestic',
-            senderContactName: 'DHL Domestic Express',
-            trackingNo: '2131234125',
-            pieces: '1',
-            actualWeight: '1.0kg(s)',
-            totalCharge: '12.68',
-            destCountry: 'VietNam',
-            shippingDate: '2016-05-03',
-        }
-    ];
-
     constructor(props) {
         super(props);
 
         this.state = {
-            pageSize: '25',
-            data: this.fakeData
+            textSearch: '',
+            pageSize: 2,
+            pageIndex: 0,
+            totalItem: 0,
+            data: []
         }
     }
 
-    onChangePageSize(item) {
-        this.setState({
-            pageSize: item
-        });
-    };
+    componentWillMount() {
+        this.getBookingHistory()
+    }
+
+    getBookingHistory(newPage) {
+        console.log(newPage);
+        getBookingHistory(
+            newPage || this.state.pageIndex,
+            this.state.pageSize,
+            this.state.textSearch
+        ).then(res => {
+            if (res.responseMessage && res.responseMessage.status === 'OK') {
+                console.log(res);
+                const {pageIndex, pageSize, totalItem} = res;
+                const data = res.responseMessage.data || [];
+                this.setState({
+                    pageSize,
+                    pageIndex,
+                    totalItem,
+                    data
+                })
+            }
+        })
+    }
+
+    // onChangePageSize(item) {
+    //     this.setState({
+    //         pageSize: item
+    //     });
+    // };
 
     render() {
         return (
             <div className="booking-list">
+
+                <Layout.Row>
+                    <Layout.Col span="4">
+                        <Input className="search-input"
+                               value={this.state.textSearch}
+                               placeholder={`${this.props.intl.formatMessage({id: 'search'})}`}
+                               onChange={(value) => {this.state.textSearch = value; this.forceUpdate()} }
+                        />
+                    </Layout.Col>
+                    <Button type="primary" onClick={this.getBookingHistory.bind(this, undefined)}>
+                        <FormattedMessage id='search'/>
+                    </Button>
+                </Layout.Row>
+
                 {/*<div className="page-size-container text-left">*/}
                     {/*Show*/}
                     {/*<Select value={this.state.pageSize}*/}
@@ -144,11 +150,16 @@ class BookingList extends Component {
                         highlightCurrentRow={true}
                         onRowClick={item => this.props.onClickShipment(item)}
                         // onCurrentChange={item => console.log(item)}
+                        emptyText={this.props.intl.formatMessage({id: 'history.empty'})}
                     />
                 </div>
                 <div className="pageable-container text-right">
                     <Pagination layout="prev, pager, next"
-                                total={this.state.data.size}/>
+                                currentPage={this.state.pageIndex + 1}
+                                pageSize={this.state.pageSize}
+                                total={this.state.totalItem}
+                                onCurrentChange={newCurrentPage => this.getBookingHistory(newCurrentPage - 1)}
+                    />
                 </div>
             </div>
         )

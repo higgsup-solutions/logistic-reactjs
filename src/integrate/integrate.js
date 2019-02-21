@@ -65,7 +65,7 @@ const makeAuthRequest = (args) => {
         }
     };
 
-    return this.makeRequest(argsUpdated);
+    return makeRequest(argsUpdated);
 };
 
 const makeRequest = (args) => {

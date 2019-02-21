@@ -59,6 +59,7 @@ export const ENGLISH = {
         "history.quoted": "Quoted",
         "history.destCountry": "Dest. Country",
         "history.shipDate": "Ship Date",
+        "history.empty": "Have no history",
 
         // Shipment Detail - alias = 'sd'
         "sd.shipmentDetail": "Shipment Detail",
