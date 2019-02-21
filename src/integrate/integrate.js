@@ -39,19 +39,16 @@ _request.interceptors.response.use(
         return response
     },
     error => {
-        console.log('err' + error); // for debug
         Notification.error({
             title: 'Error',
-            message: `${error}`
+            message: `${error.response.data.message}`
         });
         return Promise.reject(error)
     }
 );
 
 const makeAuthRequest = (args) => {
-
-    // todo: need to get token from storage
-    const {accessToken} = '_this_is_token_';
+    const {accessToken} = localStorage.getItem('authToken');
     const _headers = args.headers ? args.headers : {};
     const defaultHeaders = {
         'Authorization': accessToken,
