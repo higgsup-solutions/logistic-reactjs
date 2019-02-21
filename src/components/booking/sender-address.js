@@ -156,7 +156,8 @@ class SenderAddress extends Component {
                             <div className="label"><FormattedMessage id='booking.phone'/><span
                                 className="required ml-2">*</span></div>
                             <Input value={this.props.form.phoneNumber}
-                                   onChange={this.onChangeCommonInput('phone')}/>
+                                   className={this.checkErrorField('phoneNumber')}
+                                   onChange={this.onChangeCommonInput('phoneNumber')}/>
                         </div>
                     </div>
                     <div className="row mb-3">
@@ -168,7 +169,7 @@ class SenderAddress extends Component {
                                     value={this.props.form.contactName}
                                     inputProps={{
                                         id: 'contact-autocomplete',
-                                        className: this.checkErrorField('contact')
+                                        className: this.checkErrorField('contactName')
                                     }}
                                     wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.data}
@@ -206,7 +207,8 @@ class SenderAddress extends Component {
                             <div className="label"><FormattedMessage id='booking.address'/><span
                                 className="required ml-2">*</span></div>
                             <Input value={this.props.form.address1}
-                                   onChange={this.onChangeCommonInput('address')}/>
+                                   className={this.checkErrorField('address1')}
+                                   onChange={this.onChangeCommonInput('address1')}/>
                         </div>
                         <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.address2'/></div>
@@ -231,7 +233,7 @@ class SenderAddress extends Component {
                                     value={this.props.form.cityName}
                                     inputProps={{
                                         id: 'city-autocomplete',
-                                        className: this.checkErrorField('city')
+                                        className: this.checkErrorField('cityName')
                                     }}
                                     wrapperStyle={wrapStyleAutocomplete}
                                     items={this.props.listCity}

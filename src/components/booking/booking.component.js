@@ -136,9 +136,27 @@ class Booking extends Component {
 
     onContinueBooking = (e) => {
         let newState = this.state;
-        newState.senderErrors.push('email');
-        newState.recipientErrors.push('city');
+        const arrError = ['company', 'phoneNumber', 'contactName', 'address1', 'cityName'];
+        arrError.forEach(item => {
+            this.checkError('sender', item, 'senderErrors');
+        });
+        // if(!this.state.sender.company) {
+        //     newState.senderErrors.push('company');
+        // }
+        // if(!this.state.sender.phoneNumber) {
+        //     newState.senderErrors.push('phoneNumber');
+        // }
+        // if(!this.state.sender.contactName) {
+        //     newState.senderErrors.push('contactName');
+        // }
+        // if(!this.state.sender.address1) {
+        //     newState.senderErrors.push('address1');
+        // }
+        // if(!this.state.sender.cityName) {
+        //     newState.senderErrors.push('cityName');
+        // }
         this.setState(newState);
+        return;
         Notification.error({
             title: <h5 className="text-danger text-bold">Error</h5>,
             message: <div className="text-danger">
@@ -147,6 +165,14 @@ class Booking extends Component {
             </div>,
         });
     };
+
+    checkError(formError, field, listError) {
+        let newState = this.state;
+        if(!this.state[formError][field]) {
+            newState[listError].push(field);
+        }
+        this.setState(newState);
+    }
 
     onSelectCity = (who) => (id) => {
         let newState = this.state;
