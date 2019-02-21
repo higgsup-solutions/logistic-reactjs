@@ -1,0 +1,61 @@
+@import '../../style/style';
+
+.history-card {
+  margin: 20px;
+
+  .el-card {
+    overflow: unset;
+  }
+
+  .el-card__header {
+    background-image: $background-gradient;
+    color: white;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+
+  .label {
+    margin-bottom: 5px;
+    text-align: left;
+
+    .required {
+      margin-left: 10px;
+      color: red;
+    }
+  }
+
+}
+
+.filter-range {
+  margin-bottom: 1em;
+
+  .filter-range-select {
+    margin-right: 1em;
+  }
+}
+
+
+.booking-list {
+  text-align: left;
+
+  .page-size-select {
+    width: 4.5em;
+    margin: .5em;
+  }
+
+  .el-table {
+    font-size: 12px;
+
+    .cell, .el-table th > div {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+}
+
+.search-booking {
+
+  .el-form-item {
+    margin-right: 1.5em;
+  }
+}
