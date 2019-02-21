@@ -6,7 +6,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
 import {REGEX_EMAIL} from "../../App.constant";
-import {listCarrier, listDataCity, listDataSuggest} from "../../integrate/booking";
+import {listCarrier, listDataCity, listDataSuggest, listDimension} from "../../integrate/booking";
 
 class Booking extends Component {
     constructor(props) {
@@ -16,6 +16,7 @@ class Booking extends Component {
             listCity: [],
             listCarrier: [],
             listPackageType: [],
+            listDimension: [],
             sender: {
                 company: '',
                 phoneNumber: '',
@@ -80,28 +81,36 @@ class Booking extends Component {
             }
         });
         listDataCity().then(res => {
-            let newState = this.state;
-            if(!res.data) {
-                newState.listCity = [];
-            } else {
-                newState.listCity = res.data;
+            if(res.status == 'OK') {
+                let newState = this.state;
+                if(!res.data) {
+                    newState.listCity = [];
+                } else {
+                    newState.listCity = res.data;
+                }
+                this.setState(newState);
             }
-            this.setState(newState);
         });
         listCarrier().then(res => {
-            let newState = this.state;
-            newState.listCarrier = res.responseMessage.data;
-            newState.package.carrierId = newState.listCarrier[0].id;
-            newState.listPackageType = newState.listCarrier[0].packageDTO;
-            newState.package.packageType = newState.listPackageType[0].id;
-            this.setState(newState);
+            if(res.responseMessage.status == 'OK') {
+                let newState = this.state;
+                newState.listCarrier = res.responseMessage.data;
+                newState.package.carrierId = newState.listCarrier[0].id;
+                newState.listPackageType = newState.listCarrier[0].packageDTO;
+                newState.package.packageType = newState.listPackageType[0].id;
+                this.setState(newState);
+            }
+        });
+        listDimension().then(res => {
+            if(res.responseMessage.status == 'OK') {
+                let newState = this.state;
+                newState.listDimension = res.responseMessage.data;
+                this.setState(newState);
+            }
         });
     }
 
     onChangeFieldInput = (who) => (inputName, value) => {
-        console.log(who);
-        console.log(inputName);
-        console.log(value);
         let newState = this.state;
         if (inputName == 'phone') {
 
@@ -111,6 +120,15 @@ class Booking extends Component {
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
+        }
+        if(inputName == 'carrierId') {
+            for(let i = 0 ; i < this.state.listCarrier.length; i++) {
+                if(value == this.state.listCarrier[i].id) {
+                    newState.listPackageType = this.state.listCarrier[i].packageDTO;
+                    newState.package.packageType = newState.listPackageType[0].id;
+                    break;
+                }
+            }
         }
         newState[who][inputName] = value;
         this.setState(newState);
@@ -158,6 +176,25 @@ class Booking extends Component {
         this.setState(newState);
     };
 
+    onChangeDimension = (index, value) => {
+        let newState = this.state;
+        for(let i = 0 ; i < this.state.listDimension.length; i++) {
+            if(value == this.state.listDimension[i].id) {
+                newState.package.documentInfos[index].l = this.state.listDimension[i].length;
+                newState.package.documentInfos[index].w = this.state.listDimension[i].width;
+                newState.package.documentInfos[index].h = this.state.listDimension[i].height;
+                break;
+            }
+        }
+        this.setState(newState);
+    };
+
+    onChangeRowDimension = (index, field, value) => {
+        let newState = this.state;
+        newState.package.documentInfos[index][field] = value;
+        this.setState(newState);
+    };
+
     onAddPiece = () => {
         let newState = this.state;
         newState.package.documentInfos.push({
@@ -178,7 +215,7 @@ class Booking extends Component {
     };
 
     onQuote = (e) => {
-
+        console.log(this.state.package.documentInfos)
     };
 
     render() {
@@ -211,7 +248,11 @@ class Booking extends Component {
                                          listCarrier = {this.state.listCarrier}
                                          listPackageType = {this.state.listPackageType}
                                          addPiece = {this.onAddPiece}
+                                         onChangeDropdown = {this.onChangeFieldInput('package')}
+                                         listDimension = {this.state.listDimension}
                                          deleteRowDocument = {this.onDeleteRowDocument}
+                                         changeDimension = {this.onChangeDimension}
+                                         changeRowDimension = {this.onChangeRowDimension}
                                          changeField = {this.onChangeFieldInput('package')}/>
                         <div className="text-right pr-3">
                             <Button type="primary" onClick={this.onQuote}><FormattedMessage

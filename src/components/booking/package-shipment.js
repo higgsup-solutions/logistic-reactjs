@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import './booking.scss';
 import {Layout, DatePicker, Input, Card, Select, Radio, Form, Table, Checkbox, Button} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
+import {listDimension} from "../../integrate/booking";
 
 class PackageShipment extends Component {
     constructor(props) {
@@ -28,9 +29,15 @@ class PackageShipment extends Component {
     };
 
     onChangeDropdown = (field) => (value) => {
-        console.log(field);
-        console.log(value); return;
         this.props.changeField(field, value);
+    };
+
+    onChangeDimension = (index) => (value) => {
+        this.props.changeDimension(index, value);
+    };
+
+    onChangeRowDimension = (index, field) => (value) => {
+        this.props.changeRowDimension(index, field, value);
     };
 
     onDeleteRowDocument = (index) => (e) => {
@@ -42,26 +49,30 @@ class PackageShipment extends Component {
         const domListDocument = this.props.form.documentInfos.map((item, key) =>
             <tr key={key}>
                 <td>{key + 1}</td>
-                <td><Input/></td>
+                <td><Input value={item.weights}
+                           onChange={this.onChangeRowDimension(key, 'weights')}/></td>
                 <td>
                     <Select className="w-100"
-                            placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
-                        <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                            onChange={this.onChangeDimension(key)}
+                            placeholder={this.props.intl.formatMessage({id: 'booking.selectOneDimension'})}>
+                        {this.props.listDimension.map((subItem) =>  <Select.Option key={subItem.id} label={subItem.name} value={subItem.id}></Select.Option>)}
                     </Select>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.l}
+                           onChange={this.onChangeRowDimension(key, 'l')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.w}
+                           onChange={this.onChangeRowDimension(key, 'w')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.h}
+                           onChange={this.onChangeRowDimension(key, 'h')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.quantity}
+                           onChange={this.onChangeRowDimension(key, 'quantity')}/>
                 </td>
                 <td>{key != 0 ? <i className="fa fa-times-circle"
                                    onClick={this.onDeleteRowDocument(key)}></i> : ''}</td>
