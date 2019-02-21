@@ -4,18 +4,18 @@ import {injectIntl} from "react-intl";
 
 class BookingList extends Component {
 
-    pageSizeList = [
-        {
-            value: '25',
-            label: '25'
-        }, {
-            value: '50',
-            label: '50'
-        }, {
-            value: '100',
-            label: '100'
-        }
-    ];
+    // pageSizeList = [
+    //     {
+    //         value: '25',
+    //         label: '25'
+    //     }, {
+    //         value: '50',
+    //         label: '50'
+    //     }, {
+    //         value: '100',
+    //         label: '100'
+    //     }
+    // ];
 
     columns = [
         {
@@ -43,7 +43,7 @@ class BookingList extends Component {
         },
         {
             label: this.props.intl.formatMessage({id: 'history.quoted'}).toUpperCase(),
-            prop: "quoted",
+            prop: "totalCharge",
             width: 150
         },
         {
@@ -65,23 +65,39 @@ class BookingList extends Component {
             trackingNo: '2131234125',
             pieces: '1',
             actualWeight: '1.0kg(s)',
-            quoted: '12.68',
+            totalCharge: '12.68',
             destCountry: 'VietNam',
             shippingDate: '2016-05-03',
         },
         {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
+            carierName: 'DHL Domestic',
+            senderContactName: 'DHL Domestic Express',
+            trackingNo: '2131234125',
+            pieces: '1',
+            actualWeight: '1.0kg(s)',
+            totalCharge: '12.68',
+            destCountry: 'VietNam',
+            shippingDate: '2016-05-03',
         },
         {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
-        }, {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles'
+            carierName: 'DHL Domestic',
+            senderContactName: 'DHL Domestic Express',
+            trackingNo: '2131234125',
+            pieces: '1',
+            actualWeight: '1.0kg(s)',
+            totalCharge: '12.68',
+            destCountry: 'VietNam',
+            shippingDate: '2016-05-03',
+        },
+        {
+            carierName: 'DHL Domestic',
+            senderContactName: 'DHL Domestic Express',
+            trackingNo: '2131234125',
+            pieces: '1',
+            actualWeight: '1.0kg(s)',
+            totalCharge: '12.68',
+            destCountry: 'VietNam',
+            shippingDate: '2016-05-03',
         }
     ];
 

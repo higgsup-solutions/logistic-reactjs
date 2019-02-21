@@ -9,6 +9,9 @@ export const ENGLISH = {
         "carrier": "Carrier",
         "search": "Search",
         "clear": "Clear",
+        "view": "View",
+        "track": "Track",
+        "close": "Close",
 
         // Menu
         "menu.login": "Login",
@@ -56,5 +59,22 @@ export const ENGLISH = {
         "history.quoted": "Quoted",
         "history.destCountry": "Dest. Country",
         "history.shipDate": "Ship Date",
+
+        // Shipment Detail - alias = 'sd'
+        "sd.shipmentDetail": "Shipment Detail",
+        "sd.serviceType": "Service Type",
+        "sd.shipmentDate": "Shipment Date",
+        "sd.packageType": "Package Type",
+        "sd.tracking": "Tracking#",
+        "sd.contentType": "Content Type",
+        "sd.actualWeight": "Actual Weight",
+        "sd.packageInfo": "Package Information",
+        "sd.piece": "Piece",
+        "sd.cubicWeight": "Cubic Weight",
+        "sd.dimension": "Dimension",
+        "sd.shipperAddress": "Shipper Address",
+        "sd.receiverAddress": "Receiver Address",
+        "sd.quoteDetail": "Quote Detail",
+        "sd.quoteDetail.alert": "Quote is an estimate. Additional Fees may apply.",
     }
 };

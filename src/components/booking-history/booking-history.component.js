@@ -17,10 +17,6 @@ class BookingHistory extends Component {
         };
     }
 
-    refreshFilter() {
-        console.log('refresh')
-    };
-
     search(form) {
         console.log(form)
     }
@@ -30,6 +26,13 @@ class BookingHistory extends Component {
             selectedItem: item,
             isClickItem: true
         })
+    }
+
+    onCloseShipmentDetails() {
+        this.setState({
+            selectedItem: {},
+            isClickItem: false
+        });
     }
 
     render() {
@@ -46,7 +49,8 @@ class BookingHistory extends Component {
                                     <Input className="search-input"
                                            value={this.state.searchValue}
                                            placeholder={`${this.props.intl.formatMessage({id: 'search'})}`}
-                                           onChange={(value) => this.setState({searchValue: value})}
+                                           // onChange={(value) => this.setState({searchValue: value})}
+                                           onChange={(value) => {this.state.searchValue = value; this.forceUpdate()} }
                                     />
                                 </Layout.Col>
                             </Layout.Row>
@@ -63,6 +67,7 @@ class BookingHistory extends Component {
                 {/*show shipment detail*/}
                 <ShipmentDetail data={this.state.selectedItem}
                                 isClickItem={this.state.isClickItem}
+                                onCloseShipmentDetails={this.onCloseShipmentDetails.bind(this)}
                 />
             </div>
         );

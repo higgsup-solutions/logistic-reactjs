@@ -38,3 +38,31 @@
     margin: .5em;
   }
 }
+
+.shipment-detail-container {
+
+  .shipment-detail {
+    margin-bottom: 36px;
+  }
+
+  .package-info {
+    margin-bottom: 16px;
+
+    .package-info-header {
+      font-weight: bold;
+    }
+
+    .package-info-table {
+      margin-bottom: 8px;
+    }
+  }
+
+  .package-info-extend {
+    margin-left: 16px;
+
+    .address-table {
+      margin-bottom: 16px;
+    }
+  }
+
+}
