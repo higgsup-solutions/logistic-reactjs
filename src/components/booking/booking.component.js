@@ -99,6 +99,9 @@ class Booking extends Component {
     }
 
     onChangeFieldInput = (who) => (inputName, value) => {
+        console.log(who);
+        console.log(inputName);
+        console.log(value);
         let newState = this.state;
         if (inputName == 'phone') {
 

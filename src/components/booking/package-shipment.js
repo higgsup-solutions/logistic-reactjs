@@ -12,11 +12,11 @@ class PackageShipment extends Component {
     }
 
     onChangeContent = (value) => {
-        this.props.changeField('contentType', value)
+        this.props.changeField('contentType', value);
     };
 
     onChangeShippingDate = (date) => {
-        console.log(date);
+        this.props.changeField('shippingDate', date);
     };
 
     onAddPiece = (e) => {
@@ -25,6 +25,12 @@ class PackageShipment extends Component {
 
     onChangeDangerous = (value) => {
         this.props.changeField('dangerousGoods', value);
+    };
+
+    onChangeDropdown = (field) => (value) => {
+        console.log(field);
+        console.log(value); return;
+        this.props.changeField(field, value);
     };
 
     onDeleteRowDocument = (index) => (e) => {
@@ -82,6 +88,7 @@ class PackageShipment extends Component {
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
                                     value={this.props.form.carrierId}
+                                    onChange={this.onChangeDropdown('carrierId')}
                                     placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCarrier'})}>
                                 {this.props.listCarrier.map(item => <Select.Option key={item.id} label={item.carrierType} value={item.id}></Select.Option>)}
                             </Select>
@@ -90,9 +97,13 @@ class PackageShipment extends Component {
                             <div className="label"><FormattedMessage id='booking.serviceType'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
+                                    onChange={this.onChangeDropdown('serviceType')}
                                     placeholder={this.props.intl.formatMessage({id: 'booking.selectOneService'})}>
-                                <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-
+                                <Select.Option label="Express" value="1"></Select.Option>
+                                <Select.Option label="Economy Express" value="1"></Select.Option>
+                                <Select.Option label="DHL Worldwide Express" value="1"></Select.Option>
+                                <Select.Option label="Expedited" value="1"></Select.Option>
+                                <Select.Option label="Express Saver" value="1"></Select.Option>
                             </Select>
                         </div>
                     </div>
@@ -101,6 +112,7 @@ class PackageShipment extends Component {
                             <div className="label"><FormattedMessage id='booking.packageType'/></div>
                             <Select className="w-100"
                                     value={this.props.form.packageType}
+                                    onChange={this.onChangeDropdown('packageType')}
                                     placeholder={this.props.intl.formatMessage({id: 'booking.selectOnePackage'})}>
                                 {this.props.listPackageType.map(item => <Select.Option key={item.id} label={item.packageType} value={item.id}></Select.Option>)}
                             </Select>

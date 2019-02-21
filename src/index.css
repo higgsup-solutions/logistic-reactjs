@@ -20,14 +20,14 @@ input.invalid, .invalid input[type=text]  {
   width: 50px;
 }
 .width-100 {
-  width: 50px;
+  width: 100px;
 }
 .width-150 {
-  width: 50px;
+  width: 150px;
 }
 .width-200 {
-  width: 50px;
+  width: 200px;
 }
 .width-250 {
-  width: 50px;
+  width: 250px;
 }
