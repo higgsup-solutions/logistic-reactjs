@@ -6,76 +6,19 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
 import {REGEX_EMAIL} from "../../App.constant";
+import {listCarrier, listDataCity, listDataSuggest} from "../../integrate/booking";
 
 class Booking extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listData: [
-                {
-                    id: 1,
-                    countryId: 1,
-                    cityId: 1,
-                    userType: 'S',
-                    company: 'higgsup',
-                    contactName: 'tiepnm',
-                    senderDefault: true,
-                    recipientDefault: true,
-                    phone: '0942426999',
-                    emailAddress: 'cuongleanh91@gmail.com',
-                    address1: '72 tran dang ninh',
-                    address2: '',
-                    cityName: 'hanoi',
-                    countryName: 'Viet Nam',
-                    postalCode: '100000',
-                    stateProvince: null
-                },
-                {
-                    id: 2,
-                    countryId: 2,
-                    cityId: 1,
-                    userType: 'S',
-                    company: 'bo tai chinh',
-                    contactName: 'tiepnm',
-                    senderDefault: false,
-                    recipientDefault: false,
-                    phone: '0942426999',
-                    emailAddress: 'cuongleanh91@gmail.com',
-                    address1: '47 pham van dong',
-                    address2: '',
-                    cityName: 'hanoi',
-                    countryName: 'Ha Lan',
-                    postalCode: '200000',
-                    stateProvince: null
-                },
-                {
-                    id: 3,
-                    countryId: 3,
-                    cityId: 1,
-                    userType: 'S',
-                    company: 'vietlot',
-                    contactName: 'hungnh',
-                    senderDefault: false,
-                    recipientDefault: false,
-                    phone: '0942426999',
-                    emailAddress: 'cuongleanh91@gmail.com',
-                    address1: '13 hai ba trung',
-                    address2: '',
-                    cityName: 'hanoi',
-                    countryName: 'Dan Mach',
-                    postalCode: '100022',
-                    stateProvince: null
-                }
-            ],
-            listCity: [
-                {id: 1, cityName: 'Ha Noi', postalCode: '100000', stateProvince: null},
-                {id: 2, cityName: 'Ha Nam', postalCode: '200000', stateProvince: null},
-                {id: 3, cityName: 'Ha Tay', postalCode: '300000', stateProvince: null},
-                {id: 4, cityName: 'Ha Dong', postalCode: '400000', stateProvince: null},
-            ],
+            listData: [],
+            listCity: [],
+            listCarrier: [],
+            listPackageType: [],
             sender: {
                 company: '',
-                phone: '',
+                phoneNumber: '',
                 contactName: '',
                 emailAddress: '',
                 country: {
@@ -91,7 +34,7 @@ class Booking extends Component {
             },
             recipient: {
                 company: '',
-                phone: '',
+                phoneNumber: '',
                 contactName: '',
                 emailAddress: '',
                 country: {
@@ -105,28 +48,71 @@ class Booking extends Component {
                 postalCode: null,
                 stateProvince: ''
             },
+            package: {
+                shippingDate: new Date(),
+                carrierId: null,
+                serviceType: '',
+                packageType: null,
+                contentType: 'Documents',
+                documentInfos: [
+                    {
+                        weights: null,
+                        type: null,
+                        l: null,
+                        w: null,
+                        h: null,
+                        quantity: null
+                    }
+                ],
+                dangerousGoods: false
+            },
             senderErrors: [],
             recipientErrors: [],
-            da: ''
         }
     };
 
     componentWillMount() {
-
+        listDataSuggest().then(res => {
+            if(res.status == 'OK') {
+                let newState = this.state;
+                newState.listData = res.data;
+                this.setState(newState);
+            }
+        });
+        listDataCity().then(res => {
+            let newState = this.state;
+            if(!res.data) {
+                newState.listCity = [];
+            } else {
+                newState.listCity = res.data;
+            }
+            this.setState(newState);
+        });
+        listCarrier().then(res => {
+            let newState = this.state;
+            newState.listCarrier = res.responseMessage.data;
+            newState.package.carrierId = newState.listCarrier[0].id;
+            newState.listPackageType = newState.listCarrier[0].packageDTO;
+            newState.package.packageType = newState.listPackageType[0].id;
+            this.setState(newState);
+        });
     }
 
-    onChangeFieldInput = (name) => (inputName, value) => {
+    onChangeFieldInput = (who) => (inputName, value) => {
+        console.log(who);
+        console.log(inputName);
+        console.log(value);
         let newState = this.state;
         if (inputName == 'phone') {
 
         }
         if(inputName == 'country') {
-            newState[name].cityName = '';
-            newState[name].cityId = -1;
-            newState[name].postalCode = '';
-            newState[name].stateProvince = '';
+            newState[who].cityName = '';
+            newState[who].cityId = -1;
+            newState[who].postalCode = '';
+            newState[who].stateProvince = '';
         }
-        newState[name][inputName] = value;
+        newState[who][inputName] = value;
         this.setState(newState);
     };
 
@@ -145,7 +131,17 @@ class Booking extends Component {
     };
 
     onSelectCity = (who) => (id) => {
-
+        let newState = this.state;
+        for(let i = 0 ; i < this.state.listCity.length; i++) {
+            if(id == this.state.listCity[i].id) {
+                newState[who].cityId = this.state.listCity[i].id;
+                newState[who].cityName = this.state.listCity[i].cityName;
+                newState[who].postalCode = this.state.listCity[i].postalCode;
+                newState[who].stateProvince = this.state.listCity[i].stateProvince;
+                break;
+            }
+        }
+        this.setState(newState);
     };
 
     onSelectAuto = (who) => (id) => {
@@ -162,18 +158,35 @@ class Booking extends Component {
         this.setState(newState);
     };
 
-    onQuote = (e) => {
+    onAddPiece = () => {
         let newState = this.state;
-        newState.sender.company = 'le anh cuong';
+        newState.package.documentInfos.push({
+            weights: null,
+            type: null,
+            l: null,
+            w: null,
+            h: null,
+            quantity: null
+        });
         this.setState(newState);
+    };
+
+    onDeleteRowDocument = (index) => {
+        let newState = this.state;
+        newState.package.documentInfos.splice(index,  1);
+        this.setState(newState);
+    };
+
+    onQuote = (e) => {
+
     };
 
     render() {
 
         return (
-            <div className="booking">
-                <Layout.Row>
-                    <Layout.Col span="12">
+            <div className="container-fluid booking">
+                <div className="row w-100 ml-0">
+                    <div className="col-sm-12 col-md-6 pr-1">
                         <SenderAddress data={this.state.listData}
                                        listCity = {this.state.listCity}
                                        form={this.state.sender}
@@ -192,17 +205,22 @@ class Booking extends Component {
                                        selectCompany = {this.onSelectAuto('recipient')}
                                        fieldErrors={this.state.recipientErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
-                    </Layout.Col>
-                    <Layout.Col span="12">
-                        <PackageShipment/>
+                    </div>
+                    <div className="col-sm-12 col-md-6 pl-1">
+                        <PackageShipment form = {this.state.package}
+                                         listCarrier = {this.state.listCarrier}
+                                         listPackageType = {this.state.listPackageType}
+                                         addPiece = {this.onAddPiece}
+                                         deleteRowDocument = {this.onDeleteRowDocument}
+                                         changeField = {this.onChangeFieldInput('package')}/>
                         <div className="text-right pr-3">
                             <Button type="primary" onClick={this.onQuote}><FormattedMessage
                                 id='booking.quote'/></Button>
                             <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage
                                 id='booking.continueBooking'/></Button>
                         </div>
-                    </Layout.Col>
-                </Layout.Row>
+                    </div>
+                </div>
             </div>
         );
     }

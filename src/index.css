@@ -16,3 +16,18 @@ code {
 input.invalid, .invalid input[type=text]  {
   border-color: red!important;
 }
+.width-50 {
+  width: 50px;
+}
+.width-100 {
+  width: 100px;
+}
+.width-150 {
+  width: 150px;
+}
+.width-200 {
+  width: 200px;
+}
+.width-250 {
+  width: 250px;
+}

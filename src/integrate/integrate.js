@@ -35,7 +35,6 @@ _request.interceptors.request.use(
 // response interceptor
 _request.interceptors.response.use(
     response => {
-        // console.log(`before receiving response...`);
         return response
     },
     error => {
@@ -51,7 +50,7 @@ _request.interceptors.response.use(
 const makeAuthRequest = (args) => {
 
     // todo: need to get token from storage
-    const {accessToken} = '_this_is_token_';
+    const {accessToken} = {accessToken: `Bearer ${localStorage.getItem('authentication')}`};
     const _headers = args.headers ? args.headers : {};
     const defaultHeaders = {
         'Authorization': accessToken,
@@ -65,7 +64,7 @@ const makeAuthRequest = (args) => {
         }
     };
 
-    return this.makeRequest(argsUpdated);
+    return makeRequest(argsUpdated);
 };
 
 const makeRequest = (args) => {
