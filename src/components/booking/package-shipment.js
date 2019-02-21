@@ -97,13 +97,14 @@ class PackageShipment extends Component {
                             <div className="label"><FormattedMessage id='booking.serviceType'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
+                                    value={this.props.form.serviceType}
                                     onChange={this.onChangeDropdown('serviceType')}
                                     placeholder={this.props.intl.formatMessage({id: 'booking.selectOneService'})}>
                                 <Select.Option label="Express" value="1"></Select.Option>
-                                <Select.Option label="Economy Express" value="1"></Select.Option>
-                                <Select.Option label="DHL Worldwide Express" value="1"></Select.Option>
-                                <Select.Option label="Expedited" value="1"></Select.Option>
-                                <Select.Option label="Express Saver" value="1"></Select.Option>
+                                <Select.Option label="Economy Express" value="2"></Select.Option>
+                                <Select.Option label="DHL Worldwide Express" value="3"></Select.Option>
+                                <Select.Option label="Expedited" value="4"></Select.Option>
+                                <Select.Option label="Express Saver" value="5"></Select.Option>
                             </Select>
                         </div>
                     </div>

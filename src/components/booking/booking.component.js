@@ -51,7 +51,7 @@ class Booking extends Component {
             package: {
                 shippingDate: new Date(),
                 carrierId: null,
-                serviceType: '',
+                serviceType: '1',
                 packageType: null,
                 contentType: 'Documents',
                 documentInfos: [
