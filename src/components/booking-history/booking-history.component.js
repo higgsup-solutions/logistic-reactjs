@@ -1,41 +1,19 @@
 import React, {Component} from "react";
 import './booking-history.scss';
-import {Button, Layout, Select, Card} from 'element-react';
+import {Button, Layout, Select, Card, Input} from 'element-react';
 import BookingList from "./booking-list";
 import {FormattedMessage, injectIntl} from "react-intl";
-import SearchBooking from "./search-booking";
+import ShipmentDetail from "./shipment-detail";
 
 class BookingHistory extends Component {
-
-    filterRangeSpecs = [
-        {
-            value: 'today',
-            label: 'today'
-        }, {
-            value: 'last30Ds',
-            label: 'last30Ds'
-        }, {
-            value: 'last60Ds',
-            label: 'last60Ds'
-        }, {
-            value: 'last90Ds',
-            label: 'last90Ds'
-        }, {
-            value: 'range',
-            label: 'range'
-        }, {
-            value: 'all',
-            label: 'all'
-        }
-    ];
 
     constructor(props) {
         super(props);
 
         this.state = {
-            filterRange: 'all',
+            searchValue: '',
             dialogVisible: false,
-            selectedItem: {}
+            selectedItem: null
         };
     }
 
@@ -47,6 +25,13 @@ class BookingHistory extends Component {
         console.log(form)
     }
 
+    openShipmentDetailDialog(item) {
+        this.setState({
+            selectedItem: item,
+            isClickItem: true
+        })
+    }
+
     render() {
         return (
             <div className="booking-history">
@@ -56,35 +41,29 @@ class BookingHistory extends Component {
                               header={<div className="clearfix text-center">
                                   <FormattedMessage id='history.history'/>
                               </div>}>
-                            <div className="text-left filter-range">
-                                <Select value={this.state.filterRange}
-                                        className="filter-range-select">
-                                    {
-                                        this.filterRangeSpecs.map(el => {
-                                            return <Select.Option key={el.value}
-                                                                  label={this.props.intl.formatMessage({id: `history.filterRange.${el.label}`})}
-                                                                  value={el.value}/>
-                                        })
-                                    }
-                                </Select>
-                                <Button type="primary" onClick={this.refreshFilter.bind(this)}>
-                                    <FormattedMessage id='history.refresh'/>
-                                </Button>
-                            </div>
-
                             <Layout.Row>
-                                <SearchBooking onSearchClick={this.search}/>
+                                <Layout.Col span="4">
+                                    <Input className="search-input"
+                                           value={this.state.searchValue}
+                                           placeholder={`${this.props.intl.formatMessage({id: 'search'})}`}
+                                           onChange={(value) => this.setState({searchValue: value})}
+                                    />
+                                </Layout.Col>
                             </Layout.Row>
 
                             <Layout.Row>
                                 <Layout.Col span="24">
-                                    <BookingList/>
+                                    <BookingList onClickShipment={this.openShipmentDetailDialog.bind(this)}/>
                                 </Layout.Col>
                             </Layout.Row>
                         </Card>
                     </Layout.Col>
                 </Layout.Row>
 
+                {/*show shipment detail*/}
+                <ShipmentDetail data={this.state.selectedItem}
+                                isClickItem={this.state.isClickItem}
+                />
             </div>
         );
     }

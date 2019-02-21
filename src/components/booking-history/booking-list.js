@@ -20,92 +20,54 @@ class BookingList extends Component {
     columns = [
         {
             label: this.props.intl.formatMessage({id: 'carrier'}).toUpperCase(),
-            prop: "carrier",
+            prop: "carierName",
         },
         {
-            label: this.props.intl.formatMessage({id: 'history.voided'}).toUpperCase(),
-            prop: "voided",
-            width: 100
+            label: this.props.intl.formatMessage({id: 'history.contactNameSender'}).toUpperCase(),
+            prop: "senderContactName",
         },
         {
             label: `${this.props.intl.formatMessage({id: 'history.tracking'})}#`.toUpperCase(),
-            prop: "tracking",
-            width: 120
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'date'}).toUpperCase(),
-            prop: "date",
-            width: 120
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.timestamp'}).toUpperCase(),
-            prop: "timestamp",
-            width: 120
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.shipDate'}).toUpperCase(),
-            prop: "shipDate",
-            width: 120
+            prop: "trackingNo",
+            width: 250
         },
         {
             label: this.props.intl.formatMessage({id: 'history.pieces'}).toUpperCase(),
             prop: "pieces",
-            width: 100
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.service'}).toUpperCase(),
-            prop: "service",
+            width: 120
         },
         {
             label: this.props.intl.formatMessage({id: 'history.weight'}).toUpperCase(),
-            prop: "weight",
-            width: 100
+            prop: "actualWeight",
+            width: 150
         },
         {
             label: this.props.intl.formatMessage({id: 'history.quoted'}).toUpperCase(),
             prop: "quoted",
-            width: 100
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.scheduled'}).toUpperCase(),
-            prop: "scheduled",
-            width: 120
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.scheduleCollectionTimestamp'}).toUpperCase(),
-            prop: "scheduleCollectionTimestamp",
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.collectionInfo'}).toUpperCase(),
-            prop: "collectionInfo",
-        },
-        {
-            label: this.props.intl.formatMessage({id: 'history.destination'}).toUpperCase(),
-            prop: "destination",
+            width: 150
         },
         {
             label: this.props.intl.formatMessage({id: 'history.destCountry'}).toUpperCase(),
             prop: "destCountry",
+            width: 250
+        },
+        {
+            label: this.props.intl.formatMessage({id: 'history.shipDate'}).toUpperCase(),
+            prop: "shippingDate",
+            width: 150
         },
     ];
 
     fakeData = [
         {
-            carrier: 'DHL Domestic',
-            voided: 'NO',
-            tracking: '2131234125',
-            date: '2016-05-03',
-            timestamp: '13:23:22',
-            shipDate: '2016-05-03',
+            carierName: 'DHL Domestic',
+            senderContactName: 'DHL Domestic Express',
+            trackingNo: '2131234125',
             pieces: '1',
-            service: 'DHL Domestic Express',
-            weight: '1.0kg(s)',
+            actualWeight: '1.0kg(s)',
             quoted: '12.68',
-            scheduled: 'yes',
-            scheduleCollectionTimestamp: '2016-05-03 00:00:11',
-            collectionInfo: '234234',
-            destination: 'Tran Dang Ninh',
-            destCountry: 'VietNam'
+            destCountry: 'VietNam',
+            shippingDate: '2016-05-03',
         },
         {
             date: '2016-05-02',
@@ -141,22 +103,22 @@ class BookingList extends Component {
     render() {
         return (
             <div className="booking-list">
-                <div className="page-size-container text-left">
-                    Show
-                    <Select value={this.state.pageSize}
-                            size="small"
-                            onChange={this.onChangePageSize.bind(this)}
-                            className="page-size-select">
-                        {
-                            this.pageSizeList.map(el => {
-                                return <Select.Option key={el.value}
-                                                      label={el.label}
-                                                      value={el.value}/>
-                            })
-                        }
-                    </Select>
-                    entries
-                </div>
+                {/*<div className="page-size-container text-left">*/}
+                    {/*Show*/}
+                    {/*<Select value={this.state.pageSize}*/}
+                            {/*size="small"*/}
+                            {/*onChange={this.onChangePageSize.bind(this)}*/}
+                            {/*className="page-size-select">*/}
+                        {/*{*/}
+                            {/*this.pageSizeList.map(el => {*/}
+                                {/*return <Select.Option key={el.value}*/}
+                                                      {/*label={el.label}*/}
+                                                      {/*value={el.value}/>*/}
+                            {/*})*/}
+                        {/*}*/}
+                    {/*</Select>*/}
+                    {/*entries*/}
+                {/*</div>*/}
                 <div className="booking-table">
                     <Table
                         style={{width: '100%'}}
@@ -164,6 +126,7 @@ class BookingList extends Component {
                         data={this.state.data}
                         border={true}
                         highlightCurrentRow={true}
+                        onRowClick={item => this.props.onClickShipment(item)}
                         // onCurrentChange={item => console.log(item)}
                     />
                 </div>
