@@ -87,16 +87,6 @@ class BookingList extends Component {
         })
     }
 
-    timer = 0;
-    delay = 500;
-    onRowClick = (item) => {
-        const currentTime = (new Date()).getTime();
-        if (currentTime - this.timer < this.delay) {
-            this.props.onClickShipment(item)
-        }
-        this.timer = currentTime;
-    };
-
     render() {
         return (
             <div className="booking-list">
@@ -121,8 +111,7 @@ class BookingList extends Component {
                         data={this.state.data}
                         border={true}
                         highlightCurrentRow={true}
-                        onRowClick={this.onRowClick}
-                        // onCurrentChange={item => console.log(item)}
+                        onRowClick={(item) => {this.props.onClickShipment(item)}}
                         emptyText={this.props.intl.formatMessage({id: 'history.empty'})}
                     />
                 </div>

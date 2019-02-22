@@ -29,83 +29,65 @@ class ShipmentDetail extends Component {
     }
 
     collectDataFromSelectedItem(data) {
-        const bookingDetailData = [
-            {
-                key: 'serviceType',
-                value: data.serviceType || '-'
-            }, {
-                key: 'shipmentDate',
-                value: data.shippingDate || '-'
-            }, {
-                key: 'packageType',
-                value: data.packageType || '-'
-            }, {
-                key: 'tracking',
-                value: data.trackingNo || '-'
-            }, {
-                key: 'contentType',
-                value: data.contentType || '-'
-            }, {
-                key: 'actualWeight',
-                value: `${data.actualWeight || '-'} kg(s)`
-            }
-        ];
         const packageInfoData = [
             {
-                piece: data.pieces || '-',
-                actualWeight: `${data.actualWeight || '-'} kg(s)`,
-                cubicWeight: `${data.cubicWeight || '-'} kg(s)`,
-                dimension: `${data.dimentionLength || '-'} x ${data.dimentionWeight || '-'} x ${data.dimentionHeight || '-'} cm(s)`
+                piece: data.pieces,
+                actualWeight: data.actualWeight,
+                cubicWeight: data.cubicWeight,
+                dimension: {
+                    length: data.dimentionLength,
+                    weight: data.dimentionWeight,
+                    height: data.dimentionHeight
+                }
             }
         ];
         const addressData = [
             {
-                shipperAddress: data.senderContactName || '-',
-                receiverAddress: data.recipientContactName || '-'
+                shipperAddress: data.senderContactName,
+                receiverAddress: data.recipientContactName
             },
             {
-                shipperAddress: data.senderCompany || '-',
-                receiverAddress: data.recipientCompany || '-'
+                shipperAddress: data.senderCompany,
+                receiverAddress: data.recipientCompany
             },
             {
-                shipperAddress: data.senderAddress1 || '-',
-                receiverAddress: data.recipientAddress1 || '-'
+                shipperAddress: data.senderAddress1,
+                receiverAddress: data.recipientAddress1
             },
             {
-                shipperAddress: data.senderAddress2 || '-',
-                receiverAddress: data.recipientAddress2 || '-'
+                shipperAddress: data.senderAddress2,
+                receiverAddress: data.recipientAddress2
             },
             {
-                shipperAddress: data.senderCountryName || '-',
-                receiverAddress: data.recipientCountryName || '-'
+                shipperAddress: data.senderCountryName,
+                receiverAddress: data.recipientCountryName
             },
             {
-                shipperAddress: data.senderPhoneNumber || '-',
-                receiverAddress: data.recipientPhoneNumber || '-'
+                shipperAddress: data.senderPhoneNumber,
+                receiverAddress: data.recipientPhoneNumber
             }
         ];
         const quoteDetailData = [
             {
                 key: 'baseCharge',
-                value: data.baseCharge || '-'
+                value: data.baseCharge
             },
             {
                 key: 'fuelSurcharge',
-                value: data.fuelSurcharge || '-'
+                value: data.fuelSurcharge
             },
             {
                 key: 'gst',
-                value: data.gst || '-'
+                value: data.gst
             },
             {
                 key: 'totalCharge',
-                value: data.totalCharge || '-'
+                value: data.totalCharge
             }
         ];
         this.setState({
             dialogVisible: true,
             shipmentDetail: data,
-            bookingDetailData,
             packageInfoData,
             addressData,
             quoteDetailData
@@ -130,18 +112,42 @@ class ShipmentDetail extends Component {
                             <Layout.Col span="24">
                                 <table className="shipment-detail-table table">
                                     <tbody>
-                                    {
-                                        this.state.bookingDetailData.map((obj, i) => {
-                                            return (
-                                                <tr>
-                                                    <td className="title-block">
-                                                        <b><FormattedMessage id={`sd.${obj.key}`}/></b>
-                                                    </td>
-                                                    <td>{obj.value}</td>
-                                                </tr>
-                                            );
-                                        })
-                                    }
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.serviceType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.serviceType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.shipmentDate'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.shippingDate || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.packageType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.packageType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.tracking'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.trackingNo || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.contentType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.contentType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.actualWeight'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.actualWeight || '-'} kg(s)</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </Layout.Col>
@@ -165,10 +171,14 @@ class ShipmentDetail extends Component {
                                         this.state.packageInfoData.map((packageInfo, i) => {
                                             return (
                                                 <tr>
-                                                    <td>{packageInfo.piece}</td>
-                                                    <td>{packageInfo.actualWeight}</td>
-                                                    <td>{packageInfo.cubicWeight}</td>
-                                                    <td>{packageInfo.dimension}</td>
+                                                    <td>{packageInfo.piece || '-'}</td>
+                                                    <td>{packageInfo.actualWeight || '-'} kg(s)</td>
+                                                    <td>{packageInfo.cubicWeight || '-'} kg(s)</td>
+                                                    <td>
+                                                        {packageInfo.dimension.length  || '-'} x&nbsp;
+                                                        {packageInfo.dimension.weight  || '-'} x&nbsp;
+                                                        {packageInfo.dimension.height  || '-'} cm(s)
+                                                    </td>
                                                 </tr>
                                             );
                                         })
@@ -199,8 +209,8 @@ class ShipmentDetail extends Component {
                                         this.state.addressData.map((address, i) => {
                                             return (
                                                 <tr>
-                                                    <td>{address.shipperAddress}</td>
-                                                    <td>{address.receiverAddress}</td>
+                                                    <td>{address.shipperAddress || '-'}</td>
+                                                    <td>{address.receiverAddress || '-'}</td>
                                                 </tr>
                                             );
                                         })
@@ -219,7 +229,7 @@ class ShipmentDetail extends Component {
                                             return (
                                                 <tr>
                                                     <td>- <FormattedMessage id={`sd.${quoteDetailItem.key}`}/>:</td>
-                                                    <td>{quoteDetailItem.value}</td>
+                                                    <td>{quoteDetailItem.value || '-'}</td>
                                                 </tr>
                                             );
                                         })
