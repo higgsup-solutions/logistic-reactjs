@@ -128,7 +128,7 @@ class ShipmentDetail extends Component {
                     <Dialog.Body>
                         <Layout.Row className="shipment-detail">
                             <Layout.Col span="24">
-                                <table className="shipment-detail-table table table-hover">
+                                <table className="shipment-detail-table table">
                                     <tbody>
                                     {
                                         this.state.bookingDetailData.map((obj, i) => {
@@ -187,7 +187,7 @@ class ShipmentDetail extends Component {
                         </Layout.Row>
                         <Layout.Row className="package-info-extend">
                             <Layout.Col span="24">
-                                <table className="address-table table">
+                                <table className="address-table table table-hover">
                                     <thead>
                                         <tr>
                                             <th>{this.props.intl.formatMessage({id: 'sd.shipperAddress'}).toUpperCase()}</th>
@@ -207,7 +207,7 @@ class ShipmentDetail extends Component {
                                     }
                                     </tbody>
                                 </table>
-                                <table className="quote-detail-table table">
+                                <table className="quote-detail-table table table-hover">
                                     <thead>
                                     <tr>
                                         <th colSpan='2'>{this.props.intl.formatMessage({id: 'sd.quoteDetail'}).toUpperCase()}</th>

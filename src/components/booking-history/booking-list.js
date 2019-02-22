@@ -57,7 +57,7 @@ class BookingList extends Component {
 
         this.state = {
             textSearch: '',
-            pageSize: 2,
+            pageSize: 20,
             pageIndex: 0,
             totalItem: 0,
             data: []
@@ -87,6 +87,16 @@ class BookingList extends Component {
         })
     }
 
+    timer = 0;
+    delay = 500;
+    onRowClick = (item) => {
+        const currentTime = (new Date()).getTime();
+        if (currentTime - this.timer < this.delay) {
+            this.props.onClickShipment(item)
+        }
+        this.timer = currentTime;
+    };
+
     render() {
         return (
             <div className="booking-list">
@@ -111,7 +121,7 @@ class BookingList extends Component {
                         data={this.state.data}
                         border={true}
                         highlightCurrentRow={true}
-                        onRowClick={item => this.props.onClickShipment(item)}
+                        onRowClick={this.onRowClick}
                         // onCurrentChange={item => console.log(item)}
                         emptyText={this.props.intl.formatMessage({id: 'history.empty'})}
                     />
