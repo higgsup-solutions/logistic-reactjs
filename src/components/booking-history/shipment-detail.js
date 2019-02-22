@@ -4,109 +4,94 @@ import {Dialog, Button, Table, Layout} from "element-react";
 
 class ShipmentDetail extends Component {
 
-    bookingDetailColumns = [
-        {
-            label: "",
-            prop: "field",
-        }, {
-            label: "",
-            prop: "value",
-        }
-    ];
-
-    bookingDetailData = [
-        {
-            field: 'Service Type',
-            value: 'DHL Domestic'
-        }, {
-            field: 'Shipment Date',
-            value: '12-11-2018'
-        }, {
-            field: 'Package Type',
-            value: 'DHL Domestic Express'
-        }
-    ];
-
-    packageInfoColumns = [
-        {
-            label: this.props.intl.formatMessage({id: 'sd.piece'}).toUpperCase(),
-            prop: "piece"
-        }, {
-            label: this.props.intl.formatMessage({id: 'sd.actualWeight'}).toUpperCase(),
-            prop: "actualWeight",
-        }, {
-            label: this.props.intl.formatMessage({id: 'sd.cubicWeight'}).toUpperCase(),
-            prop: "cubicWeight",
-        }, {
-            label: this.props.intl.formatMessage({id: 'sd.dimension'}).toUpperCase(),
-            prop: "dimension",
-        }
-    ];
-
-    packageInfoData = [
-        {
-            piece: '1',
-            actualWeight: '1.0 kg(s)',
-            cubicWeight: '0.0 kg(s)',
-            dimension: '0 x 0 x 0 cm(s)'
-        }
-    ];
-
-    addressColumns = [
-        {
-            label: this.props.intl.formatMessage({id: 'sd.shipperAddress'}).toUpperCase(),
-            prop: "shipperAddress"
-        }, {
-            label: this.props.intl.formatMessage({id: 'sd.receiverAddress'}).toUpperCase(),
-            prop: "receiverAddress",
-        }
-    ];
-
-    addressData = [
-        {
-            shipperAddress: 'Tran Dang Ninh',
-            receiverAddress: 'Nguyen Khanh Toan'
-        }
-    ];
-
-    quoteDetailColumns = [
-        {
-            label: this.props.intl.formatMessage({id: 'sd.quoteDetail'}).toUpperCase(),
-            prop: "quoteDetail"
-        }, {
-            label: '',
-            prop: "value",
-        }
-    ];
-
-    quoteDetailData = [
-        {
-            quoteDetail: 'Base Charge:',
-            value: '9.67'
-        }
-    ];
-
     constructor(props) {
         super(props);
 
         this.state = {
             dialogVisible: false,
-            shipmentDetail: {}
+            shipmentDetail: {},
+            bookingDetailData: [],
+            packageInfoData: [],
+            addressData: [],
+            quoteDetailData: []
         }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
         const {data, isClickItem} = nextProps;
         if (isClickItem && data) {
-            this.setState({
-                dialogVisible: true,
-                shipmentDetail: data
-            })
+            this.collectDataFromSelectedItem(data)
         } else {
             this.setState({
                 dialogVisible: false
             })
         }
+    }
+
+    collectDataFromSelectedItem(data) {
+        const packageInfoData = [
+            {
+                piece: data.pieces,
+                actualWeight: data.actualWeight,
+                cubicWeight: data.cubicWeight,
+                dimension: {
+                    length: data.dimentionLength,
+                    weight: data.dimentionWeight,
+                    height: data.dimentionHeight
+                }
+            }
+        ];
+        const addressData = [
+            {
+                shipperAddress: data.senderContactName,
+                receiverAddress: data.recipientContactName
+            },
+            {
+                shipperAddress: data.senderCompany,
+                receiverAddress: data.recipientCompany
+            },
+            {
+                shipperAddress: data.senderAddress1,
+                receiverAddress: data.recipientAddress1
+            },
+            {
+                shipperAddress: data.senderAddress2,
+                receiverAddress: data.recipientAddress2
+            },
+            {
+                shipperAddress: data.senderCountryName,
+                receiverAddress: data.recipientCountryName
+            },
+            {
+                shipperAddress: data.senderPhoneNumber,
+                receiverAddress: data.recipientPhoneNumber
+            }
+        ];
+        const quoteDetailData = [
+            {
+                key: 'baseCharge',
+                value: data.baseCharge
+            },
+            {
+                key: 'fuelSurcharge',
+                value: data.fuelSurcharge
+            },
+            {
+                key: 'gst',
+                value: data.gst
+            },
+            {
+                key: 'totalCharge',
+                value: data.totalCharge
+            }
+        ];
+        this.setState({
+            dialogVisible: true,
+            shipmentDetail: data,
+            packageInfoData,
+            addressData,
+            quoteDetailData
+        })
     }
 
     onDialogDismiss() {
@@ -125,45 +110,132 @@ class ShipmentDetail extends Component {
                     <Dialog.Body>
                         <Layout.Row className="shipment-detail">
                             <Layout.Col span="24">
-                                <Table showHeader={false}
-                                    style={{width: '100%'}}
-                                    columns={this.bookingDetailColumns}
-                                    data={this.bookingDetailData}
-                                />
+                                <table className="shipment-detail-table table">
+                                    <tbody>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.serviceType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.serviceType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.shipmentDate'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.shippingDate || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.packageType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.packageType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.tracking'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.trackingNo || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.contentType'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.contentType || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="title-block">
+                                                <b><FormattedMessage id={'sd.actualWeight'}/></b>
+                                            </td>
+                                            <td>{this.state.shipmentDetail.actualWeight || '-'} kg(s)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </Layout.Col>
                         </Layout.Row>
                         <Layout.Row className="package-info">
                             <Layout.Col span="24">
                                 <div className="package-info-header">
-                                    <u>{'Package Information'}</u>
+                                    <u><FormattedMessage id='sd.packageInfo'/></u>
                                 </div>
-                                <Table className="package-info-table"
-                                    style={{width: '100%'}}
-                                       columns={this.packageInfoColumns}
-                                       data={this.packageInfoData}
-                                />
+                                <table className="package-info-table table">
+                                    <thead>
+                                        <tr>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.piece'}).toUpperCase()}</th>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.actualWeight'}).toUpperCase()}</th>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.cubicWeight'}).toUpperCase()}</th>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.dimension'}).toUpperCase()}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        this.state.packageInfoData.map((packageInfo, i) => {
+                                            return (
+                                                <tr>
+                                                    <td>{packageInfo.piece || '-'}</td>
+                                                    <td>{packageInfo.actualWeight || '-'} kg(s)</td>
+                                                    <td>{packageInfo.cubicWeight || '-'} kg(s)</td>
+                                                    <td>
+                                                        {packageInfo.dimension.length  || '-'} x&nbsp;
+                                                        {packageInfo.dimension.weight  || '-'} x&nbsp;
+                                                        {packageInfo.dimension.height  || '-'} cm(s)
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    }
+                                    </tbody>
+                                </table>
                                 <div className="text-right">
                                     <Button type="primary">
                                         <FormattedMessage id='view'/>
                                     </Button>
                                     <Button type="primary">
-                                        <FormattedMessage id='sd.quoteDetail.alert'/>
+                                        <FormattedMessage id='track'/>
                                     </Button>
                                 </div>
                             </Layout.Col>
                         </Layout.Row>
                         <Layout.Row className="package-info-extend">
                             <Layout.Col span="24">
-                                <Table className="address-table"
-                                       style={{width: '100%'}}
-                                       columns={this.addressColumns}
-                                       data={this.addressData}
-                                />
-                                <Table className="quote-detail-table"
-                                       style={{width: '100%'}}
-                                       columns={this.quoteDetailColumns}
-                                       data={this.quoteDetailData}
-                                />
+                                <table className="address-table table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.shipperAddress'}).toUpperCase()}</th>
+                                            <th>{this.props.intl.formatMessage({id: 'sd.receiverAddress'}).toUpperCase()}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        this.state.addressData.map((address, i) => {
+                                            return (
+                                                <tr>
+                                                    <td>{address.shipperAddress || '-'}</td>
+                                                    <td>{address.receiverAddress || '-'}</td>
+                                                </tr>
+                                            );
+                                        })
+                                    }
+                                    </tbody>
+                                </table>
+                                <table className="quote-detail-table table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th colSpan='2'>{this.props.intl.formatMessage({id: 'sd.quoteDetail'}).toUpperCase()}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        this.state.quoteDetailData.map((quoteDetailItem, i) => {
+                                            return (
+                                                <tr>
+                                                    <td>- <FormattedMessage id={`sd.${quoteDetailItem.key}`}/>:</td>
+                                                    <td>{quoteDetailItem.value || '-'}</td>
+                                                </tr>
+                                            );
+                                        })
+                                    }
+                                    </tbody>
+                                </table>
                                 <div className="quote-detail-alert">
                                     <i><FormattedMessage id='sd.quoteDetail.alert'/></i>
                                 </div>

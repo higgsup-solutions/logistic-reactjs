@@ -80,6 +80,10 @@ export const ENGLISH = {
         "sd.shipperAddress": "Shipper Address",
         "sd.receiverAddress": "Receiver Address",
         "sd.quoteDetail": "Quote Detail",
+        "sd.baseCharge": "Base Charge",
+        "sd.fuelSurcharge": "Fuel Surcharge",
+        "sd.gst": "GST",
+        "sd.totalCharge": "Total Charge",
         "sd.quoteDetail.alert": "Quote is an estimate. Additional Fees may apply.",
     }
 };
