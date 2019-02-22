@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './register.scss';
-import {Button, Form, Input} from "element-react";
+import {Button, Form, Input, Card} from "element-react";
 import TokenStorage from "../../utils/token";
 import {navigate} from "@reach/router";
 import {register} from "../../integrate/auth";
@@ -57,10 +57,7 @@ class RegisterComponent extends Component {
                     password: this.state.user.password
                 };
 
-                console.log(data);
-
                 register(data).then(res => {
-                    console.log(res);
                     navigate('/public/login');
                 });
             } else {
@@ -73,7 +70,7 @@ class RegisterComponent extends Component {
     render() {
 
         return (
-            <div className="register-container p-4 mb-5">
+            <Card className="register-container mb-5">
                 <h3 className="pb-4">Register</h3>
 
                 <Form
@@ -102,7 +99,7 @@ class RegisterComponent extends Component {
                         <Button className="mr-5" type="primary" nativeType="submit">Register</Button>
                     </Form.Item>
                 </Form>
-            </div>
+            </Card>
         );
     }
 }

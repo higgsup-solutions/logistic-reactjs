@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './login.scss';
 import {login} from '../../integrate/auth';
 import {navigate} from "@reach/router";
-import {Button, Checkbox, Form, Input} from 'element-react';
+import {Button, Checkbox, Form, Input, Card} from 'element-react';
 import TokenStorage from "../../utils/token";
 
 class LoginComponent extends Component {
@@ -77,7 +77,7 @@ class LoginComponent extends Component {
     render() {
 
         return (
-            <div className="login-container p-4 mb-5">
+            <Card className="login-container mb-5 box-card">
                 <h3 className="pb-4">Login</h3>
 
                 <Form
@@ -96,7 +96,7 @@ class LoginComponent extends Component {
 
                     <Form.Item label="Password" prop="password">
                         <Input
-                             type="password" value={this.state.user.password}
+                            type="password" value={this.state.user.password}
                             onChange={this.onChangeInput('password')}/>
                     </Form.Item>
 
@@ -110,7 +110,7 @@ class LoginComponent extends Component {
                         </div>
                     </Form.Item>
                 </Form>
-            </div>
+            </Card>
         );
     }
 }
