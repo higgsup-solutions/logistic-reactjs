@@ -35,6 +35,7 @@ export const ENGLISH = {
         "booking.selectOneCarrier": "Select One Carrier",
         "booking.selectOnePackage": "Select One Package",
         "booking.selectOneService": "Select One Service",
+        "booking.selectOneDimension": "Select One Dimension",
         "booking.address": "Address",
         "booking.address2": "Address2",
         "booking.saveToAddressBook": "Save To Address Book",
