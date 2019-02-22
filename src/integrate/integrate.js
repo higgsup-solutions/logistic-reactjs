@@ -1,6 +1,7 @@
 import axios from "axios"
 import {API_ROOT} from "./integrate.endpoint";
 import { Notification } from 'element-react';
+import TokenStorage from "../utils/token";
 
 const _getAppVersion = () => {
     return '1.0.0';
@@ -38,19 +39,16 @@ _request.interceptors.response.use(
         return response
     },
     error => {
-        console.log('err' + error); // for debug
         Notification.error({
             title: 'Error',
-            message: `${error}`
+            message: `${error.response.data.message}`
         });
         return Promise.reject(error)
     }
 );
 
 const makeAuthRequest = (args) => {
-
-    // todo: need to get token from storage
-    const {accessToken} = {accessToken: `Bearer ${localStorage.getItem('authentication')}`};
+    const accessToken = TokenStorage.getAccessToken();
     const _headers = args.headers ? args.headers : {};
     const defaultHeaders = {
         'Authorization': accessToken,

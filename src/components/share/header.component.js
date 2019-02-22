@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import './share.scss';
-import {Menu} from 'element-react';
+import {Menu, Button} from 'element-react';
 import {navigate, Link} from '@reach/router';
 import {BOOKING, BOOKING_HISTORY, LOGIN, SETTING} from "../../App.url";
 import {FormattedMessage} from "react-intl";
 import logo from "../../assets/logo.png";
+import {logout} from "../../integrate/auth";
+import TokenStorage from "../../utils/token";
 
 class HeaderComponent extends Component {
     constructor(props) {
@@ -23,7 +25,9 @@ class HeaderComponent extends Component {
     }
 
     onLogout = (e) => {
-        localStorage.clear();
+        logout();
+        TokenStorage.clear();
+        navigate('/');
     };
 
     onSelect = (e) => {
@@ -46,7 +50,8 @@ class HeaderComponent extends Component {
                     {this.state.menu.map((item) =>
                         <Menu.Item key={item.index} index={item.index}><FormattedMessage id={item.label}/></Menu.Item>)}
                 </Menu>
-                <Link onClick={this.onLogout} className="logout" to={LOGIN}>Logout</Link>
+                <Button type="primary" className="logout" onClick={this.onLogout} >Logout</Button>
+                {/*<Link onClick={this.onLogout} className="logout" to={LOGIN}>Logout</Link>*/}
             </div>
         );
     }

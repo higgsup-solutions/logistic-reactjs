@@ -44,8 +44,8 @@ class App extends Component {
                 <Router>
                     <PrivateRoute component={LayoutComponent} path="/" >
                         <Redirect exact from="/" to={BOOKING} noThrow />
-                        <Authorization component={Booking} allowedRoles={ROLE_ADMIN} path={BOOKING}/>
-                        <Authorization component={BookingHistory} allowedRoles={ROLE_MANAGER} path={BOOKING_HISTORY} />
+                        <Booking path={BOOKING}/>
+                        <BookingHistory path={BOOKING_HISTORY} />
                         <NotFound default />
                     </PrivateRoute>
                     <PublicLayoutComponent path={PUBLIC}>
