@@ -42,8 +42,29 @@
 
 .shipment-detail-container {
 
+  .el-dialog--small {
+    width: 60%;
+  }
+
+  .el-dialog__header {
+    padding: 10px 20px 10px;
+    background: $background-gradient;
+
+    .el-dialog__title{
+      color: white;
+    }
+  }
+
+  tr {
+    border-bottom: .1pt solid gainsboro;
+  }
+
   .shipment-detail {
     margin-bottom: 36px;
+
+    .title-block {
+      background: $secondary-background;
+    }
   }
 
   .package-info {
@@ -66,4 +87,20 @@
     }
   }
 
+  .shipment-detail-table {
+    width: 100%;
+  }
+
+  .quote-detail-table {
+    margin-bottom: 0.5rem;
+  }
+
+  .quote-detail-alert {
+    padding-left: 0.75rem;
+  }
+
+  .table td, .table th {
+    padding: 0.5rem 0.75rem;
+  }
 }
+
