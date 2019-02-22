@@ -203,7 +203,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
    
   - How to use that api?
   
-  ```
+  ```js
   login(data).then(res => {
       if (res.success) {
           localStorage.setItem('authentication', `Bearer ${res.data.accessToken}`);

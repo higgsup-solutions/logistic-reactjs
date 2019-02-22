@@ -1,10 +1,12 @@
+@import '../../style/style';
+
 .indigo{
   background-color: red!important;
 }
 .footer{
   .footer-row-1 {
     padding: 50px 0px 100px 0px;
-    background-image: linear-gradient(to right, #333366 , #336699 );
+    background-image: $background-gradient;
     .title{
       color: white;
     }
@@ -24,16 +26,18 @@
 
 .public-header{
   .el-menu{
-    background-image: linear-gradient(to right, #333366 , #336699 );
+    background-image: $background-gradient;
     .el-menu-item{
       color: white;
+      font-weight: bold;
+      font-size: 15px;
       &:hover{
         background-color: transparent!important;
-        color: #20a0ff;
+        color: $active-link;
       }
       &.is-active{
-        border-bottom: 5px solid #20a0ff;
-        color: #20a0ff;
+        border-bottom: 5px solid $active-link;
+        color: $active-link;
       }
     }
   }

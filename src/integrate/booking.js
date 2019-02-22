@@ -1,0 +1,22 @@
+import integrate from './integrate';
+import {LIST_ADDRESS, LIST_CARRIER, LIST_CITY} from "./integrate.endpoint";
+import {processString} from "../utils/string";
+
+export const listDataSuggest = () => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(LIST_ADDRESS, {userId: 5}),
+        method: 'GET',
+    });
+};
+export const listDataCity = (countryId) => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(LIST_CITY, {id: 5}),
+        method: 'GET',
+    });
+};
+export const listCarrier = () => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(LIST_CARRIER),
+        method: 'GET',
+    });
+};

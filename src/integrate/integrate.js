@@ -36,7 +36,6 @@ _request.interceptors.request.use(
 // response interceptor
 _request.interceptors.response.use(
     response => {
-        // console.log(`before receiving response...`);
         return response
     },
     error => {

@@ -1,0 +1,69 @@
+@import '../../style/style';
+
+.history-card {
+  margin: 20px;
+
+  .el-card {
+    overflow: unset;
+  }
+
+  .el-card__header {
+    background-image: $background-gradient;
+    color: white;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+
+  .label {
+    margin-bottom: 5px;
+    text-align: left;
+
+    .required {
+      margin-left: 10px;
+      color: red;
+    }
+  }
+
+}
+
+.search-input {
+  margin-bottom: 1em;
+  padding-right: 1em;
+}
+
+.booking-list {
+  text-align: left;
+
+  .page-size-select {
+    width: 4.5em;
+    margin: .5em;
+  }
+}
+
+.shipment-detail-container {
+
+  .shipment-detail {
+    margin-bottom: 36px;
+  }
+
+  .package-info {
+    margin-bottom: 16px;
+
+    .package-info-header {
+      font-weight: bold;
+    }
+
+    .package-info-table {
+      margin-bottom: 8px;
+    }
+  }
+
+  .package-info-extend {
+    margin-left: 16px;
+
+    .address-table {
+      margin-bottom: 16px;
+    }
+  }
+
+}
