@@ -11,19 +11,6 @@ import {getBookingHistory} from "../../integrate/booking-history";
 
 class BookingList extends Component {
 
-    // pageSizeList = [
-    //     {
-    //         value: '25',
-    //         label: '25'
-    //     }, {
-    //         value: '50',
-    //         label: '50'
-    //     }, {
-    //         value: '100',
-    //         label: '100'
-    //     }
-    // ];
-
     columns = [
         {
             label: this.props.intl.formatMessage({id: 'carrier'}).toUpperCase(),
@@ -102,12 +89,6 @@ class BookingList extends Component {
         })
     }
 
-    // onChangePageSize(item) {
-    //     this.setState({
-    //         pageSize: item
-    //     });
-    // };
-
     render() {
         return (
             <div className="booking-list">
@@ -125,22 +106,6 @@ class BookingList extends Component {
                     </Button>
                 </Layout.Row>
 
-                {/*<div className="page-size-container text-left">*/}
-                    {/*Show*/}
-                    {/*<Select value={this.state.pageSize}*/}
-                            {/*size="small"*/}
-                            {/*onChange={this.onChangePageSize.bind(this)}*/}
-                            {/*className="page-size-select">*/}
-                        {/*{*/}
-                            {/*this.pageSizeList.map(el => {*/}
-                                {/*return <Select.Option key={el.value}*/}
-                                                      {/*label={el.label}*/}
-                                                      {/*value={el.value}/>*/}
-                            {/*})*/}
-                        {/*}*/}
-                    {/*</Select>*/}
-                    {/*entries*/}
-                {/*</div>*/}
                 <div className="booking-table">
                     <Table
                         style={{width: '100%'}}
