@@ -69,14 +69,12 @@ class BookingList extends Component {
     }
 
     getBookingHistory(newPage) {
-        console.log(newPage);
         getBookingHistory(
             newPage || this.state.pageIndex,
             this.state.pageSize,
             this.state.textSearch
         ).then(res => {
             if (res.responseMessage && res.responseMessage.status === 'OK') {
-                console.log(res);
                 const {pageIndex, pageSize, totalItem} = res;
                 const data = res.responseMessage.data || [];
                 this.setState({
