@@ -1,9 +1,18 @@
-import {Button} from "element-react";
 import React from "react";
 
 export const ENGLISH = {
     lang: "en",
     messages: {
+
+        // Common
+        "carrier": "Carrier",
+        "search": "Search",
+        "clear": "Clear",
+        "view": "View",
+        "track": "Track",
+        "close": "Close",
+
+        // Menu
         "menu.login": "Login",
         "menu.register": "Register",
         "menu.booking": "Booking",
@@ -14,6 +23,8 @@ export const ENGLISH = {
         "menu.supplies": "Supplies",
         "menu.invoices": "Invoices",
         "menu.help": "Help",
+
+        // Booking
         "booking.senderAddress": "Sender Address",
         "booking.company": "Company",
         "booking.phone": "Phone",
@@ -41,5 +52,33 @@ export const ENGLISH = {
         "booking.continueBooking": "Continue Booking",
         "booking.quote": "Quote",
         "booking.addPiece": "Add Piece",
+
+        // Booking History
+        "history.history": "History",
+        "history.contactNameSender": "Contact Name Sender",
+        "history.tracking": "Tracking",
+        "history.pieces": "Pieces",
+        "history.weight": "Weight",
+        "history.quoted": "Quoted",
+        "history.destCountry": "Dest. Country",
+        "history.shipDate": "Ship Date",
+        "history.empty": "Have no history",
+
+        // Shipment Detail - alias = 'sd'
+        "sd.shipmentDetail": "Shipment Detail",
+        "sd.serviceType": "Service Type",
+        "sd.shipmentDate": "Shipment Date",
+        "sd.packageType": "Package Type",
+        "sd.tracking": "Tracking#",
+        "sd.contentType": "Content Type",
+        "sd.actualWeight": "Actual Weight",
+        "sd.packageInfo": "Package Information",
+        "sd.piece": "Piece",
+        "sd.cubicWeight": "Cubic Weight",
+        "sd.dimension": "Dimension",
+        "sd.shipperAddress": "Shipper Address",
+        "sd.receiverAddress": "Receiver Address",
+        "sd.quoteDetail": "Quote Detail",
+        "sd.quoteDetail.alert": "Quote is an estimate. Additional Fees may apply.",
     }
 };
