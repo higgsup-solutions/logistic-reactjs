@@ -46,7 +46,7 @@ class SenderAddress extends Component {
     };
 
     onChangeCity = (event, value) => {
-        this.props.changeField('city', value);
+        this.props.changeField('cityName', value);
     };
 
     renderItemDropdownCompany = (item, isHighlighted) => {
@@ -100,7 +100,7 @@ class SenderAddress extends Component {
     }
 
     onChangeCheckbox = (e) => {
-        this.props.changeField('saveToAddressBook', null)
+        this.props.changeField('saveToAddressBook', !this.props.form.saveToAddressBook)
     };
 
     onChangeCommonInput = (inputName) => (value) => {
@@ -129,7 +129,7 @@ class SenderAddress extends Component {
         return (
             <div className="mycard sender">
                 <Card className="box-card"
-                      header={<div className="clearfix">{this.props.name}</div>}>
+                      header={<div className="clearfix pl-3">{this.props.name}</div>}>
                     <div className="row mb-3">
                         <div className="col-xs-12 col-sm-6 pr-2">
                             <div className="label"><FormattedMessage id='booking.company'/><span
@@ -184,7 +184,7 @@ class SenderAddress extends Component {
                         </div>
                         <div className="col-xs-12 col-sm-6 pl-2">
                             <div className="label"><FormattedMessage id='booking.emailAddress'/></div>
-                            <Input className={this.checkErrorField('email')}
+                            <Input className={this.checkErrorField('emailAddress')}
                                    value={this.props.form.emailAddress}
                                    onChange={this.onChangeCommonInput('emailAddress')}/>
                         </div>

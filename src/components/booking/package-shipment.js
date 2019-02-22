@@ -44,12 +44,17 @@ class PackageShipment extends Component {
         this.props.deleteRowDocument(index);
     };
 
+    checkErrorField(index, fieldName) {
+        return this.props.fieldErrors[index].includes(fieldName) ? 'invalid' : '';
+    }
+
     render() {
 
         const domListDocument = this.props.form.documentInfos.map((item, key) =>
             <tr key={key}>
                 <td>{key + 1}</td>
                 <td><Input value={item.weights}
+                           className={this.checkErrorField(key, 'weights')}
                            onChange={this.onChangeRowDimension(key, 'weights')}/></td>
                 <td>
                     <Select className="w-100"
@@ -60,18 +65,22 @@ class PackageShipment extends Component {
                 </td>
                 <td>
                     <Input value={item.l}
+                           className={this.checkErrorField(key, 'l')}
                            onChange={this.onChangeRowDimension(key, 'l')}/>
                 </td>
                 <td>
                     <Input value={item.w}
+                           className={this.checkErrorField(key, 'w')}
                            onChange={this.onChangeRowDimension(key, 'w')}/>
                 </td>
                 <td>
                     <Input value={item.h}
+                           className={this.checkErrorField(key, 'h')}
                            onChange={this.onChangeRowDimension(key, 'h')}/>
                 </td>
                 <td>
                     <Input value={item.quantity}
+                           className={this.checkErrorField(key, 'quantity')}
                            onChange={this.onChangeRowDimension(key, 'quantity')}/>
                 </td>
                 <td>{key != 0 ? <i className="fa fa-times-circle"
@@ -83,7 +92,7 @@ class PackageShipment extends Component {
         return (
             <div className="mycard package">
                 <Card className="box-card"
-                      header={<div className="clearfix"><FormattedMessage id='booking.packageShipment'/></div>}>
+                      header={<div className="clearfix pl-3"><FormattedMessage id='booking.packageShipment'/></div>}>
                     <div className="row mb-3 pl-3">
                         <div className="col-xs-12 text-left">
                             <div className="label"><FormattedMessage id='booking.shippingDate'/></div>
@@ -148,10 +157,10 @@ class PackageShipment extends Component {
                             <thead>
                             <tr>
                                 <th rowSpan="2" className="width-50">Row</th>
-                                <th rowSpan="2" className="width-100">Weights (Kgs)*</th>
+                                <th rowSpan="2" className="width-100">Weights (Kgs)<span className="required">*</span></th>
                                 <th rowSpan="2" className="width-150"></th>
-                                <th colSpan="3">Dimensions(cm)</th>
-                                <th rowSpan="2" className="width-100">Quantity*</th>
+                                <th colSpan="3">Dimensions(cm)<span className="required">*</span></th>
+                                <th rowSpan="2" className="width-100">Quantity<span className="required">*</span></th>
                                 <th rowSpan="2" className="width-50"></th>
                             </tr>
                             <tr>

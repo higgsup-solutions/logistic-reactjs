@@ -10,7 +10,7 @@ export const listDataSuggest = () => {
 };
 export const listDataCity = (countryId) => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(LIST_CITY, {id: 5}),
+        url: processString.parseUrl(LIST_CITY, {id: countryId}),
         method: 'GET',
     });
 };
