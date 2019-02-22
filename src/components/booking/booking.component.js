@@ -6,7 +6,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
 import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
-import {listCarrier, listDataCity, listDataSuggest, listDimension} from "../../integrate/booking";
+import {listCarrier, listDataCity, listDataSuggest, listDimension, saveAddressToBook} from "../../integrate/booking";
 import {fieldName} from "../../utils/field-name";
 import {processString} from "../../utils/string";
 import {processNumber} from "../../utils/number";
@@ -270,8 +270,34 @@ class Booking extends Component {
                 return;
             }
         }
-        console.log('call api');
+        if(this.state.sender.saveToAddressBook) {
+            this.intergrateSaveAddressToBook('sender');
+        }
+        if(this.state.recipient.saveToAddressBook) {
+            this.intergrateSaveAddressToBook('recipient');
+        }
+        console.log('call api quote ngay mai backend moi xong');
+        this.intergrateQuoteAPI();
     };
+
+    intergrateQuoteAPI() {
+
+    }
+
+    intergrateSaveAddressToBook(people) {
+        if(this.state[people].saveToAddressBook) {
+            let data = this.state[people];
+            data.receipientDefault = false;
+            data.senderDefault = false;
+            data.email = this.state[people].emailAddress;
+            data.countryId = this.state[people].country.value;
+            data.countryName = this.state[people].country.label;
+
+            saveAddressToBook(data).then(res => {
+                console.log(res);
+            });
+        }
+    }
 
     checkError(formError, field, listError) {
         let newState = this.state;
