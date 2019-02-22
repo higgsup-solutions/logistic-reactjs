@@ -138,3 +138,13 @@
     max-height: 250px;
   }
 }
+
+.quote{
+  .el-dialog__title{
+    color: $active-link;
+    border-bottom: 3px solid $active-link;
+  }
+  .border-top-1{
+    border-top: 2px solid $active-link;
+  }
+}

@@ -6,10 +6,11 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
 import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
-import {listCarrier, listDataCity, listDataSuggest, listDimension} from "../../integrate/booking";
+import {listCarrier, listDataCity, listDataSuggest, listDimension, saveAddressToBook} from "../../integrate/booking";
 import {fieldName} from "../../utils/field-name";
 import {processString} from "../../utils/string";
 import {processNumber} from "../../utils/number";
+import Quote from "./quote";
 
 class Booking extends Component {
     constructor(props) {
@@ -19,8 +20,17 @@ class Booking extends Component {
             listCitySender: [],
             listCityRecipient: [],
             listCarrier: [],
+            allCarrier: [],
             listPackageType: [],
             listDimension: [],
+            showQuote: false,
+            quote: {
+                baseCharge: '',
+                fuelSurcharge: '',
+                totalWeight: '',
+                weightType: '',
+                totalCharge: '',
+            },
             sender: {
                 company: '',
                 phoneNumber: '',
@@ -111,7 +121,9 @@ class Booking extends Component {
         listCarrier().then(res => {
             if (res.responseMessage.status == 'OK') {
                 let newState = this.state;
-                newState.listCarrier = res.responseMessage.data;
+                newState.allCarrier = res.responseMessage.data;
+                newState.listCarrier.push(newState.allCarrier[0]);
+                newState.listCarrier.push(newState.allCarrier[1]);
                 newState.package.carrierId = newState.listCarrier[0].id;
                 newState.listPackageType = newState.listCarrier[0].packageDTO;
                 newState.package.packageType = newState.listPackageType[0].id;
@@ -146,6 +158,17 @@ class Booking extends Component {
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
+            newState.listCarrier = [];
+            if(value.value != 288) {
+                newState.listCarrier.push(newState.allCarrier[2]);
+                newState.listCarrier.push(newState.allCarrier[3]);
+            } else {
+                newState.listCarrier.push(newState.allCarrier[0]);
+                newState.listCarrier.push(newState.allCarrier[1]);
+            }
+            newState.package.carrierId = newState.listCarrier[0].id;
+            newState.listPackageType = newState.listCarrier[0].packageDTO;
+            newState.package.packageType = newState.listPackageType[0].id;
         }
         if (inputName == 'carrierId') {
             for (let i = 0; i < this.state.listCarrier.length; i++) {
@@ -164,7 +187,6 @@ class Booking extends Component {
         let newState = this.state;
         newState.senderErrors = [];
         newState.recipientErrors = [];
-        newState.packageErrors = [];
 
         const arrError = ['company', 'phoneNumber', 'contactName', 'address1', 'cityName'];
         arrError.forEach(item => {
@@ -197,7 +219,6 @@ class Booking extends Component {
                     required</div>)
             }
         });
-        this.checkErrorDimension();
 
         newState.recipientErrors.forEach(item => {
             if (item == 'emailAddress') {
@@ -209,15 +230,19 @@ class Booking extends Component {
             }
         });
 
-        let checkHaveErrorDimension = false;
-        for(let i = 0 ; i < newState.packageErrors.length; i++) {
-            if(newState.packageErrors[i].length > 0) {
-                checkHaveErrorDimension = true;
-                break;
+        if(this.state.package.contentType == 'Documents') {
+            newState.packageErrors = [];
+            this.checkErrorDimension();
+            let checkHaveErrorDimension = false;
+            for(let i = 0 ; i < newState.packageErrors.length; i++) {
+                if(newState.packageErrors[i].length > 0) {
+                    checkHaveErrorDimension = true;
+                    break;
+                }
             }
-        }
-        if(checkHaveErrorDimension) {
-            errMessage.push(<div className="text-danger">Package dimension is required</div>)
+            if(checkHaveErrorDimension) {
+                errMessage.push(<div className="text-danger">Package dimension is required</div>)
+            }
         }
 
         this.setState(newState);
@@ -228,9 +253,51 @@ class Booking extends Component {
                 duration: 5000
             });
             return;
+        } else {
+            if(newState.sender.country.value != 288 && newState.recipient.country.value != 288) {
+                errMessage.push(<div className="text-danger">Sender country or recipient country must is Viet Nam</div>);
+            }
+            if(`${this.state.sender.countryId}@${this.state.sender.address1}@${this.state.sender.cityId}@${this.state.sender.postalCode}`
+                == `${this.state.recipient.countryId}@${this.state.recipient.address1}@${this.state.recipient.cityId}@${this.state.recipient.postalCode}`) {
+                errMessage.push(<div className="text-danger">Sender address and Recipient address must is not same</div>);
+            }
+            if(errMessage.length > 0) {
+                Notification.error({
+                    title: <h5 className="text-danger text-bold">Error</h5>,
+                    message: errMessage,
+                    duration: 5000
+                });
+                return;
+            }
         }
-        console.log('call api');
+        if(this.state.sender.saveToAddressBook) {
+            this.intergrateSaveAddressToBook('sender');
+        }
+        if(this.state.recipient.saveToAddressBook) {
+            this.intergrateSaveAddressToBook('recipient');
+        }
+        console.log('call api quote ngay mai backend moi xong');
+        this.intergrateQuoteAPI();
     };
+
+    intergrateQuoteAPI() {
+
+    }
+
+    intergrateSaveAddressToBook(people) {
+        if(this.state[people].saveToAddressBook) {
+            let data = this.state[people];
+            data.receipientDefault = false;
+            data.senderDefault = false;
+            data.email = this.state[people].emailAddress;
+            data.countryId = this.state[people].country.value;
+            data.countryName = this.state[people].country.label;
+
+            saveAddressToBook(data).then(res => {
+                console.log(res);
+            });
+        }
+    }
 
     checkError(formError, field, listError) {
         let newState = this.state;
@@ -326,7 +393,6 @@ class Booking extends Component {
         let newState = this.state;
         newState.package.documentInfos.push({
             weights: null,
-            type: null,
             l: null,
             w: null,
             h: null,
@@ -344,7 +410,16 @@ class Booking extends Component {
     };
 
     onQuote = (e) => {
-        console.log(this.state)
+        console.log('call api quote and assign data to this.state.quote');
+        let newState = this.state;
+        newState.showQuote = true;
+        this.setState(newState);
+    };
+
+    onCloseQuote = () => {
+        let newState = this.state;
+        newState.showQuote = false;
+        this.setState(newState);
     };
 
     render() {
@@ -390,6 +465,9 @@ class Booking extends Component {
                             <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage
                                 id='booking.continueBooking'/></Button>
                         </div>
+                        <Quote showQuote={this.state.showQuote}
+                               data = {this.state.quote}
+                               closeQuote={this.onCloseQuote}/>
                     </div>
                 </div>
             </div>

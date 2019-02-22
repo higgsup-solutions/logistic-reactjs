@@ -1,5 +1,5 @@
 import integrate from './integrate';
-import {LIST_ADDRESS, LIST_CARRIER, LIST_CITY, LIST_DIMENSION} from "./integrate.endpoint";
+import {LIST_ADDRESS, LIST_CARRIER, LIST_CITY, LIST_DIMENSION, SAVE_ADDRESS} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 
 export const listDataSuggest = () => {
@@ -24,5 +24,13 @@ export const listDimension = () => {
     return integrate.makeAuthRequest({
         url: processString.parseUrl(LIST_DIMENSION),
         method: 'GET',
+    });
+};
+
+export const saveAddressToBook = (data) => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(SAVE_ADDRESS, {userId: 5}),
+        method: 'POST',
+        data: data
     });
 };

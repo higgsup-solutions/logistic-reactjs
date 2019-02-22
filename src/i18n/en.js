@@ -54,6 +54,14 @@ export const ENGLISH = {
         "booking.quote": "Quote",
         "booking.addPiece": "Add Piece",
 
+        //Quote Popup
+        "quote.baseCharge": "Base Charge",
+        "quote.fuelSurcharge": "Fuel Surcharge",
+        "quote.totalWeight": "Total Weight",
+        "quote.weightType": "Weight Type",
+        "quote.totalCharge": "Total Charge",
+        "quote.messageFoot": "Quote is an estimate. Additional fees may apply.",
+
         // Booking History
         "history.history": "History",
         "history.contactNameSender": "Contact Name Sender",
