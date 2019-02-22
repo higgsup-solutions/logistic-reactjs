@@ -1,6 +1,7 @@
 import axios from "axios"
 import {API_ROOT} from "./integrate.endpoint";
 import { Notification } from 'element-react';
+import TokenStorage from "../utils/token";
 
 const _getAppVersion = () => {
     return '1.0.0';
@@ -48,7 +49,7 @@ _request.interceptors.response.use(
 );
 
 const makeAuthRequest = (args) => {
-    const {accessToken} = localStorage.getItem('authToken');
+    const accessToken = TokenStorage.getAccessToken();
     const _headers = args.headers ? args.headers : {};
     const defaultHeaders = {
         'Authorization': accessToken,
@@ -62,7 +63,7 @@ const makeAuthRequest = (args) => {
         }
     };
 
-    return this.makeRequest(argsUpdated);
+    return makeRequest(argsUpdated);
 };
 
 const makeRequest = (args) => {

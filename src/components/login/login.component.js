@@ -3,6 +3,7 @@ import './login.scss';
 import {login} from '../../integrate/auth';
 import {navigate} from "@reach/router";
 import {Button, Checkbox, Form, Input} from 'element-react';
+import TokenStorage from "../../utils/token";
 
 class LoginComponent extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class LoginComponent extends Component {
             }
         };
 
-        if(localStorage.getItem('authToken')) {
+        if(TokenStorage.isTokenPresent()) {
             navigate(`/`);
         }
     }
@@ -61,7 +62,7 @@ class LoginComponent extends Component {
                 refreshToken: `Bearer ${res.refreshToken}`
             };
 
-            localStorage.setItem('authToken', JSON.stringify(authToken));
+            TokenStorage.store(authToken);
             navigate(`/`);
         });
     };
