@@ -6,4 +6,5 @@ export const BUY_SALE = '/school';
 export const LIST_ADDRESS = '/user/userId/addresses';
 export const LIST_CITY = '/countries/id/cities';
 export const LIST_CARRIER = '/carrier/carrier';
+export const LIST_DIMENSION = '/user/dimension';
 export const BOOKING_HISTORY_LIST = '/transaction/search';

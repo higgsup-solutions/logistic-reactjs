@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import './booking.scss';
 import {Layout, DatePicker, Input, Card, Select, Radio, Form, Table, Checkbox, Button} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
+import {listDimension} from "../../integrate/booking";
 
 class PackageShipment extends Component {
     constructor(props) {
@@ -28,40 +29,59 @@ class PackageShipment extends Component {
     };
 
     onChangeDropdown = (field) => (value) => {
-        console.log(field);
-        console.log(value); return;
         this.props.changeField(field, value);
+    };
+
+    onChangeDimension = (index) => (value) => {
+        this.props.changeDimension(index, value);
+    };
+
+    onChangeRowDimension = (index, field) => (value) => {
+        this.props.changeRowDimension(index, field, value);
     };
 
     onDeleteRowDocument = (index) => (e) => {
         this.props.deleteRowDocument(index);
     };
 
+    checkErrorField(index, fieldName) {
+        return this.props.fieldErrors[index].includes(fieldName) ? 'invalid' : '';
+    }
+
     render() {
 
         const domListDocument = this.props.form.documentInfos.map((item, key) =>
             <tr key={key}>
                 <td>{key + 1}</td>
-                <td><Input/></td>
+                <td><Input value={item.weights}
+                           className={this.checkErrorField(key, 'weights')}
+                           onChange={this.onChangeRowDimension(key, 'weights')}/></td>
                 <td>
                     <Select className="w-100"
-                            placeholder={this.props.intl.formatMessage({id: 'booking.selectOneCountry'})}>
-                        <Select.Option label="Zone 1" value="shanghai"></Select.Option>
-                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
-                        <Select.Option label="Zone 2" value="beijing"></Select.Option>
+                            onChange={this.onChangeDimension(key)}
+                            placeholder={this.props.intl.formatMessage({id: 'booking.selectOneDimension'})}>
+                        {this.props.listDimension.map((subItem) =>  <Select.Option key={subItem.id} label={subItem.name} value={subItem.id}></Select.Option>)}
                     </Select>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.l}
+                           className={this.checkErrorField(key, 'l')}
+                           onChange={this.onChangeRowDimension(key, 'l')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.w}
+                           className={this.checkErrorField(key, 'w')}
+                           onChange={this.onChangeRowDimension(key, 'w')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.h}
+                           className={this.checkErrorField(key, 'h')}
+                           onChange={this.onChangeRowDimension(key, 'h')}/>
                 </td>
                 <td>
-                    <Input/>
+                    <Input value={item.quantity}
+                           className={this.checkErrorField(key, 'quantity')}
+                           onChange={this.onChangeRowDimension(key, 'quantity')}/>
                 </td>
                 <td>{key != 0 ? <i className="fa fa-times-circle"
                                    onClick={this.onDeleteRowDocument(key)}></i> : ''}</td>
@@ -72,7 +92,7 @@ class PackageShipment extends Component {
         return (
             <div className="mycard package">
                 <Card className="box-card"
-                      header={<div className="clearfix"><FormattedMessage id='booking.packageShipment'/></div>}>
+                      header={<div className="clearfix pl-3"><FormattedMessage id='booking.packageShipment'/></div>}>
                     <div className="row mb-3 pl-3">
                         <div className="col-xs-12 text-left">
                             <div className="label"><FormattedMessage id='booking.shippingDate'/></div>
@@ -97,13 +117,14 @@ class PackageShipment extends Component {
                             <div className="label"><FormattedMessage id='booking.serviceType'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
+                                    value={this.props.form.serviceType}
                                     onChange={this.onChangeDropdown('serviceType')}
                                     placeholder={this.props.intl.formatMessage({id: 'booking.selectOneService'})}>
                                 <Select.Option label="Express" value="1"></Select.Option>
-                                <Select.Option label="Economy Express" value="1"></Select.Option>
-                                <Select.Option label="DHL Worldwide Express" value="1"></Select.Option>
-                                <Select.Option label="Expedited" value="1"></Select.Option>
-                                <Select.Option label="Express Saver" value="1"></Select.Option>
+                                <Select.Option label="Economy Express" value="2"></Select.Option>
+                                <Select.Option label="DHL Worldwide Express" value="3"></Select.Option>
+                                <Select.Option label="Expedited" value="4"></Select.Option>
+                                <Select.Option label="Express Saver" value="5"></Select.Option>
                             </Select>
                         </div>
                     </div>
@@ -136,10 +157,10 @@ class PackageShipment extends Component {
                             <thead>
                             <tr>
                                 <th rowSpan="2" className="width-50">Row</th>
-                                <th rowSpan="2" className="width-100">Weights (Kgs)*</th>
+                                <th rowSpan="2" className="width-100">Weights (Kgs)<span className="required">*</span></th>
                                 <th rowSpan="2" className="width-150"></th>
-                                <th colSpan="3">Dimensions(cm)</th>
-                                <th rowSpan="2" className="width-100">Quantity*</th>
+                                <th colSpan="3">Dimensions(cm)<span className="required">*</span></th>
+                                <th rowSpan="2" className="width-100">Quantity<span className="required">*</span></th>
                                 <th rowSpan="2" className="width-50"></th>
                             </tr>
                             <tr>

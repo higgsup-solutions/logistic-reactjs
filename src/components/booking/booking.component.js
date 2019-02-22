@@ -5,17 +5,22 @@ import {Button, Layout} from 'element-react';
 import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
-import {REGEX_EMAIL} from "../../App.constant";
-import {listCarrier, listDataCity, listDataSuggest} from "../../integrate/booking";
+import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
+import {listCarrier, listDataCity, listDataSuggest, listDimension} from "../../integrate/booking";
+import {fieldName} from "../../utils/field-name";
+import {processString} from "../../utils/string";
+import {processNumber} from "../../utils/number";
 
 class Booking extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listData: [],
-            listCity: [],
+            listCitySender: [],
+            listCityRecipient: [],
             listCarrier: [],
             listPackageType: [],
+            listDimension: [],
             sender: {
                 company: '',
                 phoneNumber: '',
@@ -51,13 +56,12 @@ class Booking extends Component {
             package: {
                 shippingDate: new Date(),
                 carrierId: null,
-                serviceType: '',
+                serviceType: '1',
                 packageType: null,
                 contentType: 'Documents',
                 documentInfos: [
                     {
                         weights: null,
-                        type: null,
                         l: null,
                         w: null,
                         h: null,
@@ -68,49 +72,89 @@ class Booking extends Component {
             },
             senderErrors: [],
             recipientErrors: [],
+            packageErrors: [
+                []
+            ]
         }
     };
 
     componentWillMount() {
         listDataSuggest().then(res => {
-            if(res.status == 'OK') {
+            if (res.status == 'OK') {
                 let newState = this.state;
                 newState.listData = res.data;
                 this.setState(newState);
             }
         });
-        listDataCity().then(res => {
-            let newState = this.state;
-            if(!res.data) {
-                newState.listCity = [];
-            } else {
-                newState.listCity = res.data;
+        listDataCity(this.state.sender.country.value).then(res => {
+            if (res.status == 'OK') {
+                let newState = this.state;
+                if (!res.data) {
+                    newState.listCitySender = [];
+                } else {
+                    newState.listCitySender = res.data;
+                }
+                this.setState(newState);
             }
-            this.setState(newState);
+        });
+        listDataCity(this.state.recipient.country.value).then(res => {
+            if (res.status == 'OK') {
+                let newState = this.state;
+                if (!res.data) {
+                    newState.listCityRecipient = [];
+                } else {
+                    newState.listCityRecipient = res.data;
+                }
+                this.setState(newState);
+            }
         });
         listCarrier().then(res => {
-            let newState = this.state;
-            newState.listCarrier = res.responseMessage.data;
-            newState.package.carrierId = newState.listCarrier[0].id;
-            newState.listPackageType = newState.listCarrier[0].packageDTO;
-            newState.package.packageType = newState.listPackageType[0].id;
-            this.setState(newState);
+            if (res.responseMessage.status == 'OK') {
+                let newState = this.state;
+                newState.listCarrier = res.responseMessage.data;
+                newState.package.carrierId = newState.listCarrier[0].id;
+                newState.listPackageType = newState.listCarrier[0].packageDTO;
+                newState.package.packageType = newState.listPackageType[0].id;
+                this.setState(newState);
+            }
+        });
+        listDimension().then(res => {
+            if (res.responseMessage.status == 'OK') {
+                let newState = this.state;
+                newState.listDimension = res.responseMessage.data;
+                this.setState(newState);
+            }
         });
     }
 
     onChangeFieldInput = (who) => (inputName, value) => {
-        console.log(who);
-        console.log(inputName);
-        console.log(value);
-        let newState = this.state;
-        if (inputName == 'phone') {
-
+        if (inputName == 'phoneNumber' && processString.checkNotExistCharPhone(value)) {
+            return;
         }
-        if(inputName == 'country') {
+        if (inputName == 'postalCode' && processNumber.checkExistNotNumber(value)) {
+            return;
+        }
+        let newState = this.state;
+        for (let i = 0; i < newState[`${who}Errors`].length; i++) {
+            if (inputName == newState[`${who}Errors`][i]) {
+                newState[`${who}Errors`].splice(i, 1);
+                break;
+            }
+        }
+        if (inputName == 'country') {
             newState[who].cityName = '';
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
+        }
+        if (inputName == 'carrierId') {
+            for (let i = 0; i < this.state.listCarrier.length; i++) {
+                if (value == this.state.listCarrier[i].id) {
+                    newState.listPackageType = this.state.listCarrier[i].packageDTO;
+                    newState.package.packageType = newState.listPackageType[0].id;
+                    break;
+                }
+            }
         }
         newState[who][inputName] = value;
         this.setState(newState);
@@ -118,26 +162,107 @@ class Booking extends Component {
 
     onContinueBooking = (e) => {
         let newState = this.state;
-        newState.senderErrors.push('email');
-        newState.recipientErrors.push('city');
-        this.setState(newState);
-        Notification.error({
-            title: <h5 className="text-danger text-bold">Error</h5>,
-            message: <div className="text-danger">
-                <div>email invalid</div>
-                <div>company is required</div>
-            </div>,
+        newState.senderErrors = [];
+        newState.recipientErrors = [];
+        newState.packageErrors = [];
+
+        const arrError = ['company', 'phoneNumber', 'contactName', 'address1', 'cityName'];
+        arrError.forEach(item => {
+            this.checkError('sender', item, 'senderErrors');
         });
+        arrError.forEach(item => {
+            this.checkError('recipient', item, 'recipientErrors');
+        });
+        let pat = new RegExp(REGEX_EMAIL);
+        let patPhone = new RegExp(REGEX_PHONE_NUMBER);
+        if (!pat.test(newState.sender.emailAddress)) {
+            newState.senderErrors.push('emailAddress');
+        }
+        if (!pat.test(newState.recipient.emailAddress)) {
+            newState.recipientErrors.push('emailAddress');
+        }
+        if (!newState.senderErrors.includes('phoneNumber') && !patPhone.test(newState.sender.phoneNumber)) {
+            newState.senderErrors.push('phoneNumber');
+        }
+        if (!newState.recipientErrors.includes('phoneNumber') && !patPhone.test(newState.recipient.phoneNumber)) {
+            newState.recipientErrors.push('phoneNumber');
+        }
+        let errMessage = [];
+        newState.senderErrors.forEach(item => {
+            if (item == 'emailAddress' || item == 'phoneNumber') {
+                errMessage.push(<div className="text-danger">Sender {fieldName.mappingBookingPage(item)} is
+                    invalid</div>)
+            } else {
+                errMessage.push(<div className="text-danger">Sender {fieldName.mappingBookingPage(item)} is
+                    required</div>)
+            }
+        });
+        this.checkErrorDimension();
+
+        newState.recipientErrors.forEach(item => {
+            if (item == 'emailAddress') {
+                errMessage.push(<div className="text-danger">Recipient {fieldName.mappingBookingPage(item)} is
+                    invalid</div>)
+            } else {
+                errMessage.push(<div className="text-danger">Recipient {fieldName.mappingBookingPage(item)} is
+                    required</div>)
+            }
+        });
+
+        let checkHaveErrorDimension = false;
+        for(let i = 0 ; i < newState.packageErrors.length; i++) {
+            if(newState.packageErrors[i].length > 0) {
+                checkHaveErrorDimension = true;
+                break;
+            }
+        }
+        if(checkHaveErrorDimension) {
+            errMessage.push(<div className="text-danger">Package dimension is required</div>)
+        }
+
+        this.setState(newState);
+        if (errMessage.length > 0) {
+            Notification.error({
+                title: <h5 className="text-danger text-bold">Error</h5>,
+                message: errMessage,
+                duration: 5000
+            });
+            return;
+        }
+        console.log('call api');
     };
 
-    onSelectCity = (who) => (id) => {
+    checkError(formError, field, listError) {
         let newState = this.state;
-        for(let i = 0 ; i < this.state.listCity.length; i++) {
-            if(id == this.state.listCity[i].id) {
-                newState[who].cityId = this.state.listCity[i].id;
-                newState[who].cityName = this.state.listCity[i].cityName;
-                newState[who].postalCode = this.state.listCity[i].postalCode;
-                newState[who].stateProvince = this.state.listCity[i].stateProvince;
+        if (!this.state[formError][field]) {
+            newState[listError].push(field);
+        }
+        this.setState(newState);
+    }
+
+    checkErrorDimension() {
+        let newState = this.state;
+        for(let i = 0 ; i < this.state.package.documentInfos.length; i++) {
+            let item = [];
+            for(let dimension in this.state.package.documentInfos[i]) {
+                if(!this.state.package.documentInfos[i][dimension]) {
+                    item.push(dimension);
+                }
+            }
+            this.state.packageErrors.push(item);
+        }
+        this.setState(newState);
+    }
+
+    onSelectCity = (who) => (id) => {
+        const list = `listCity${who.charAt(0).toUpperCase() + who.slice(1)}`;
+        let newState = this.state;
+        for (let i = 0; i < this.state[list].length; i++) {
+            if (id == this.state[list][i].id) {
+                newState[who].cityId = this.state[list][i].id;
+                newState[who].cityName = this.state[list][i].cityName;
+                newState[who].postalCode = this.state[list][i].postalCode;
+                newState[who].stateProvince = this.state[list][i].stateProvince;
                 break;
             }
         }
@@ -148,10 +273,49 @@ class Booking extends Component {
         let newState = this.state;
         for (let i = 0; i < this.state.listData.length; i++) {
             if (this.state.listData[i].id == id) {
-                newState[who] = this.state.listData[i];
-                newState[who].country = {
-                    label: this.state.listData[i].countryName, value: this.state.listData[i].countryId
-                };
+                newState[who].company = this.state.listData[i].company;
+                newState[who].phoneNumber = this.state.listData[i].phoneNumber;
+                newState[who].contactName = this.state.listData[i].contactName;
+                newState[who].emailAddress = this.state.listData[i].emailAddress;
+                newState[who].countryId = this.state.listData[i].countryId;
+                newState[who].countryName = this.state.listData[i].countryName;
+                newState[who].address1 = this.state.listData[i].address1;
+                newState[who].address2 = this.state.listData[i].address2;
+                newState[who].cityId = this.state.listData[i].cityId;
+                newState[who].cityName = this.state.listData[i].cityName;
+                newState[who].postalCode = this.state.listData[i].postalCode;
+                newState[who].stateProvince = this.state.listData[i].stateProvince;
+                newState[who].country.label = this.state.listData[i].countryName;
+                newState[who].country.value = this.state.listData[i].countryId;
+                break;
+            }
+        }
+        newState[`${who}Errors`] = [];
+        this.setState(newState);
+    };
+
+    onChangeDimension = (index, value) => {
+        let newState = this.state;
+        for (let i = 0; i < this.state.listDimension.length; i++) {
+            if (value == this.state.listDimension[i].id) {
+                newState.package.documentInfos[index].l = this.state.listDimension[i].length;
+                newState.package.documentInfos[index].w = this.state.listDimension[i].width;
+                newState.package.documentInfos[index].h = this.state.listDimension[i].height;
+                break;
+            }
+        }
+        this.setState(newState);
+    };
+
+    onChangeRowDimension = (index, field, value) => {
+        if(processNumber.checkExistNotNumberFloat(value)) {
+            return;
+        }
+        let newState = this.state;
+        newState.package.documentInfos[index][field] = value;
+        for(let i = 0 ; i < newState.packageErrors[index].length; i++) {
+            if (field == newState.packageErrors[index][i]) {
+                newState.packageErrors[index].splice(i, 1);
                 break;
             }
         }
@@ -168,17 +332,19 @@ class Booking extends Component {
             h: null,
             quantity: null
         });
+        newState.packageErrors.push([]);
         this.setState(newState);
     };
 
     onDeleteRowDocument = (index) => {
         let newState = this.state;
-        newState.package.documentInfos.splice(index,  1);
+        newState.package.documentInfos.splice(index, 1);
+        newState.packageErrors.splice(index, 1);
         this.setState(newState);
     };
 
     onQuote = (e) => {
-
+        console.log(this.state)
     };
 
     render() {
@@ -188,31 +354,36 @@ class Booking extends Component {
                 <div className="row w-100 ml-0">
                     <div className="col-sm-12 col-md-6 pr-1">
                         <SenderAddress data={this.state.listData}
-                                       listCity = {this.state.listCity}
+                                       listCity={this.state.listCitySender}
                                        form={this.state.sender}
                                        changeField={this.onChangeFieldInput('sender')}
-                                       selectCity = {this.onSelectCity('sender')}
-                                       selectContactName = {this.onSelectAuto('sender')}
-                                       selectCompany = {this.onSelectAuto('sender')}
+                                       selectCity={this.onSelectCity('sender')}
+                                       selectContactName={this.onSelectAuto('sender')}
+                                       selectCompany={this.onSelectAuto('sender')}
                                        fieldErrors={this.state.senderErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
                         <SenderAddress data={this.state.listData}
-                                       listCity = {this.state.listCity}
+                                       listCity={this.state.listCityRecipient}
                                        form={this.state.recipient}
                                        changeField={this.onChangeFieldInput('recipient')}
-                                       selectCity = {this.onSelectCity('recipient')}
-                                       selectContactName = {this.onSelectAuto('recipient')}
-                                       selectCompany = {this.onSelectAuto('recipient')}
+                                       selectCity={this.onSelectCity('recipient')}
+                                       selectContactName={this.onSelectAuto('recipient')}
+                                       selectCompany={this.onSelectAuto('recipient')}
                                        fieldErrors={this.state.recipientErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </div>
                     <div className="col-sm-12 col-md-6 pl-1">
-                        <PackageShipment form = {this.state.package}
-                                         listCarrier = {this.state.listCarrier}
-                                         listPackageType = {this.state.listPackageType}
-                                         addPiece = {this.onAddPiece}
-                                         deleteRowDocument = {this.onDeleteRowDocument}
-                                         changeField = {this.onChangeFieldInput('package')}/>
+                        <PackageShipment form={this.state.package}
+                                         listCarrier={this.state.listCarrier}
+                                         listPackageType={this.state.listPackageType}
+                                         addPiece={this.onAddPiece}
+                                         onChangeDropdown={this.onChangeFieldInput('package')}
+                                         listDimension={this.state.listDimension}
+                                         fieldErrors = {this.state.packageErrors}
+                                         deleteRowDocument={this.onDeleteRowDocument}
+                                         changeDimension={this.onChangeDimension}
+                                         changeRowDimension={this.onChangeRowDimension}
+                                         changeField={this.onChangeFieldInput('package')}/>
                         <div className="text-right pr-3">
                             <Button type="primary" onClick={this.onQuote}><FormattedMessage
                                 id='booking.quote'/></Button>
