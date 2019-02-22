@@ -51,19 +51,25 @@ class LoginComponent extends Component {
     onSubmitLogin = (e) => {
         e.preventDefault();
 
-        const data = {
-            email: this.state.user.email,
-            password: this.state.user.password
-        };
+        this.refs.loginForm.validate((valid) => {
+            if (valid) {
+                const data = {
+                    email: this.state.user.email,
+                    password: this.state.user.password
+                };
 
-        login(data).then(res => {
-            let authToken = {
-                accessToken: `Bearer ${res.token}`,
-                refreshToken: `Bearer ${res.refreshToken}`
-            };
+                login(data).then(res => {
+                    let authToken = {
+                        accessToken: `Bearer ${res.token}`,
+                        refreshToken: `Bearer ${res.refreshToken}`
+                    };
 
-            TokenStorage.store(authToken);
-            navigate(`/`);
+                    TokenStorage.store(authToken);
+                    navigate(`/`);
+                });
+            } else {
+                return false;
+            }
         });
     };
 
@@ -75,6 +81,7 @@ class LoginComponent extends Component {
                 <h3 className="pb-4">Login</h3>
 
                 <Form
+                    ref="loginForm"
                     labelPosition="top" labelWidth="100"
                     model={this.state.user} rules={this.state.form.rules}
                     onSubmit={this.onSubmitLogin}>
@@ -95,7 +102,7 @@ class LoginComponent extends Component {
 
                     <div className="pb-2"/>
 
-                    <Form.Item>
+                    <Form.Item className="mb-1">
                         <Button className="mr-5" type="primary" nativeType="submit">Login</Button>
                         <Checkbox checked>Remember me</Checkbox>
                         <div>
