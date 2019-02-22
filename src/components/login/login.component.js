@@ -56,10 +56,12 @@ class LoginComponent extends Component {
         };
 
         login(data).then(res => {
-            localStorage.setItem('authToken', {
+            let authToken = {
                 accessToken: `Bearer ${res.token}`,
                 refreshToken: `Bearer ${res.refreshToken}`
-            });
+            };
+
+            localStorage.setItem('authToken', JSON.stringify(authToken));
             navigate(`/`);
         });
     };
