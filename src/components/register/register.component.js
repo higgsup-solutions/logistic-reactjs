@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './register.scss';
-import {Button, Form, Input, Card} from "element-react";
-import TokenStorage from "../../utils/token";
+import {Button, Card, Form, Input} from "element-react";
 import {navigate} from "@reach/router";
 import {register} from "../../integrate/auth";
+import {FormattedMessage, injectIntl} from "react-intl";
 
 class RegisterComponent extends Component {
     constructor(props) {
@@ -14,18 +14,18 @@ class RegisterComponent extends Component {
                     email: [
                         {
                             required: true,
-                            message: 'Email address is required',
+                            message: this.props.intl.formatMessage({id: 'register.validation.email.required'}),
                             trigger: 'change'
                         },
                         {
                             type: 'email',
-                            message: 'Email address is invalid',
+                            message: this.props.intl.formatMessage({id: 'register.validation.email.invalid'}),
                             trigger: 'blur'
                         }
                     ],
                     password: {
                         required: true,
-                        message: 'Password is required',
+                        message: this.props.intl.formatMessage({id: 'register.validation.password.required'}),
                         trigger: 'change'
                     }
                 }
@@ -35,10 +35,6 @@ class RegisterComponent extends Component {
                 password: ''
             }
         };
-
-        if(TokenStorage.isTokenPresent()) {
-            navigate(`/`);
-        }
     }
 
     onChangeInput = (fieldName) => (e) => {
@@ -68,10 +64,11 @@ class RegisterComponent extends Component {
 
 
     render() {
-
         return (
             <Card className="register-container mb-5">
-                <h3 className="pb-4">Register</h3>
+                <h3 className="pb-4">
+                    <FormattedMessage id="register"/>
+                </h3>
 
                 <Form
                     ref="registerForm"
@@ -79,7 +76,9 @@ class RegisterComponent extends Component {
                     model={this.state.user} rules={this.state.form.rules}
                     onSubmit={this.onSubmitRegister}>
 
-                    <Form.Item label="Email address" prop="email">
+                    <Form.Item
+                        label={this.props.intl.formatMessage({id: 'email'})}
+                        prop="email">
                         <Input
                             value={this.state.user.email}
                             onChange={this.onChangeInput('email')}/>
@@ -87,7 +86,9 @@ class RegisterComponent extends Component {
 
                     <div className="pb-2"/>
 
-                    <Form.Item label="Password" prop="password">
+                    <Form.Item
+                        label={this.props.intl.formatMessage({id: 'password'})}
+                        prop="password">
                         <Input
                             type="password" value={this.state.user.password}
                             onChange={this.onChangeInput('password')}/>
@@ -96,7 +97,9 @@ class RegisterComponent extends Component {
                     <div className="pb-2"/>
 
                     <Form.Item className="mb-1">
-                        <Button className="mr-5" type="primary" nativeType="submit">Register</Button>
+                        <Button className="mr-5" type="primary" nativeType="submit">
+                            <FormattedMessage id="register"/>
+                        </Button>
                     </Form.Item>
                 </Form>
             </Card>
@@ -104,4 +107,4 @@ class RegisterComponent extends Component {
     }
 }
 
-export default RegisterComponent;
+export default injectIntl(RegisterComponent);

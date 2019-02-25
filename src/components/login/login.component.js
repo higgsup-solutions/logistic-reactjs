@@ -4,6 +4,7 @@ import {login} from '../../integrate/auth';
 import {navigate} from "@reach/router";
 import {Button, Checkbox, Form, Input, Card} from 'element-react';
 import TokenStorage from "../../utils/token";
+import {FormattedMessage, injectIntl} from "react-intl";
 
 class LoginComponent extends Component {
     constructor(props) {
@@ -15,18 +16,18 @@ class LoginComponent extends Component {
                     email: [
                         {
                             required: true,
-                            message: 'Email address is required',
+                            message: this.props.intl.formatMessage({id: 'login.validation.email.required'}),
                             trigger: 'change'
                         },
                         {
                             type: 'email',
-                            message: 'Email address is invalid',
+                            message: this.props.intl.formatMessage({id: 'login.validation.email.invalid'}),
                             trigger: 'blur'
                         }
                     ],
                     password: {
                         required: true,
-                        message: 'Password is required',
+                        message: this.props.intl.formatMessage({id: 'login.validation.password.required'}),
                         trigger: 'change'
                     }
                 }
@@ -78,7 +79,9 @@ class LoginComponent extends Component {
 
         return (
             <Card className="login-container mb-5 box-card">
-                <h3 className="pb-4">Login</h3>
+                <h3 className="pb-4">
+                    <FormattedMessage id="login"/>
+                </h3>
 
                 <Form
                     ref="loginForm"
@@ -86,7 +89,9 @@ class LoginComponent extends Component {
                     model={this.state.user} rules={this.state.form.rules}
                     onSubmit={this.onSubmitLogin}>
 
-                    <Form.Item label="Email address" prop="email">
+                    <Form.Item
+                        label={this.props.intl.formatMessage({id: 'email'})}
+                        prop="email">
                         <Input
                             value={this.state.user.email}
                             onChange={this.onChangeInput('email')}/>
@@ -94,7 +99,9 @@ class LoginComponent extends Component {
 
                     <div className="pb-2"/>
 
-                    <Form.Item label="Password" prop="password">
+                    <Form.Item
+                        label={this.props.intl.formatMessage({id: 'password'})}
+                        prop="password">
                         <Input
                             type="password" value={this.state.user.password}
                             onChange={this.onChangeInput('password')}/>
@@ -103,10 +110,18 @@ class LoginComponent extends Component {
                     <div className="pb-2"/>
 
                     <Form.Item className="mb-1">
-                        <Button className="mr-5" type="primary" nativeType="submit">Login</Button>
-                        <Checkbox checked>Remember me</Checkbox>
+                        <Button className="mr-5" type="primary" nativeType="submit">
+                            <FormattedMessage id="login"/>
+                        </Button>
+
+                        <Checkbox checked>
+                            <FormattedMessage id="login.rememberMe"/>
+                        </Checkbox>
+
                         <div>
-                            <a href="#">Lost your password?</a>
+                            <a href="#">
+                                <FormattedMessage id="login.forgotPassword"/>
+                            </a>
                         </div>
                     </Form.Item>
                 </Form>
@@ -115,4 +130,4 @@ class LoginComponent extends Component {
     }
 }
 
-export default LoginComponent;
+export default injectIntl(LoginComponent);
