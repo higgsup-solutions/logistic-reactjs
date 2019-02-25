@@ -6,11 +6,20 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import PackageShipment from "./package-shipment";
 import {Notification} from 'element-react';
 import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
-import {listCarrier, listDataCity, listDataSuggest, listDimension, saveAddressToBook} from "../../integrate/booking";
+import {
+    listCarrier,
+    listDataCity,
+    listDataSuggest,
+    listDimension,
+    quote,
+    saveAddressToBook
+} from "../../integrate/booking";
 import {fieldName} from "../../utils/field-name";
 import {processString} from "../../utils/string";
 import {processNumber} from "../../utils/number";
 import Quote from "./quote";
+import {navigate} from "@reach/router";
+import {CONFIRM} from "../../App.url";
 
 class Booking extends Component {
     constructor(props) {
@@ -24,6 +33,7 @@ class Booking extends Component {
             listPackageType: [],
             listDimension: [],
             showQuote: false,
+            whichButtonClick: null,
             quote: {
                 baseCharge: '',
                 fuelSurcharge: '',
@@ -140,7 +150,6 @@ class Booking extends Component {
     }
 
     onChangeFieldInput = (who) => (inputName, value) => {
-        console.log(inputName);
         if (inputName == 'phoneNumber' && processString.checkNotExistCharPhone(value)) {
             return;
         }
@@ -160,7 +169,7 @@ class Booking extends Component {
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
             newState.listCarrier = [];
-            if(value.value != 288) {
+            if (value.value != 288) {
                 newState.listCarrier.push(newState.allCarrier[2]);
                 newState.listCarrier.push(newState.allCarrier[3]);
             } else {
@@ -186,6 +195,9 @@ class Booking extends Component {
 
     onContinueBooking = (e) => {
         let newState = this.state;
+        newState.whichButtonClick = 'continueBooking';
+        this.setState(newState);
+
         newState.senderErrors = [];
         newState.recipientErrors = [];
 
@@ -231,17 +243,17 @@ class Booking extends Component {
             }
         });
 
-        if(this.state.package.contentType == 'Documents') {
+        if (this.state.package.contentType == 'Parcel') {
             newState.packageErrors = [];
             this.checkErrorDimension();
             let checkHaveErrorDimension = false;
-            for(let i = 0 ; i < newState.packageErrors.length; i++) {
-                if(newState.packageErrors[i].length > 0) {
+            for (let i = 0; i < newState.packageErrors.length; i++) {
+                if (newState.packageErrors[i].length > 0) {
                     checkHaveErrorDimension = true;
                     break;
                 }
             }
-            if(checkHaveErrorDimension) {
+            if (checkHaveErrorDimension) {
                 errMessage.push(<div className="text-danger">Package dimension is required</div>)
             }
         }
@@ -255,14 +267,16 @@ class Booking extends Component {
             });
             return;
         } else {
-            if(newState.sender.country.value != 288 && newState.recipient.country.value != 288) {
-                errMessage.push(<div className="text-danger">Sender country or recipient country must is Viet Nam</div>);
+            if (newState.sender.country.value != 288 && newState.recipient.country.value != 288) {
+                errMessage.push(<div className="text-danger">Sender country or recipient country must is Viet
+                    Nam</div>);
             }
-            if(`${this.state.sender.countryId}@${this.state.sender.address1}@${this.state.sender.cityId}@${this.state.sender.postalCode}`
+            if (`${this.state.sender.countryId}@${this.state.sender.address1}@${this.state.sender.cityId}@${this.state.sender.postalCode}`
                 == `${this.state.recipient.countryId}@${this.state.recipient.address1}@${this.state.recipient.cityId}@${this.state.recipient.postalCode}`) {
-                errMessage.push(<div className="text-danger">Sender address and Recipient address must is not same</div>);
+                errMessage.push(<div className="text-danger">Sender address and Recipient address must is not
+                    same</div>);
             }
-            if(errMessage.length > 0) {
+            if (errMessage.length > 0) {
                 Notification.error({
                     title: <h5 className="text-danger text-bold">Error</h5>,
                     message: errMessage,
@@ -271,42 +285,74 @@ class Booking extends Component {
                 return;
             }
         }
-        if(this.state.sender.saveToAddressBook) {
+        if (this.state.sender.saveToAddressBook) {
             this.intergrateSaveAddressToBook('sender');
         }
-        if(this.state.recipient.saveToAddressBook) {
+        if (this.state.recipient.saveToAddressBook) {
             this.intergrateSaveAddressToBook('recipient');
         }
-        console.log('call api quote ngay mai backend moi xong');
         this.intergrateQuoteAPI();
     };
 
     intergrateQuoteAPI() {
-        console.log(this.state.package);
+        let dimensionDTOList = [{
+            height: 1,
+            length: 1,
+            quantity: 1,
+            weights: 1,
+            width: 1
+        }];
+        if (this.state.package.contentType == 'Parcel') {
+            dimensionDTOList = [];
+            this.state.package.documentInfos.forEach(item => {
+                dimensionDTOList.push({
+                    height: item.h,
+                    length: item.l,
+                    quantity: item.quantity,
+                    weights: item.weights,
+                    width: item.w
+                })
+            })
+        }
         const data = {
             carrierId: this.state.package.carrierId,
             contentType: this.state.package.contentType,
             countryId: 288,
-            dangerousGoods: true,
-            dimensionDTOList: [
-                {
-                    "height": 0,
-                    "id": 0,
-                    "length": 0,
-                    "name": "string",
-                    "quantity": 0,
-                    "weights": 0,
-                    "width": 0
+            dangerousGoods: this.state.package.dangerousGoods,
+            dimensionDTOList: dimensionDTOList,
+            packageId: this.state.package.packageType,
+            recipientCityName: this.state.sender.cityName,
+            senderCityName: this.state.recipient.cityName
+        };
+        quote(data).then(res => {
+            if (res.status == 'OK') {
+                let newState = this.state;
+                newState.quote.baseCharge = res.data.baseCharge;
+                newState.quote.fuelSurcharge = res.data.fuelSurcharge;
+                newState.quote.totalWeight = res.data.totalWeight;
+                newState.quote.totalCharge = res.data.totalCharge;
+                newState.quote.weightType = res.data.weightType;
+                if (this.state.whichButtonClick == 'continueBooking') {
+                    navigate(CONFIRM,
+                        {
+                            state: {
+                                data: {
+                                    sender: this.state.sender,
+                                    recipient: this.state.recipient,
+                                    package: this.state.package,
+                                    chargeInfo: res.data
+                                }
+                            }
+                        }
+                    );
                 }
-            ],
-            packageId: 0,
-            recipientCityName: "string",
-            senderCityName: "string"
-        }
+                this.setState(newState);
+            }
+        });
     }
 
     intergrateSaveAddressToBook(people) {
-        if(this.state[people].saveToAddressBook) {
+        if (this.state[people].saveToAddressBook) {
             let data = this.state[people];
             data.receipientDefault = false;
             data.senderDefault = false;
@@ -330,10 +376,10 @@ class Booking extends Component {
 
     checkErrorDimension() {
         let newState = this.state;
-        for(let i = 0 ; i < this.state.package.documentInfos.length; i++) {
+        for (let i = 0; i < this.state.package.documentInfos.length; i++) {
             let item = [];
-            for(let dimension in this.state.package.documentInfos[i]) {
-                if(!this.state.package.documentInfos[i][dimension]) {
+            for (let dimension in this.state.package.documentInfos[i]) {
+                if (!this.state.package.documentInfos[i][dimension]) {
                     item.push(dimension);
                 }
             }
@@ -351,6 +397,12 @@ class Booking extends Component {
                 newState[who].cityName = this.state[list][i].cityName;
                 newState[who].postalCode = this.state[list][i].postalCode;
                 newState[who].stateProvince = this.state[list][i].stateProvince;
+                break;
+            }
+        }
+        for (let i = 0; i < newState[`${who}Errors`].length; i++) {
+            if ('cityName' == newState[`${who}Errors`][i]) {
+                newState[`${who}Errors`].splice(i, 1);
                 break;
             }
         }
@@ -396,12 +448,12 @@ class Booking extends Component {
     };
 
     onChangeRowDimension = (index, field, value) => {
-        if(processNumber.checkExistNotNumberFloat(value)) {
+        if (processNumber.checkExistNotNumberFloat(value)) {
             return;
         }
         let newState = this.state;
         newState.package.documentInfos[index][field] = value;
-        for(let i = 0 ; i < newState.packageErrors[index].length; i++) {
+        for (let i = 0; i < newState.packageErrors[index].length; i++) {
             if (field == newState.packageErrors[index][i]) {
                 newState.packageErrors[index].splice(i, 1);
                 break;
@@ -431,10 +483,49 @@ class Booking extends Component {
     };
 
     onQuote = (e) => {
-        this.intergrateQuoteAPI();
         let newState = this.state;
-        newState.showQuote = true;
+        newState.whichButtonClick = 'quote';
         this.setState(newState);
+
+        newState.senderErrors = [];
+        newState.recipientErrors = [];
+        let errMessage = [];
+        if (!newState.sender.cityName) {
+            newState.senderErrors.push('cityName');
+            errMessage.push(<div className="text-danger">Sender City is required</div>)
+        }
+        if (!newState.recipient.cityName) {
+            newState.recipientErrors.push('cityName');
+            errMessage.push(<div className="text-danger">Recipient City is required</div>)
+        }
+
+        if (newState.package.contentType == 'Parcel') {
+            newState.packageErrors = [];
+            this.checkErrorDimension();
+            let checkHaveErrorDimension = false;
+            for (let i = 0; i < newState.packageErrors.length; i++) {
+                if (newState.packageErrors[i].length > 0) {
+                    checkHaveErrorDimension = true;
+                    break;
+                }
+            }
+            if (checkHaveErrorDimension) {
+                errMessage.push(<div className="text-danger">Package dimension is required</div>)
+            }
+        }
+        this.setState(newState);
+        if (errMessage.length > 0) {
+            Notification.error({
+                title: <h5 className="text-danger text-bold">Error</h5>,
+                message: errMessage,
+                duration: 3000
+            });
+            return;
+        } else {
+            this.intergrateQuoteAPI();
+            newState.showQuote = true;
+            this.setState(newState);
+        }
     };
 
     onCloseQuote = () => {
@@ -475,7 +566,7 @@ class Booking extends Component {
                                          addPiece={this.onAddPiece}
                                          onChangeDropdown={this.onChangeFieldInput('package')}
                                          listDimension={this.state.listDimension}
-                                         fieldErrors = {this.state.packageErrors}
+                                         fieldErrors={this.state.packageErrors}
                                          deleteRowDocument={this.onDeleteRowDocument}
                                          changeDimension={this.onChangeDimension}
                                          changeRowDimension={this.onChangeRowDimension}
@@ -487,7 +578,7 @@ class Booking extends Component {
                                 id='booking.continueBooking'/></Button>
                         </div>
                         <Quote showQuote={this.state.showQuote}
-                               data = {this.state.quote}
+                               data={this.state.quote}
                                closeQuote={this.onCloseQuote}/>
                     </div>
                 </div>

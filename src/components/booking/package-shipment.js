@@ -152,7 +152,7 @@ class PackageShipment extends Component {
                         </div>
                     </div>
                     <div className="table-wrap">
-                        {this.props.form.contentType == 'Parcel' ? <div className="cover"></div> : ''}
+                        {this.props.form.contentType == 'Documents' ? <div className="cover"></div> : ''}
                         <table className="table table-bordered">
                             <thead>
                             <tr>
@@ -175,7 +175,10 @@ class PackageShipment extends Component {
                         </table>
                     </div>
                     <div className="text-left mt-1">
-                        <Button type="primary" size="small" onClick={this.onAddPiece}><FormattedMessage
+                        <Button type="primary"
+                                disabled={this.props.form.contentType == 'Documents'}
+                                size="small"
+                                onClick={this.onAddPiece}><FormattedMessage
                             id='booking.addPiece'/></Button>
                     </div>
                     <div className="mt-3 text-left">

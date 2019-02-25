@@ -14,9 +14,10 @@ import Booking from "./components/booking/booking.component";
 import BookingHistory from "./components/booking-history/booking-history.component";
 import NotFound from "./components/notfound/notfound.component";
 import {ROLE_ADMIN, ROLE_MANAGER} from "./App.constant";
-import {BOOKING, BOOKING_HISTORY, LOGIN_URL, PUBLIC, REGISTER_URL, LOGIN} from "./App.url";
+import {BOOKING, BOOKING_HISTORY, LOGIN_URL, PUBLIC, REGISTER_URL, LOGIN, CONFIRM} from "./App.url";
 import Authorization from "./components/authorizaton/authorization";
 import 'font-awesome/css/font-awesome.min.css';
+import ConfirmComponent from "./components/confirm-page/confirm.component";
 
 i18n.use(locale);
 
@@ -46,6 +47,7 @@ class App extends Component {
                         <Redirect exact from="/" to={BOOKING} noThrow />
                         <Booking path={BOOKING}/>
                         <BookingHistory path={BOOKING_HISTORY} />
+                        <ConfirmComponent path={CONFIRM} />
                         <NotFound default />
                     </PrivateRoute>
                     <PublicLayoutComponent path={PUBLIC}>
