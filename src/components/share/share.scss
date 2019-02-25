@@ -27,10 +27,10 @@
             color: #e12d2d;
           }
           &.fa-phone{
-            color: #94d82d;
+            color: gold;
           }
           &.fa-envelope{
-            color: $active-link;
+            color: #753a88;
           }
         }
         .text{
@@ -48,10 +48,11 @@
     .el-menu-item{
       color: white;
       font-weight: bold;
-      font-size: 15px;
+      font-size: 16px;
       &:hover{
         background-color: transparent!important;
         color: $active-link;
+        border-bottom-color: $active-link;
       }
       &.is-active{
         border-bottom: 5px solid $active-link;
@@ -73,5 +74,9 @@
     float: right;
     position: relative;
     top: -49px;
+    background-color: darkorange;
+    &:hover{
+      background-color: rgba(darkorange, 0.8);
+    }
   }
 }
