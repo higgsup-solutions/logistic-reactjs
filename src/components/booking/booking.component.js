@@ -119,9 +119,9 @@ class Booking extends Component {
             }
         });
         listCarrier().then(res => {
-            if (res.responseMessage.status == 'OK') {
+            if (res.status == 'OK') {
                 let newState = this.state;
-                newState.allCarrier = res.responseMessage.data;
+                newState.allCarrier = res.data;
                 newState.listCarrier.push(newState.allCarrier[0]);
                 newState.listCarrier.push(newState.allCarrier[1]);
                 newState.package.carrierId = newState.listCarrier[0].id;
@@ -131,15 +131,16 @@ class Booking extends Component {
             }
         });
         listDimension().then(res => {
-            if (res.responseMessage.status == 'OK') {
+            if (res.status == 'OK') {
                 let newState = this.state;
-                newState.listDimension = res.responseMessage.data;
+                newState.listDimension = res.data;
                 this.setState(newState);
             }
         });
     }
 
     onChangeFieldInput = (who) => (inputName, value) => {
+        console.log(inputName);
         if (inputName == 'phoneNumber' && processString.checkNotExistCharPhone(value)) {
             return;
         }
@@ -281,7 +282,27 @@ class Booking extends Component {
     };
 
     intergrateQuoteAPI() {
-
+        console.log(this.state.package);
+        const data = {
+            carrierId: this.state.package.carrierId,
+            contentType: this.state.package.contentType,
+            countryId: 288,
+            dangerousGoods: true,
+            dimensionDTOList: [
+                {
+                    "height": 0,
+                    "id": 0,
+                    "length": 0,
+                    "name": "string",
+                    "quantity": 0,
+                    "weights": 0,
+                    "width": 0
+                }
+            ],
+            packageId: 0,
+            recipientCityName: "string",
+            senderCityName: "string"
+        }
     }
 
     intergrateSaveAddressToBook(people) {
@@ -410,7 +431,7 @@ class Booking extends Component {
     };
 
     onQuote = (e) => {
-        console.log('call api quote and assign data to this.state.quote');
+        this.intergrateQuoteAPI();
         let newState = this.state;
         newState.showQuote = true;
         this.setState(newState);
