@@ -1,0 +1,28 @@
+@import "./style/style";
+
+.language-block{
+  z-index: 9;
+  float: right;
+  top: 10px;
+  margin-left: 30px;
+}
+.mycard {
+  margin: 20px;
+  .el-card{
+    overflow: unset;
+  }
+  .el-card__header {
+    background-image: $background-gradient;
+    color: white;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+  .label{
+    margin-bottom: 5px;
+    text-align: left;
+    .required{
+      margin-left: 10px;
+      color: red;
+    }
+  }
+}

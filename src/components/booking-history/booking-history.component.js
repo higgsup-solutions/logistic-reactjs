@@ -35,7 +35,7 @@ class BookingHistory extends Component {
             <div className="booking-history">
                 <Layout.Row>
                     <Layout.Col span="24">
-                        <Card className="history-card"
+                        <Card className="mycard"
                               header={<div className="clearfix" style={{paddingLeft: '1em'}}>
                                   <FormattedMessage id='history.history'/>
                               </div>}>

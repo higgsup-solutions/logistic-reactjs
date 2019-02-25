@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+import './App.scss';
 import LayoutComponent from "./components/layout/layout.component";
 import { Router, Redirect } from "@reach/router";
 import LoginComponent from "./components/login/login.component";

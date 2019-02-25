@@ -1,13 +1,8 @@
 import React, {Component} from "react";
-import {
-    Table,
-    Pagination,
-    Layout,
-    Input,
-    Button
-} from "element-react";
+import {Button, Input, Layout, Pagination, Table} from "element-react";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {getBookingHistory} from "../../integrate/booking-history";
+import dateUtil from '../../utils/datetime'
 
 class BookingList extends Component {
 
@@ -48,6 +43,10 @@ class BookingList extends Component {
         {
             label: this.props.intl.formatMessage({id: 'history.shipDate'}).toUpperCase(),
             prop: "shippingDate",
+            render: (row, column, index) => {
+                const shipDate = row.shippingDate;
+                return shipDate ? dateUtil.dateFormat.ddmmyyyyMinus(shipDate) : '-'
+            },
             width: 150
         },
     ];

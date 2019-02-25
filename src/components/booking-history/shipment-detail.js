@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {FormattedMessage, injectIntl} from "react-intl";
-import {Dialog, Button, Table, Layout} from "element-react";
+import {Dialog, Button, Layout} from "element-react";
+import dateUtil from "../../utils/datetime";
 
 class ShipmentDetail extends Component {
 
@@ -122,7 +123,9 @@ class ShipmentDetail extends Component {
                                             <td className="title-block">
                                                 <b><FormattedMessage id={'sd.shipmentDate'}/></b>
                                             </td>
-                                            <td>{this.state.shipmentDetail.shippingDate || '-'}</td>
+                                            <td>{this.state.shipmentDetail.shippingDate ?
+                                                dateUtil.dateFormat.ddmmyyyyMinus(this.state.shipmentDetail.shippingDate) :
+                                                '-'}</td>
                                         </tr>
                                         <tr>
                                             <td className="title-block">
