@@ -19,6 +19,16 @@ class PublicHeaderComponent extends Component {
         };
     }
 
+    componentWillMount() {
+        this.state.menu.forEach(item => {
+            if(item.url == this.props.pathname) {
+                let newState = this.state;
+                newState.activeLink = item.index;
+                this.setState(newState);
+            }
+        });
+    }
+
     onSelect(e) {
         let newState = this.state;
         for(let i = 0 ; i < this.state.menu.length; i++) {
