@@ -8,17 +8,35 @@
     padding: 50px 0px 100px 0px;
     background-image: $background-gradient;
     .title{
-      color: white;
+      color: #e12d2d;
+      font-size: 18px;
+      font-weight: bold;
     }
     .footer-item {
       text-align: left;
-      i{
-        margin-right: 5px;
-        color: white;
-      }
-      .text{
-        font-size: 12px;
-        color: white;
+      .footer-sub-item{
+        position: relative;
+        padding-left: 30px;
+        i{
+          position: absolute;
+          left: 1px;
+          top: 5px;
+          margin-right: 5px;
+          color: white;
+          &.fa-map-marker{
+            color: #e12d2d;
+          }
+          &.fa-phone{
+            color: #94d82d;
+          }
+          &.fa-envelope{
+            color: $active-link;
+          }
+        }
+        .text{
+          font-size: 12px;
+          color: white;
+        }
       }
     }
   }
