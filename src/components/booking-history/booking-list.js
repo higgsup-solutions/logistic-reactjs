@@ -57,7 +57,7 @@ class BookingList extends Component {
 
         this.state = {
             textSearch: '',
-            pageSize: 2,
+            pageSize: 20,
             pageIndex: 0,
             totalItem: 0,
             data: []
@@ -69,14 +69,12 @@ class BookingList extends Component {
     }
 
     getBookingHistory(newPage) {
-        console.log(newPage);
         getBookingHistory(
             newPage || this.state.pageIndex,
             this.state.pageSize,
             this.state.textSearch
         ).then(res => {
             if (res.responseMessage && res.responseMessage.status === 'OK') {
-                console.log(res);
                 const {pageIndex, pageSize, totalItem} = res;
                 const data = res.responseMessage.data || [];
                 this.setState({
@@ -113,8 +111,7 @@ class BookingList extends Component {
                         data={this.state.data}
                         border={true}
                         highlightCurrentRow={true}
-                        onRowClick={item => this.props.onClickShipment(item)}
-                        // onCurrentChange={item => console.log(item)}
+                        onRowClick={(item) => {this.props.onClickShipment(item)}}
                         emptyText={this.props.intl.formatMessage({id: 'history.empty'})}
                     />
                 </div>
