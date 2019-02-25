@@ -21,7 +21,17 @@ class HeaderComponent extends Component {
                 {index: '6', url: SETTING, label: 'menu.help'},
             ],
             activeLink: '1'
-        }
+        };
+    }
+
+    componentWillMount() {
+        this.state.menu.forEach(item => {
+            if(item.url == this.props.pathname) {
+                let newState = this.state;
+                newState.activeLink = item.index;
+                this.setState(newState);
+            }
+        });
     }
 
     onLogout = (e) => {

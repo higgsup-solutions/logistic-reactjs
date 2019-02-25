@@ -13,7 +13,7 @@ class LayoutComponent extends Component {
     render() {
         return (
             <div>
-                <Header/>
+                <Header pathname={this.props.location.pathname}/>
                 {this.props.children}
                 <FooterComponent/>
             </div>
