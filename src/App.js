@@ -1,22 +1,21 @@
 import React, {Component} from 'react';
 import './App.scss';
 import LayoutComponent from "./components/layout/layout.component";
-import { Router, Redirect } from "@reach/router";
+import {Redirect, Router} from "@reach/router";
 import LoginComponent from "./components/login/login.component";
 import PrivateRoute from "./components/private-route/private-route";
-import {Select, i18n} from 'element-react';
+import {i18n, Select} from 'element-react';
 import 'element-theme-default';
 import locale from 'element-react/src/locale/lang/en';
-import { injectIntl } from 'react-intl';
+import {injectIntl} from 'react-intl';
 import PublicLayoutComponent from "./components/layout/public-layout.component";
 import RegisterComponent from "./components/register/register.component";
 import Booking from "./components/booking/booking.component";
 import BookingHistory from "./components/booking-history/booking-history.component";
 import NotFound from "./components/notfound/notfound.component";
-import {ROLE_ADMIN, ROLE_MANAGER} from "./App.constant";
-import {BOOKING, BOOKING_HISTORY, LOGIN_URL, PUBLIC, REGISTER_URL, LOGIN} from "./App.url";
-import Authorization from "./components/authorizaton/authorization";
+import {ADDRESS_BOOK, BOOKING, BOOKING_HISTORY, LOGIN, LOGIN_URL, PUBLIC, REGISTER_URL} from "./App.url";
 import 'font-awesome/css/font-awesome.min.css';
+import AddressBook from "./components/address-book/address-book.component";
 
 i18n.use(locale);
 
@@ -46,6 +45,7 @@ class App extends Component {
                         <Redirect exact from="/" to={BOOKING} noThrow />
                         <Booking path={BOOKING}/>
                         <BookingHistory path={BOOKING_HISTORY} />
+                        <AddressBook path={ADDRESS_BOOK} />
                         <NotFound default />
                     </PrivateRoute>
                     <PublicLayoutComponent path={PUBLIC}>

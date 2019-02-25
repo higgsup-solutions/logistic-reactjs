@@ -1,10 +1,10 @@
 import integrate from './integrate';
-import {LIST_ADDRESS, LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, SAVE_ADDRESS} from "./integrate.endpoint";
+import {GET_ADDRESS_BOOK, LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, SAVE_ADDRESS} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 
 export const listDataSuggest = () => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(LIST_ADDRESS, {userId: 5}),
+        url: processString.parseUrl(GET_ADDRESS_BOOK, {userId: 5}),
         method: 'GET',
     });
 };

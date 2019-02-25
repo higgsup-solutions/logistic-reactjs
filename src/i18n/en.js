@@ -20,6 +20,7 @@ export const ENGLISH = {
         "menu.login": "Login",
         "menu.register": "Register",
         "menu.booking": "Booking",
+        "menu.addressBook": "Address Book",
         "menu.bookingHistory": "Booking History",
         "menu.setting": "Setting",
         "base.user": "Username",
