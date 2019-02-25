@@ -14,7 +14,7 @@ class FooterItem extends Component {
 
     render() {
         return (
-            <div className="footer-item">
+            <div className="footer-sub-item">
                 <i className={`fa ${this.props.icon}`}></i>
                 <span className="text">{this.props.text}</span>
             </div>
