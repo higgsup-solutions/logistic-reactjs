@@ -11,6 +11,10 @@ export const ENGLISH = {
         "view": "View",
         "track": "Track",
         "close": "Close",
+        "login": "Login",
+        "register": "Register",
+        "email": "Email address",
+        "password": "Password",
 
         // Menu
         "menu.login": "Login",
@@ -23,6 +27,18 @@ export const ENGLISH = {
         "menu.supplies": "Supplies",
         "menu.invoices": "Invoices",
         "menu.help": "Help",
+
+        // Login
+        "login.validation.email.required": "Email address is required",
+        "login.validation.email.invalid": "Email address is invalid",
+        "login.validation.password.required": "Password is required",
+        "login.rememberMe": "Remember me",
+        "login.forgotPassword": "Lost your password?",
+
+        // Register
+        "register.validation.email.required": "Email address is required",
+        "register.validation.email.invalid": "Email address is invalid",
+        "register.validation.password.required": "Password is required",
 
         // Booking
         "booking.senderAddress": "Sender Address",
