@@ -39,6 +39,7 @@ class LoginComponent extends Component {
 
         if(TokenStorage.isTokenPresent()) {
             navigate(`/`);
+            window.location.reload();
         }
     }
 
