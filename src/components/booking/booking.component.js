@@ -209,6 +209,16 @@ class Booking extends Component {
         return result;
     }
 
+    compareAddress() {
+        if(this.state.sender.country.value == this.state.recipient.country.value &&
+            this.state.sender.address1.trim().toLocaleLowerCase() == this.state.recipient.address1.trim().toLocaleLowerCase() &&
+            this.state.sender.cityName.trim().toLocaleLowerCase() == this.state.recipient.cityName.trim().toLocaleLowerCase() &&
+            this.state.sender.postalCode == this.state.recipient.postalCode)  {
+            return true;
+        }
+        return false;
+    }
+
     onContinueBooking = (e) => {
         let newState = this.state;
         newState.whichButtonClick = 'continueBooking';
@@ -287,8 +297,7 @@ class Booking extends Component {
                 errMessage.push(<div className="text-danger">Sender country or recipient country must is Viet
                     Nam</div>);
             }
-            if (`${this.state.sender.countryId}@${this.state.sender.address1}@${this.state.sender.cityId}@${this.state.sender.postalCode}`
-                == `${this.state.recipient.countryId}@${this.state.recipient.address1}@${this.state.recipient.cityId}@${this.state.recipient.postalCode}`) {
+            if (this.compareAddress()) {
                 errMessage.push(<div className="text-danger">Sender address and Recipient address must is not
                     same</div>);
             }
@@ -340,7 +349,7 @@ class Booking extends Component {
             recipientCityName: this.state.sender.cityName,
             senderCityName: this.state.recipient.cityName
         };
-        quote(data).then(res => {
+        quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
                 let newState = this.state;
                 newState.quote.baseCharge = res.data.baseCharge;
@@ -565,6 +574,7 @@ class Booking extends Component {
                                        selectCompany={this.onSelectAuto('sender')}
                                        fieldErrors={this.state.senderErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
+                        <div className="pb-3"></div>
                         <SenderAddress data={this.state.listData}
                                        listCity={this.state.listCityRecipient}
                                        form={this.state.recipient}

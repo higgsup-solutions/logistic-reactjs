@@ -11,4 +11,4 @@ export const LIST_CARRIER = '/carrier';
 export const LIST_DIMENSION = '/user/{userId}/dimensions?limit={amountLimited}';
 export const BOOKING_HISTORY_LIST = '/transaction/search';
 export const SAVE_ADDRESS = '/user/{userId}/addresses';
-export const QUOTE = '/carrier/quote';
+export const QUOTE = '/carrier/{carrierId}/quote';

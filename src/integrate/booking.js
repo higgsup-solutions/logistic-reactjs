@@ -36,9 +36,9 @@ export const saveAddressToBook = (data) => {
     });
 };
 
-export const quote = (data) => {
+export const quote = (carrierId, data) => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(QUOTE),
+        url: processString.parseUrl(QUOTE, {carrierId}),
         method: 'POST',
         data: data
     });
