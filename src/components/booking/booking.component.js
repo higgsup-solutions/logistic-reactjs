@@ -106,28 +106,8 @@ class Booking extends Component {
                 this.setState(newState);
             }
         });
-        listDataCity(this.state.sender.country.value).then(res => {
-            if (res.status == 'OK') {
-                let newState = this.state;
-                if (!res.data) {
-                    newState.listCitySender = [];
-                } else {
-                    newState.listCitySender = res.data;
-                }
-                this.setState(newState);
-            }
-        });
-        listDataCity(this.state.recipient.country.value).then(res => {
-            if (res.status == 'OK') {
-                let newState = this.state;
-                if (!res.data) {
-                    newState.listCityRecipient = [];
-                } else {
-                    newState.listCityRecipient = res.data;
-                }
-                this.setState(newState);
-            }
-        });
+        this.getListCity(this.state.sender.country.value, 'listCitySender');
+        this.getListCity(this.state.recipient.country.value, 'listCityRecipient');
         listCarrier().then(res => {
             if (res.status == 'OK') {
                 let newState = this.state;
@@ -149,6 +129,20 @@ class Booking extends Component {
         });
     }
 
+    getListCity(countryId, who) {
+        listDataCity(countryId).then(res => {
+            if (res.status == 'OK') {
+                let newState = this.state;
+                if (!res.data) {
+                    newState[who] = [];
+                } else {
+                    newState[who] = res.data;
+                }
+                this.setState(newState);
+            }
+        });
+    }
+
     onChangeFieldInput = (who) => (inputName, value) => {
         if (inputName == 'phoneNumber' && processString.checkNotExistCharPhone(value)) {
             return;
@@ -164,12 +158,19 @@ class Booking extends Component {
             }
         }
         if (inputName == 'country') {
+            let whichList = '';
+            if(who == 'sender') {
+                whichList = 'listCitySender';
+            } else {
+                whichList = 'listCityRecipient';
+            }
+            this.getListCity(value.value, whichList);
             newState[who].cityName = '';
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
             newState.listCarrier = [];
-            if (value.value != 288) {
+            if (this.getTypeCarrier(who, value.value) == 'in') {
                 newState.listCarrier.push(newState.allCarrier[2]);
                 newState.listCarrier.push(newState.allCarrier[3]);
             } else {
@@ -192,6 +193,21 @@ class Booking extends Component {
         newState[who][inputName] = value;
         this.setState(newState);
     };
+
+    getTypeCarrier(who, value) {
+        let result = 'in';
+        if(who == 'sender') {
+            if(value == 288 && this.state.recipient.country.value == 288) {
+                result = 'dos';
+            }
+        }
+        if(who == 'recipient') {
+            if(value == 288 && this.state.sender.country.value == 288) {
+                result = 'dos';
+            }
+        }
+        return result;
+    }
 
     onContinueBooking = (e) => {
         let newState = this.state;
