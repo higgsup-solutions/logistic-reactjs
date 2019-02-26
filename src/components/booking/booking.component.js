@@ -210,10 +210,10 @@ class Booking extends Component {
         });
         let pat = new RegExp(REGEX_EMAIL);
         let patPhone = new RegExp(REGEX_PHONE_NUMBER);
-        if (!pat.test(newState.sender.emailAddress)) {
+        if (newState.sender.emailAddress && !pat.test(newState.sender.emailAddress)) {
             newState.senderErrors.push('emailAddress');
         }
-        if (!pat.test(newState.recipient.emailAddress)) {
+        if (newState.recipient.emailAddress &&!pat.test(newState.recipient.emailAddress)) {
             newState.recipientErrors.push('emailAddress');
         }
         if (!newState.senderErrors.includes('phoneNumber') && !patPhone.test(newState.sender.phoneNumber)) {
@@ -571,7 +571,7 @@ class Booking extends Component {
                                          changeDimension={this.onChangeDimension}
                                          changeRowDimension={this.onChangeRowDimension}
                                          changeField={this.onChangeFieldInput('package')}/>
-                        <div className="text-right pr-3">
+                        <div className="text-right pr-3 pt-3">
                             <Button type="primary" onClick={this.onQuote}><FormattedMessage
                                 id='booking.quote'/></Button>
                             <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage
