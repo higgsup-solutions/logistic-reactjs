@@ -39,11 +39,18 @@ class ConfirmComponent extends Component {
         };
 
         confirmBooking(data).then(res => {
-            Notification.success({
-                title: 'Success',
-                message: this.props.intl.formatMessage({id: 'confirm.bookingSuccess'})
-            });
-            navigate(BOOKING);
+            if (res.status === 'OK') {
+                Notification.success({
+                    title: 'Success',
+                    message: this.props.intl.formatMessage({id: 'confirm.bookingSuccess'})
+                });
+                navigate(BOOKING);
+            } else {
+                Notification.error({
+                    title: 'Error',
+                    message: res.messageString
+                });
+            }
         })
     }
 
