@@ -73,9 +73,7 @@ class AddressBook extends Component {
                         filteredAddressBook: res.data
                     }
                 ),
-                () => {
-                    this.goToPage(1);
-                }
+                () => this.goToPage(1)
             );
         });
     }
@@ -99,10 +97,9 @@ class AddressBook extends Component {
         this.setState(
             Object.assign({},
                 this.state,
-                { filteredAddressBook: filteredAddressBook }),
-            () => {
-            this.goToPage(1);
-        });
+                {filteredAddressBook: filteredAddressBook}),
+            () => this.goToPage(1)
+        );
     };
 
     goToPage = pageIndex => {
