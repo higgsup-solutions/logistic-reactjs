@@ -110,5 +110,18 @@ export const ENGLISH = {
         "sd.gst": "GST",
         "sd.totalCharge": "Total Charge",
         "sd.quoteDetail.alert": "Quote is an estimate. Additional Fees may apply.",
+
+        // Address Book - alias = 'ab'
+        "ab.contactName": "Contact",
+        "ab.company": "Company",
+        "ab.address1": "Address#",
+        "ab.address2": "Address 2",
+        "ab.cityName": "City",
+        "ab.stateProvince": "State/Province",
+        "ab.postalCode": "Postal Code",
+        "ab.countryName": "Country",
+        "ab.phoneNumber": "Phone",
+        "ab.title": "Address Book",
+        "ab.searchInput.placeHolder": "Search address book...",
     }
 };

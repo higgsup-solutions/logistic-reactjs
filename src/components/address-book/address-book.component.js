@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, Form, Input, Pagination, Table} from 'element-react';
 import './address-book.scss';
 import {getAddressBook} from "../../integrate/address-book";
+import {FormattedMessage, injectIntl} from "react-intl";
 
 class AddressBook extends Component {
 
@@ -15,39 +16,39 @@ class AddressBook extends Component {
 
             columns: [
                 {
-                    label: "Contact",
+                    label: this.props.intl.formatMessage({id: 'ab.contactName'}),
                     prop: "contactName",
                 },
                 {
-                    label: "Company",
+                    label: this.props.intl.formatMessage({id: 'ab.company'}),
                     prop: "company",
                 },
                 {
-                    label: "Address",
+                    label: this.props.intl.formatMessage({id: 'ab.address1'}),
                     prop: "address1"
                 },
                 {
-                    label: "Address2",
+                    label: this.props.intl.formatMessage({id: 'ab.address2'}),
                     prop: "address2"
                 },
                 {
-                    label: "City",
+                    label: this.props.intl.formatMessage({id: 'ab.cityName'}),
                     prop: "cityName"
                 },
                 {
-                    label: "State/Province",
+                    label: this.props.intl.formatMessage({id: 'ab.stateProvince'}),
                     prop: "stateProvince"
                 },
                 {
-                    label: "Postal Code",
+                    label: this.props.intl.formatMessage({id: 'ab.postalCode'}),
                     prop: "postalCode"
                 },
                 {
-                    label: "Country",
+                    label: this.props.intl.formatMessage({id: 'ab.countryName'}),
                     prop: "countryName"
                 },
                 {
-                    label: "Phone",
+                    label: this.props.intl.formatMessage({id: 'ab.phoneNumber'}),
                     prop: "phoneNumber"
                 }
             ],
@@ -130,7 +131,7 @@ class AddressBook extends Component {
                 className="mycard"
                 header={
                     <div className="clearfix pl-3">
-                        <span>Address Book</span>
+                        <span><FormattedMessage id="ab.title"/></span>
                     </div>
                 }
             >
@@ -139,7 +140,7 @@ class AddressBook extends Component {
                         <Input
                             className="search-address-input"
                             value={this.state.searchForm.searchTerm}
-                            placeholder="Search address book..."
+                            placeholder={this.props.intl.formatMessage({id: 'ab.searchInput.placeHolder'})}
                             onChange={this.onChangeInput}
                             append={
                                 <Button nativeType="submit" type="primary" icon="search"/>
@@ -165,4 +166,4 @@ class AddressBook extends Component {
     }
 }
 
-export default AddressBook;
+export default injectIntl(AddressBook);
