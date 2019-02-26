@@ -1,4 +1,4 @@
-export const API_ROOT = 'http://192.168.1.10:8080/api';
+export const API_ROOT = 'http://192.168.1.60:8080/api';
 export const LOGIN = '/auth/login';
 export const REFRESH_TOKEN = '/auth/token';
 export const LOGOUT = '/logout';
@@ -12,3 +12,4 @@ export const LIST_DIMENSION = '/user/{userId}/dimensions?limit={amountLimited}';
 export const BOOKING_HISTORY_LIST = '/transaction/search';
 export const SAVE_ADDRESS = '/user/{userId}/addresses';
 export const QUOTE = '/carrier/{carrierId}/quote';
+export const CONFIRM_BOOKING = '/transaction/confirmBooking';

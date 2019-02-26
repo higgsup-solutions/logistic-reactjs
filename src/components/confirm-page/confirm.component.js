@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import './confirm.scss';
-import {Button, Card, Layout} from "element-react";
+import {Button, Card, Layout, Notification} from "element-react";
 import {FormattedMessage, injectIntl} from "react-intl";
 import AddressDetailConfirm from "./address-detail-confirm";
 import MoreDetailConfirm from "./more-detail-confirm";
 import ShipmentDetailConfirm from "./shipment-detail-confirm";
 import {navigate} from "@reach/router";
 import {BOOKING} from "../../App.url";
+import {confirmBooking} from "../../integrate/booking";
 
 class ConfirmComponent extends Component {
     constructor(props) {
@@ -23,7 +24,27 @@ class ConfirmComponent extends Component {
     }
 
     confirmBooking() {
+        const data = {
+            quoteRequest: this.state.quoteRequest,
+            recipientAddress: {
+                ...this.state.recipient,
+                email: this.state.recipient.emailAddress
+            },
+            senderAddress: {
+                ...this.state.sender,
+                email: this.state.sender.emailAddress
+            },
+            serviceType: this.state.package.serviceType,
+            shippingDate: this.state.package.shippingDate
+        };
 
+        confirmBooking(data).then(res => {
+            Notification.success({
+                title: 'Success',
+                message: this.props.intl.formatMessage({id: 'confirm.bookingSuccess'})
+            });
+            navigate(BOOKING);
+        })
     }
 
     render() {
@@ -118,19 +139,24 @@ const fakeData = {
         "countryName": "Viet Nam"
     },
     "recipient": {
-        "company": "higgsup",
-        "phoneNumber": "0123456789",
-        "contactName": "tiepnm",
-        "emailAddress": "quytest_1@gmail.com",
-        "country": {"label": "Viet Nam", "value": 288},
         "address1": "Ha Noi",
         "address2": "TP Ho Chi Minh",
-        "saveToAddressBook": false,
-        "cityId": 15,
         "cityName": "Bạc Liêu",
-        "postalCode": "260000",
-        "stateProvince": null,
+        "company": "higgsup",
+        "contactName": "tiepnm",
         "countryId": 288,
+        "emailAddress": "quytest_1@gmail.com",
+        id:'???',
+        "phoneNumber": "0123456789",
+        "postalCode": "260000",
+
+
+        "stateProvince": null,
+
+
+        "country": {"label": "Viet Nam", "value": 288},
+        "cityId": 15,
+        "saveToAddressBook": false,
         "countryName": "Viet Nam"
     },
     "package": {

@@ -135,5 +135,6 @@ export const ENGLISH = {
         "confirm.quoteDetails": "Quote Details",
         "confirm.sender.address": "Sender Address",
         "confirm.receiver.address": "Receiver Address",
+        "confirm.bookingSuccess": "Booking success!",
     }
 };

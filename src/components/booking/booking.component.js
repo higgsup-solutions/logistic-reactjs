@@ -349,7 +349,8 @@ class Booking extends Component {
                                             .filter(item => item.id === this.state.package.packageType)
                                             .map(item => item.packageType)
                                     },
-                                    chargeInfo: res.data
+                                    chargeInfo: res.data,
+                                    quoteRequest: data
                                 }
                             }
                         }
