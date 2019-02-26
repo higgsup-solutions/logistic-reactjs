@@ -10,21 +10,12 @@ import ShipmentDetailConfirm from "./shipment-detail-confirm";
 class ConfirmComponent extends Component {
     constructor(props) {
         super(props);
-        // console.log(JSON.stringify(this.props.location.state.data))
+        const data = this.props.location.state.data;
 
         this.state = {
-            ...fakeData,
-            quote: {
-                total: '0.00'
-            }
+            ...data,
         };
     }
-
-    componentWillMount() {
-        // todo: quote
-        // this.setState()
-    }
-
 
     render() {
         return (
@@ -53,7 +44,7 @@ class ConfirmComponent extends Component {
                                                     <FormattedMessage id={'booking.quote'}/>
                                                 </td>
                                                 <td>
-                                                    <div>{this.state.quote.total || '-'}</div>
+                                                    <div>{this.state.chargeInfo.totalCharge || '-'}</div>
                                                     <div><i><u>
                                                         <FormattedMessage id={'sd.quoteDetail.alert'}/>
                                                     </u></i></div>
@@ -69,7 +60,7 @@ class ConfirmComponent extends Component {
                             />
 
                             <AddressDetailConfirm
-                                data={this.state.recipient}
+                                data={this.state.sender}
                                 who={'sender'}
                             />
 

@@ -76,6 +76,7 @@ class Booking extends Component {
             package: {
                 shippingDate: new Date(),
                 carrierId: null,
+                carrierType: null,
                 serviceType: '1',
                 packageType: null,
                 contentType: 'Documents',
@@ -135,6 +136,7 @@ class Booking extends Component {
                 newState.listCarrier.push(newState.allCarrier[0]);
                 newState.listCarrier.push(newState.allCarrier[1]);
                 newState.package.carrierId = newState.listCarrier[0].id;
+                newState.package.carrierType = newState.listCarrier[0].carrierType;
                 newState.listPackageType = newState.listCarrier[0].packageDTO;
                 newState.package.packageType = newState.listPackageType[0].id;
                 this.setState(newState);
@@ -177,6 +179,7 @@ class Booking extends Component {
                 newState.listCarrier.push(newState.allCarrier[1]);
             }
             newState.package.carrierId = newState.listCarrier[0].id;
+            newState.package.carrierType = newState.listCarrier[0].carrierType;
             newState.listPackageType = newState.listCarrier[0].packageDTO;
             newState.package.packageType = newState.listPackageType[0].id;
         }
@@ -316,6 +319,7 @@ class Booking extends Component {
         }
         const data = {
             carrierId: this.state.package.carrierId,
+            carrierType: this.state.package.carrierType,
             contentType: this.state.package.contentType,
             countryId: 288,
             dangerousGoods: this.state.package.dangerousGoods,

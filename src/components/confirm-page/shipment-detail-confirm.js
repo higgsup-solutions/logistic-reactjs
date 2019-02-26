@@ -24,7 +24,7 @@ class ShipmentDetailConfirm extends Component {
                             <td className="title-block">
                                 <FormattedMessage id={'confirm.carrierName'}/>
                             </td>
-                            <td>{this.state.package.carrierId || '-'}</td>
+                            <td>{this.state.package.carrierType || '-'}</td>
                         </tr>
                         <tr>
                             <td className="title-block">

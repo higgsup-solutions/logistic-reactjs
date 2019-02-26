@@ -16,7 +16,7 @@ class MoreDetailConfirm extends Component {
     render() {
         return (
             <div>
-                <h5 style={{'margin-left': '1.5em'}}><u>
+                <h5 style={{'marginLeft': '1.5em'}}><u>
                     <FormattedMessage id={'confirm.moreDetails'}/>:
                 </u></h5>
                 <Layout.Row className="more-detail">
