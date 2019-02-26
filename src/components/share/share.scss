@@ -8,17 +8,35 @@
     padding: 50px 0px 100px 0px;
     background-image: $background-gradient;
     .title{
-      color: white;
+      color: #e12d2d;
+      font-size: 18px;
+      font-weight: bold;
     }
     .footer-item {
       text-align: left;
-      i{
-        margin-right: 5px;
-        color: white;
-      }
-      .text{
-        font-size: 12px;
-        color: white;
+      .footer-sub-item{
+        position: relative;
+        padding-left: 30px;
+        i{
+          position: absolute;
+          left: 1px;
+          top: 5px;
+          margin-right: 5px;
+          color: white;
+          &.fa-map-marker{
+            color: #e12d2d;
+          }
+          &.fa-phone{
+            color: gold;
+          }
+          &.fa-envelope{
+            color: #753a88;
+          }
+        }
+        .text{
+          font-size: 12px;
+          color: white;
+        }
       }
     }
   }
@@ -30,10 +48,11 @@
     .el-menu-item{
       color: white;
       font-weight: bold;
-      font-size: 15px;
+      font-size: 16px;
       &:hover{
         background-color: transparent!important;
         color: $active-link;
+        border-bottom-color: $active-link;
       }
       &.is-active{
         border-bottom: 5px solid $active-link;
@@ -55,5 +74,9 @@
     float: right;
     position: relative;
     top: -49px;
+    background-color: darkorange;
+    &:hover{
+      background-color: rgba(darkorange, 0.8);
+    }
   }
 }
