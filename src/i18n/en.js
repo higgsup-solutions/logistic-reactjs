@@ -124,5 +124,12 @@ export const ENGLISH = {
         "ab.phoneNumber": "Phone",
         "ab.title": "Address Book",
         "ab.searchInput.placeHolder": "Search address book...",
+
+        // Settings
+        "settings.title": "Settings",
+        "settings.tab.userSettings": "User Settings",
+        "settings.tab.addressDefault": "Address Default",
+        "settings.tab.changePassword": "Change Password",
+        "settings.tab.dimensions": "Dimensions",
     }
 };
