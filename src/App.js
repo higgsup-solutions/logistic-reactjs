@@ -38,8 +38,8 @@ class App extends Component {
                 <Select value={this.state.language}
                         onChange={this.onChangeLanguage}
                         className="language-block z-index-9 mr-2">
-                    <Select.Option label="English" value="en"/>
-                    <Select.Option label="Vietnamese" value="vn"/>
+                    <Select.Option label="English" value="en"></Select.Option>
+                    <Select.Option label="Vietnamese" value="vn"></Select.Option>
                 </Select>
                 <Router>
                     <PrivateRoute component={LayoutComponent} path="/" >
