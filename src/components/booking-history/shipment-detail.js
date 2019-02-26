@@ -12,7 +12,7 @@ class ShipmentDetail extends Component {
             dialogVisible: false,
             shipmentDetail: {},
             bookingDetailData: [],
-            packageInfoData: [],
+            dimensionDTOList: [],
             addressData: [],
             quoteDetailData: []
         }
@@ -30,18 +30,6 @@ class ShipmentDetail extends Component {
     }
 
     collectDataFromSelectedItem(data) {
-        const packageInfoData = [
-            {
-                piece: data.pieces,
-                actualWeight: data.actualWeight,
-                cubicWeight: data.cubicWeight,
-                dimension: {
-                    length: data.dimentionLength,
-                    weight: data.dimentionWeight,
-                    height: data.dimentionHeight
-                }
-            }
-        ];
         const addressData = [
             {
                 shipperAddress: data.senderContactName,
@@ -78,10 +66,6 @@ class ShipmentDetail extends Component {
                 value: data.fuelSurcharge
             },
             {
-                key: 'gst',
-                value: data.gst
-            },
-            {
                 key: 'totalCharge',
                 value: data.totalCharge
             }
@@ -89,7 +73,7 @@ class ShipmentDetail extends Component {
         this.setState({
             dialogVisible: true,
             shipmentDetail: data,
-            packageInfoData,
+            dimensionDTOList: data.dimensionDTOList || [],
             addressData,
             quoteDetailData
         })
@@ -149,7 +133,7 @@ class ShipmentDetail extends Component {
                                             <td className="title-block">
                                                 <b><FormattedMessage id={'sd.actualWeight'}/></b>
                                             </td>
-                                            <td>{this.state.shipmentDetail.actualWeight || '-'} kg(s)</td>
+                                            <td>{this.state.shipmentDetail.totalWeight} kg(s)</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -171,16 +155,16 @@ class ShipmentDetail extends Component {
                                     </thead>
                                     <tbody>
                                     {
-                                        this.state.packageInfoData.map((packageInfo, i) => {
+                                        this.state.dimensionDTOList.map((packageInfo, i) => {
                                             return (
-                                                <tr>
-                                                    <td>{packageInfo.piece || '-'}</td>
-                                                    <td>{packageInfo.actualWeight || '-'} kg(s)</td>
-                                                    <td>{packageInfo.cubicWeight || '-'} kg(s)</td>
+                                                <tr key={i}>
+                                                    <td>{i+1}</td>
+                                                    <td>{packageInfo.weights} kg(s)</td>
+                                                    <td>{packageInfo.cubicWeight} kg(s)</td>
                                                     <td>
-                                                        {packageInfo.dimension.length  || '-'} x&nbsp;
-                                                        {packageInfo.dimension.weight  || '-'} x&nbsp;
-                                                        {packageInfo.dimension.height  || '-'} cm(s)
+                                                        {packageInfo.length} x&nbsp;
+                                                        {packageInfo.width} x&nbsp;
+                                                        {packageInfo.height} cm(s)
                                                     </td>
                                                 </tr>
                                             );
@@ -211,7 +195,7 @@ class ShipmentDetail extends Component {
                                     {
                                         this.state.addressData.map((address, i) => {
                                             return (
-                                                <tr>
+                                                <tr key={`${address.shipperAddress},${address.receiverAddress}`}>
                                                     <td>{address.shipperAddress || '-'}</td>
                                                     <td>{address.receiverAddress || '-'}</td>
                                                 </tr>
@@ -230,7 +214,7 @@ class ShipmentDetail extends Component {
                                     {
                                         this.state.quoteDetailData.map((quoteDetailItem, i) => {
                                             return (
-                                                <tr>
+                                                <tr key={quoteDetailItem.key}>
                                                     <td>- <FormattedMessage id={`sd.${quoteDetailItem.key}`}/>:</td>
                                                     <td>{quoteDetailItem.value || '-'}</td>
                                                 </tr>

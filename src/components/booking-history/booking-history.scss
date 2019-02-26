@@ -1,5 +1,10 @@
 @import '../../style/style';
 
+.booking-card {
+  margin: 20px;
+  padding: 0;
+}
+
 .search-input {
   margin-bottom: 1em;
   padding-right: 1em;
@@ -17,7 +22,7 @@
 .shipment-detail-container {
 
   .el-dialog--small {
-    width: 60%;
+    width: 70%;
     top: 10%
   }
 
@@ -25,7 +30,7 @@
     padding: 10px 20px 10px;
     background: $background-gradient;
 
-    .el-dialog__title{
+    .el-dialog__title {
       color: white;
     }
   }
