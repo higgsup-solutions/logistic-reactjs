@@ -48,6 +48,18 @@ function createAuthRefreshInterceptor (axios, options = {}) {
             return axios(error.response.config);
         }).catch(error => {
             axios.interceptors.request.eject(requestQueueInterceptorId);
+
+            const data = error.response.data || null;
+            if (data && data.errorCode == 10 && data.status == 401) {
+                Notification.error({
+                    title: 'Error',
+                    message: 'Session timeout, please login to application!'
+                });
+                // logout
+                logout();
+                TokenStorage.clear();
+                navigate('/');
+            }
             return Promise.reject(error)
         }).finally(() => createAuthRefreshInterceptor(axios, refreshTokenCall, options));
     });
