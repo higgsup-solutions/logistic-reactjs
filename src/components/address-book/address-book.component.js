@@ -55,7 +55,7 @@ class AddressBook extends Component {
             addressBook: [],
             filteredAddressBook: [],
             pagination: {
-                pageSize: 1,
+                pageSize: 10,
                 currentPage: 1,
                 data: []
             }
@@ -137,14 +137,13 @@ class AddressBook extends Component {
                 <Form inline={true} model={this.state.searchForm} onSubmit={this.onSearch}>
                     <Form.Item>
                         <Input
-                            className="search-input"
+                            className="search-address-input"
                             value={this.state.searchForm.searchTerm}
                             placeholder="Search address book..."
-                            onChange={this.onChangeInput} />
-                    </Form.Item>
-
-                    <Form.Item>
-                        <Button nativeType="submit" type="primary">Search</Button>
+                            onChange={this.onChangeInput}
+                            append={
+                                <Button nativeType="submit" type="primary" icon="search"/>
+                            }/>
                     </Form.Item>
                 </Form>
 

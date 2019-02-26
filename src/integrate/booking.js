@@ -1,10 +1,11 @@
 import integrate from './integrate';
 import {GET_ADDRESS_BOOK, LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, SAVE_ADDRESS} from "./integrate.endpoint";
 import {processString} from "../utils/string";
+import UserInfoStorage from "../utils/user-info";
 
 export const listDataSuggest = () => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(GET_ADDRESS_BOOK, {userId: 5}),
+        url: processString.parseUrl(GET_ADDRESS_BOOK, {userId: UserInfoStorage.getUserId()}),
         method: 'GET',
     });
 };
@@ -22,14 +23,14 @@ export const listCarrier = () => {
 };
 export const listDimension = () => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(LIST_DIMENSION, {userId: 5, amountLimited: 5}),
+        url: processString.parseUrl(LIST_DIMENSION, {userId: UserInfoStorage.getUserId(), amountLimited: 5}),
         method: 'GET',
     });
 };
 
 export const saveAddressToBook = (data) => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(SAVE_ADDRESS, {userId: 5}),
+        url: processString.parseUrl(SAVE_ADDRESS, {userId: UserInfoStorage.getUserId()}),
         method: 'POST',
         data: data
     });
