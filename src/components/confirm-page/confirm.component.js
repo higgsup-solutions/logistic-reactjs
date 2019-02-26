@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import './confirm.scss';
 import {Button, Card, Layout} from "element-react";
 import {FormattedMessage, injectIntl} from "react-intl";
-import {quote} from "../../integrate/booking";
 import AddressDetailConfirm from "./address-detail-confirm";
 import MoreDetailConfirm from "./more-detail-confirm";
 import ShipmentDetailConfirm from "./shipment-detail-confirm";
+import {navigate} from "@reach/router";
+import {BOOKING} from "../../App.url";
 
 class ConfirmComponent extends Component {
     constructor(props) {
@@ -15,6 +16,14 @@ class ConfirmComponent extends Component {
         this.state = {
             ...data,
         };
+    }
+
+    cancelConfirm() {
+        navigate(BOOKING);
+    }
+
+    confirmBooking() {
+
     }
 
     render() {
@@ -70,10 +79,12 @@ class ConfirmComponent extends Component {
                             />
 
                             <div className="text-right action-block">
-                                <Button type="primary">
+                                <Button type="primary"
+                                        onClick={this.cancelConfirm.bind(this)}>
                                     <FormattedMessage id='cancel'/>
                                 </Button>
-                                <Button type="primary">
+                                <Button type="primary"
+                                        onClick={this.confirmBooking.bind(this)}>
                                     <FormattedMessage id='booking'/>
                                 </Button>
                             </div>

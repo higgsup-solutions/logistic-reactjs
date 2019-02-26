@@ -328,7 +328,7 @@ class Booking extends Component {
             recipientCityName: this.state.sender.cityName,
             senderCityName: this.state.recipient.cityName
         };
-        quote(data).then(res => {
+        quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
                 let newState = this.state;
                 newState.quote.baseCharge = res.data.baseCharge;
@@ -343,7 +343,12 @@ class Booking extends Component {
                                 data: {
                                     sender: this.state.sender,
                                     recipient: this.state.recipient,
-                                    package: this.state.package,
+                                    package: {
+                                        ...this.state.package,
+                                        packageTypeName: this.state.listPackageType
+                                            .filter(item => item.id === this.state.package.packageType)
+                                            .map(item => item.packageType)
+                                    },
                                     chargeInfo: res.data
                                 }
                             }

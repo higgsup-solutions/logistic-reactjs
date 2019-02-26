@@ -5,6 +5,14 @@ import {Layout} from "element-react";
 
 class ShipmentDetailConfirm extends Component {
 
+    serviceTypeList = [
+        'Express',
+        'Economy Express',
+        'DHL Worldwide Express',
+        'Expedited',
+        'Express Saver'
+    ];
+
     constructor(props) {
         super(props);
 
@@ -30,13 +38,13 @@ class ShipmentDetailConfirm extends Component {
                             <td className="title-block">
                                 <FormattedMessage id={'sd.serviceType'}/>
                             </td>
-                            <td>{this.state.package.serviceType || '-'}</td>
+                            <td>{this.serviceTypeList[this.state.package.serviceType] || '-'}</td>
                         </tr>
                         <tr>
                             <td className="title-block">
                                 <FormattedMessage id={'sd.packageType'}/>
                             </td>
-                            <td>{this.state.package.packageType || '-'}</td>
+                            <td>{this.state.package.packageTypeName || '-'}</td>
                         </tr>
                         <tr>
                             <td className="title-block">
