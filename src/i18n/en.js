@@ -16,6 +16,7 @@ export const ENGLISH = {
         "email": "Email address",
         "password": "Password",
         "emptyData": "No data available",
+        "save": "Save",
 
         // Menu
         "menu.login": "Login",
@@ -131,5 +132,13 @@ export const ENGLISH = {
         "settings.tab.addressDefault": "Address Default",
         "settings.tab.changePassword": "Change Password",
         "settings.tab.dimensions": "Dimensions",
+        "settings.info.title": "User Information",
+        "settings.info.firstName": "First Name",
+        "settings.info.lastName": "Last Name",
+        "settings.info.phone": "Phone",
+        "settings.info.email": "Email",
+        "settings.info.country": "Country",
+        "settings.info.city": "City",
+        "settings.info.address": "Address",
     }
 };

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Card, Tabs} from "element-react";
 import UserSettings from "./user-settings.component";
+import './settings.scss';
 
 class Settings extends Component {
 
