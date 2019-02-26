@@ -4,6 +4,7 @@ export const REGISTER = '/public/register';
 export const LOGIN_URL = '/login';
 export const REGISTER_URL = '/register';
 export const BOOKING = '/booking';
+export const ADDRESS_BOOK = '/address-book';
 export const BOOKING_HISTORY = '/booking-history';
 export const CONFIRM = '/confirm';
 export const SETTING = '/setting';

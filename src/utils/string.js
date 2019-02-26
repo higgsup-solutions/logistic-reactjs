@@ -5,7 +5,7 @@ export const processString = {
             return url;
         }
         for(let param in objParams) {
-            result = result.replace(param, objParams[param]);
+            result = result.replace('{' + param + '}', objParams[param]);
         }
         return result;
     },

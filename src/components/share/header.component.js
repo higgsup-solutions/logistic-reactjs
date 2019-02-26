@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './share.scss';
-import {Menu, Button} from 'element-react';
-import {navigate, Link} from '@reach/router';
-import {BOOKING, BOOKING_HISTORY, LOGIN, SETTING} from "../../App.url";
+import {Button, Menu} from 'element-react';
+import {navigate} from '@reach/router';
+import {BOOKING, BOOKING_HISTORY, SETTING, ADDRESS_BOOK} from "../../App.url";
 import {FormattedMessage} from "react-intl";
 import logo from "../../assets/logo.png";
 import {logout} from "../../integrate/auth";
@@ -14,11 +14,12 @@ class HeaderComponent extends Component {
         this.state = {
             menu: [
                 {index: '1', url: BOOKING, label: 'menu.booking'},
-                {index: '2', url: BOOKING_HISTORY, label: 'menu.bookingHistory'},
-                {index: '3', url: SETTING, label: 'menu.setting'},
-                {index: '4', url: SETTING, label: 'menu.supplies'},
-                {index: '5', url: SETTING, label: 'menu.invoices'},
-                {index: '6', url: SETTING, label: 'menu.help'},
+                {index: '2', url: ADDRESS_BOOK, label: 'menu.addressBook'},
+                {index: '3', url: BOOKING_HISTORY, label: 'menu.bookingHistory'},
+                {index: '4', url: SETTING, label: 'menu.setting'},
+                {index: '5', url: SETTING, label: 'menu.supplies'},
+                {index: '6', url: SETTING, label: 'menu.invoices'},
+                {index: '7', url: SETTING, label: 'menu.help'},
             ],
             activeLink: '1'
         };

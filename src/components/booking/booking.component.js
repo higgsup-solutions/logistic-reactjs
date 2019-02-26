@@ -537,9 +537,9 @@ class Booking extends Component {
     render() {
 
         return (
-            <div className="container-fluid booking">
+            <div className="booking">
                 <div className="row w-100 ml-0">
-                    <div className="col-sm-12 col-md-6 pr-1">
+                    <div className="col-sm-12 col-md-6">
                         <SenderAddress data={this.state.listData}
                                        listCity={this.state.listCitySender}
                                        form={this.state.sender}
@@ -559,7 +559,7 @@ class Booking extends Component {
                                        fieldErrors={this.state.recipientErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </div>
-                    <div className="col-sm-12 col-md-6 pl-1">
+                    <div className="col-sm-12 col-md-6">
                         <PackageShipment form={this.state.package}
                                          listCarrier={this.state.listCarrier}
                                          listPackageType={this.state.listPackageType}
