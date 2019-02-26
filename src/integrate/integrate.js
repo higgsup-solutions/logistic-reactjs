@@ -1,7 +1,7 @@
 import axios from "axios"
 import {API_ROOT} from "./integrate.endpoint";
-import { Notification } from 'element-react';
 import TokenStorage from "../utils/token";
+import refreshTokenInterceptor from "./refresh-token-interceptor";
 
 const _getAppVersion = () => {
     return '1.0.0';
@@ -14,6 +14,8 @@ const _request = axios.create({
     baseURL: _baseURL,
     timeout: 15000,
 });
+
+refreshTokenInterceptor(_request);
 
 // request interceptor
 _request.interceptors.request.use(
@@ -39,10 +41,6 @@ _request.interceptors.response.use(
         return response
     },
     error => {
-        Notification.error({
-            title: 'Error',
-            message: `${error.response.data.message}`
-        });
         return Promise.reject(error)
     }
 );
