@@ -15,6 +15,7 @@ export const ENGLISH = {
         "register": "Register",
         "email": "Email address",
         "password": "Password",
+        "emptyData": "No data available",
 
         // Menu
         "menu.login": "Login",

@@ -146,6 +146,7 @@ class AddressBook extends Component {
                 </Form>
 
                 <Table
+                    emptyText={this.props.intl.formatMessage({id: 'emptyData'})}
                     columns={this.state.columns}
                     data={this.state.pagination.data}
                     stripe={true}
