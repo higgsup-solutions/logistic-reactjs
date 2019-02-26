@@ -58,6 +58,7 @@ class PackageShipment extends Component {
                            onChange={this.onChangeRowDimension(key, 'weights')}/></td>
                 <td>
                     <Select className="w-100"
+                            value={item.type}
                             onChange={this.onChangeDimension(key)}
                             placeholder={this.props.intl.formatMessage({id: 'booking.selectOneDimension'})}>
                         {this.props.listDimension.map((subItem) =>  <Select.Option key={subItem.id} label={subItem.name} value={subItem.id}></Select.Option>)}

@@ -82,6 +82,7 @@ class Booking extends Component {
                 documentInfos: [
                     {
                         weights: null,
+                        type: '',
                         l: null,
                         w: null,
                         h: null,
@@ -463,6 +464,7 @@ class Booking extends Component {
         let newState = this.state;
         for (let i = 0; i < this.state.listDimension.length; i++) {
             if (value == this.state.listDimension[i].id) {
+                newState.package.documentInfos[index].type = value;
                 newState.package.documentInfos[index].l = this.state.listDimension[i].length;
                 newState.package.documentInfos[index].w = this.state.listDimension[i].width;
                 newState.package.documentInfos[index].h = this.state.listDimension[i].height;
@@ -491,6 +493,7 @@ class Booking extends Component {
         let newState = this.state;
         newState.package.documentInfos.push({
             weights: null,
+            type: '',
             l: null,
             w: null,
             h: null,
