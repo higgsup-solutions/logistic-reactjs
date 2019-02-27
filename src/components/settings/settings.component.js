@@ -4,6 +4,7 @@ import {Card, Tabs} from "element-react";
 import UserSettings from "./user-settings";
 import AddressDefaultSettings from "./address-default-settings";
 import './settings.scss';
+import ChangePassword from "./change-password";
 
 class Settings extends Component {
 
@@ -20,7 +21,7 @@ class Settings extends Component {
                                       <FormattedMessage id='settings.title'/>
                                   </div>
                               }>
-                            <Tabs type="card" value="user-setting">
+                            <Tabs type="card" value="change-password">
                                 <Tabs.Pane
                                     name="user-setting"
                                     label={
@@ -51,7 +52,7 @@ class Settings extends Component {
                                     label={
                                         this.props.intl.formatMessage({id: 'settings.tab.changePassword'}).toUpperCase()
                                     }>
-                                    User
+                                    <ChangePassword/>
                                 </Tabs.Pane>
                                 <Tabs.Pane
                                     name="dimensions"

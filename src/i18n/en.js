@@ -145,5 +145,11 @@ export const ENGLISH = {
         "settings.defaultAddress.to": "Default To Address",
         "settings.defaultAddress.findCompany": "Find By Company",
         "settings.defaultAddress.findContact": "Find By Contact",
+        "settings.changePass.title": "Password",
+        "settings.changePass.note": "Note:",
+        "settings.changePass.noteDes": "- Password should contain minimum 8 characters, with at least one letter and one number.",
+        "settings.changePass.oldPass": "Old Password",
+        "settings.changePass.newPass": "New Password",
+        "settings.changePass.confirmPass": "Confirm Password",
     }
 };
