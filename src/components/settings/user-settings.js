@@ -22,16 +22,23 @@ class UserSettings extends Component {
             address: ''
         };
         this.state = {
-            oldInfo: info,
-            form: info
+            oldInfo: {...info},
+            form: {...info},
+            isChanged: false
         }
     }
 
     onChangeInput = (fieldName) => (e) => {
         let newState = {...this.state};
         newState.form[fieldName] = e;
+        newState.isChanged = this.isUserInfoUpdated(newState);
         this.setState(newState);
     };
+
+    isUserInfoUpdated(newState) {
+        const {oldInfo, form} = newState;
+        return JSON.stringify(oldInfo) !== JSON.stringify(form);
+    }
 
     componentWillMount() {
         getUserInfo().then(res => {
@@ -39,8 +46,8 @@ class UserSettings extends Component {
             if (!info.phone) info.phone = '';
             delete info.password;
             this.setState({
-                oldInfo: info,
-                form: info
+                oldInfo: {...info},
+                form: {...info}
             })
         });
     }
@@ -54,6 +61,14 @@ class UserSettings extends Component {
                    title: 'Success',
                    message: this.props.intl.formatMessage({id: 'settings.info.updateSuccess'})
                });
+
+               const info = res.data;
+               if (!info.phone) info.phone = '';
+               delete info.password;
+               this.setState({
+                   oldInfo: {...info},
+                   isChanged: false
+               })
            } else {
                Notification.error({
                    title: 'Error',
@@ -173,6 +188,7 @@ class UserSettings extends Component {
                             <div className="text-right">
                                 <Button
                                     type="primary"
+                                    disabled={!this.state.isChanged}
                                     onClick={this.updateUserInfo.bind(this)}>
                                     <FormattedMessage id='save'/>
                                 </Button>
