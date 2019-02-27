@@ -76,6 +76,7 @@ class Booking extends Component {
             package: {
                 shippingDate: new Date(),
                 carrierId: null,
+                carrierType: null,
                 serviceType: '1',
                 packageType: null,
                 contentType: 'Documents',
@@ -135,6 +136,7 @@ class Booking extends Component {
                 newState.listCarrier.push(newState.allCarrier[0]);
                 newState.listCarrier.push(newState.allCarrier[1]);
                 newState.package.carrierId = newState.listCarrier[0].id;
+                newState.package.carrierType = newState.listCarrier[0].carrierType;
                 newState.listPackageType = newState.listCarrier[0].packageDTO;
                 newState.package.packageType = newState.listPackageType[0].id;
                 this.setState(newState);
@@ -177,6 +179,7 @@ class Booking extends Component {
                 newState.listCarrier.push(newState.allCarrier[1]);
             }
             newState.package.carrierId = newState.listCarrier[0].id;
+            newState.package.carrierType = newState.listCarrier[0].carrierType;
             newState.listPackageType = newState.listCarrier[0].packageDTO;
             newState.package.packageType = newState.listPackageType[0].id;
         }
@@ -316,6 +319,7 @@ class Booking extends Component {
         }
         const data = {
             carrierId: this.state.package.carrierId,
+            carrierType: this.state.package.carrierType,
             contentType: this.state.package.contentType,
             countryId: 288,
             dangerousGoods: this.state.package.dangerousGoods,
@@ -324,7 +328,7 @@ class Booking extends Component {
             recipientCityName: this.state.sender.cityName,
             senderCityName: this.state.recipient.cityName
         };
-        quote(data).then(res => {
+        quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
                 let newState = this.state;
                 newState.quote.baseCharge = res.data.baseCharge;
@@ -339,8 +343,14 @@ class Booking extends Component {
                                 data: {
                                     sender: this.state.sender,
                                     recipient: this.state.recipient,
-                                    package: this.state.package,
-                                    chargeInfo: res.data
+                                    package: {
+                                        ...this.state.package,
+                                        packageTypeName: this.state.listPackageType
+                                            .filter(item => item.id === this.state.package.packageType)
+                                            .map(item => item.packageType)
+                                    },
+                                    chargeInfo: res.data,
+                                    quoteRequest: data
                                 }
                             }
                         }

@@ -1,0 +1,37 @@
+@import '../../style/style';
+
+.confirm-card {
+  margin: 20px;
+  padding: 0;
+
+  .shipment-detail,
+  .quote-detail,
+  .more-detail,
+  .address-detail {
+    margin: .75em 2em 2.5em;
+    background: $secondary-background;
+  }
+
+  .action-block {
+    margin-right: 2em;
+  }
+
+  // For table
+  .table {
+    margin-bottom: 0;
+
+    td {
+      width: 50%;
+    }
+
+    .title-block {
+      background: whitesmoke;
+    }
+
+    tr {
+      border-bottom: .1pt solid gainsboro;
+    }
+  }
+
+}
+
