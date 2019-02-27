@@ -17,6 +17,7 @@ export const ENGLISH = {
         "password": "Password",
         "emptyData": "No data available",
         "save": "Save",
+        "reset": "Reset",
 
         // Menu
         "menu.login": "Login",
@@ -140,5 +141,9 @@ export const ENGLISH = {
         "settings.info.country": "Country",
         "settings.info.city": "City",
         "settings.info.address": "Address",
+        "settings.defaultAddress.from": "Default From Address",
+        "settings.defaultAddress.to": "Default To Address",
+        "settings.defaultAddress.findCompany": "Find By Company",
+        "settings.defaultAddress.findContact": "Find By Contact",
     }
 };

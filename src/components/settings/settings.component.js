@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Card, Tabs} from "element-react";
-import UserSettings from "./user-settings.component";
+import UserSettings from "./user-settings";
+import AddressDefaultSettings from "./address-default-settings";
 import './settings.scss';
 
 class Settings extends Component {
@@ -12,7 +13,7 @@ class Settings extends Component {
                 <div className="row w-100 ml-0">
                     <div className="col-md-12">
 
-                        <Card className="mycard confirm-card"
+                        <Card className="mycard settings-card"
                               header={
                                   <div className="clearfix"
                                        style={{paddingLeft: '1em'}}>
@@ -32,7 +33,18 @@ class Settings extends Component {
                                     label={
                                         this.props.intl.formatMessage({id: 'settings.tab.addressDefault'}).toUpperCase()
                                     }>
-                                    User
+                                    <div className="user-settings">
+                                        <div className="row">
+                                            <div className="col-md-6 col-sm-12">
+                                                <AddressDefaultSettings
+                                                    type="from"/>
+                                            </div>
+                                            <div className="col-md-6 col-sm-12">
+                                                <AddressDefaultSettings
+                                                    type="to"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Tabs.Pane>
                                 <Tabs.Pane
                                     name="change-password"
