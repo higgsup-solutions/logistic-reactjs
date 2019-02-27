@@ -16,6 +16,8 @@ export const ENGLISH = {
         "email": "Email address",
         "password": "Password",
         "emptyData": "No data available",
+        "cancel": "Cancel",
+        "booking": "Booking",
         "save": "Save",
         "reset": "Reset",
 
@@ -126,6 +128,16 @@ export const ENGLISH = {
         "ab.phoneNumber": "Phone",
         "ab.title": "Address Book",
         "ab.searchInput.placeHolder": "Search address book...",
+
+        // Confirm Booking page - alias = 'confirm'
+        "confirm.title": "Shipment",
+        "confirm.carrierName": "Carrier Name",
+        "confirm.weight": "Weight",
+        "confirm.moreDetails": "More Details",
+        "confirm.quoteDetails": "Quote Details",
+        "confirm.sender.address": "Sender Address",
+        "confirm.receiver.address": "Receiver Address",
+        "confirm.bookingSuccess": "Booking success!",
 
         // Settings
         "settings.title": "Settings",

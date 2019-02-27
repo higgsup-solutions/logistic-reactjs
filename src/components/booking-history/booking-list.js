@@ -18,27 +18,22 @@ class BookingList extends Component {
         {
             label: `${this.props.intl.formatMessage({id: 'history.tracking'})}#`.toUpperCase(),
             prop: "trackingNo",
-            width: 250
         },
         {
             label: this.props.intl.formatMessage({id: 'history.pieces'}).toUpperCase(),
             prop: "pieces",
-            width: 120
         },
         {
             label: this.props.intl.formatMessage({id: 'history.weight'}).toUpperCase(),
-            prop: "actualWeight",
-            width: 150
+            prop: "totalWeight",
         },
         {
             label: this.props.intl.formatMessage({id: 'history.quoted'}).toUpperCase(),
             prop: "totalCharge",
-            width: 150
         },
         {
             label: this.props.intl.formatMessage({id: 'history.destCountry'}).toUpperCase(),
-            prop: "destCountry",
-            width: 250
+            prop: "recipientCountryName",
         },
         {
             label: this.props.intl.formatMessage({id: 'history.shipDate'}).toUpperCase(),
@@ -47,7 +42,6 @@ class BookingList extends Component {
                 const shipDate = row.shippingDate;
                 return shipDate ? dateUtil.dateFormat.ddmmyyyyMinus(shipDate) : '-'
             },
-            width: 150
         },
     ];
 
@@ -115,12 +109,16 @@ class BookingList extends Component {
                     />
                 </div>
                 <div className="pageable-container text-right">
-                    <Pagination layout="prev, pager, next"
-                                currentPage={this.state.pageIndex + 1}
-                                pageSize={this.state.pageSize}
-                                total={this.state.totalItem}
-                                onCurrentChange={newCurrentPage => this.getBookingHistory(newCurrentPage - 1)}
-                    />
+                    {
+                        // If have no data, not show Pagination
+                        this.state.totalItem <= 0 ? null :
+                            <Pagination layout="prev, pager, next"
+                                    currentPage={this.state.pageIndex + 1}
+                                    pageSize={this.state.pageSize}
+                                    total={this.state.totalItem}
+                                    onCurrentChange={newCurrentPage => this.getBookingHistory(newCurrentPage - 1)}
+                            />
+                    }
                 </div>
             </div>
         )
