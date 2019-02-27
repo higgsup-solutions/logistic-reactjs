@@ -16,3 +16,4 @@ export const CONFIRM_BOOKING = '/transaction/confirmBooking';
 
 // Settings Page
 export const USER = '/user/{userId}';
+export const CHANGE_PASSWORD = USER + '/change_pass';

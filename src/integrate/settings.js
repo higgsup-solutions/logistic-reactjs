@@ -1,5 +1,5 @@
 import integrate from './integrate';
-import {USER} from "./integrate.endpoint";
+import {USER, CHANGE_PASSWORD} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 import UserInfoStorage from "../utils/user-info";
 
@@ -20,3 +20,13 @@ export const updateUserInfo = (data) => {
 };
 
 // Address default
+
+
+// Change password
+export const changePassword = (data) => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(CHANGE_PASSWORD, {userId: UserInfoStorage.getUserId()}),
+        method: 'POST',
+        data
+    });
+};
