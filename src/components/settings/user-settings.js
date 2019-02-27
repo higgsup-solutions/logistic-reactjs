@@ -1,14 +1,18 @@
 import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
-import {Button, Card, Input} from "element-react";
+import {Button, Card, Input, Notification} from "element-react";
+import {getUserInfo, updateUserInfo} from "../../integrate/settings";
+import {processString} from "../../utils/string";
+import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
 
 class UserSettings extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            id: 5,
+        const info = {
+            id: '',
+            phone: '',
             email: '',
             firstName: '',
             lastName: '',
@@ -16,18 +20,79 @@ class UserSettings extends Component {
             city: '',
             language: '',
             address: ''
+        };
+        this.state = {
+            oldInfo: info,
+            form: info
         }
     }
 
     onChangeInput = (fieldName) => (e) => {
         let newState = {...this.state};
-        newState[fieldName] = e;
+        newState.form[fieldName] = e;
         this.setState(newState);
     };
 
     componentWillMount() {
-        // call api
+        getUserInfo().then(res => {
+            const info = res.data;
+            if (!info.phone) info.phone = '';
+            delete info.password;
+            this.setState({
+                oldInfo: info,
+                form: info
+            })
+        });
     }
+
+    updateUserInfo() {
+        if (!this.isValidData()) return;
+
+        updateUserInfo(this.state.form).then(res => {
+           if (res.status === 'OK') {
+               Notification.info({
+                   title: 'Success',
+                   message: this.props.intl.formatMessage({id: 'settings.info.updateSuccess'})
+               });
+           } else {
+               Notification.error({
+                   title: 'Error',
+                   message: res.messageString
+               });
+           }
+        });
+    }
+
+    isValidData = () => {
+        const {phone, email} = this.state.form;
+        if (processString.checkNotExistCharPhone(phone)) {
+            Notification.error({
+                title: 'Error',
+                message: 'Phone is invalid'
+            });
+            return false;
+        }
+
+        let patPhone = new RegExp(REGEX_PHONE_NUMBER);
+        if (phone && !patPhone.test(phone)) {
+            Notification.error({
+                title: 'Error',
+                message: 'Phone is invalid'
+            });
+            return false;
+        }
+
+        let patEmail = new RegExp(REGEX_EMAIL);
+        if (!patEmail.test(email)) {
+            Notification.error({
+                title: 'Error',
+                message: 'Email is invalid'
+            });
+            return false;
+        }
+
+        return true;
+    };
 
     render() {
         return (
@@ -47,7 +112,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.firstName'/>:
                                     </div>
                                     <Input
-                                        value={this.state.firstName}
+                                        value={this.state.form.firstName}
                                         onChange={this.onChangeInput('firstName')}/>
                                 </div>
                                 <div className="col-md-6">
@@ -55,7 +120,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.lastName'/>:
                                     </div>
                                     <Input
-                                        value={this.state.lastName}
+                                        value={this.state.form.lastName}
                                         onChange={this.onChangeInput('lastName')}/>
                                 </div>
                             </div>
@@ -65,7 +130,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.phone'/>:
                                     </div>
                                     <Input
-                                        value={this.state.phone}
+                                        value={this.state.form.phone}
                                         onChange={this.onChangeInput('phone')}/>
                                 </div>
                                 <div className="col-md-6">
@@ -73,7 +138,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.email'/>:
                                     </div>
                                     <Input
-                                        value={this.state.email}
+                                        value={this.state.form.email}
                                         onChange={this.onChangeInput('email')}/>
                                 </div>
                             </div>
@@ -83,7 +148,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.country'/>:
                                     </div>
                                     <Input
-                                        value={this.state.country}
+                                        value={this.state.form.country}
                                         onChange={this.onChangeInput('country')}/>
                                 </div>
                                 <div className="col-md-6">
@@ -91,7 +156,7 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.city'/>:
                                     </div>
                                     <Input
-                                        value={this.state.city}
+                                        value={this.state.form.city}
                                         onChange={this.onChangeInput('city')}/>
                                 </div>
                             </div>
@@ -101,12 +166,14 @@ class UserSettings extends Component {
                                         <FormattedMessage id='settings.info.address'/>:
                                     </div>
                                     <Input
-                                        value={this.state.address}
+                                        value={this.state.form.address}
                                         onChange={this.onChangeInput('address')}/>
                                 </div>
                             </div>
                             <div className="text-right">
-                                <Button type="primary">
+                                <Button
+                                    type="primary"
+                                    onClick={this.updateUserInfo.bind(this)}>
                                     <FormattedMessage id='save'/>
                                 </Button>
                             </div>

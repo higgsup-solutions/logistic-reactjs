@@ -141,6 +141,7 @@ export const ENGLISH = {
         "settings.info.country": "Country",
         "settings.info.city": "City",
         "settings.info.address": "Address",
+        "settings.info.updateSuccess": "User Information is updated successfully",
         "settings.defaultAddress.from": "Default From Address",
         "settings.defaultAddress.to": "Default To Address",
         "settings.defaultAddress.findCompany": "Find By Company",

@@ -21,7 +21,7 @@ class Settings extends Component {
                                       <FormattedMessage id='settings.title'/>
                                   </div>
                               }>
-                            <Tabs type="card" value="change-password">
+                            <Tabs type="card" value="user-setting">
                                 <Tabs.Pane
                                     name="user-setting"
                                     label={
