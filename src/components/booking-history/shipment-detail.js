@@ -9,7 +9,7 @@ class ShipmentDetail extends Component {
         super(props);
 
         this.state = {
-            dialogVisible: true,
+            dialogVisible: false,
             shipmentDetail: {},
             bookingDetailData: [],
             dimensionDTOList: [],
