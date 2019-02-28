@@ -1,5 +1,23 @@
-.el-input {
-  &.search-address-input {
-    width: 350px;
+@import '../../style/style';
+
+.address-book {
+  .el-input {
+    &.search-address-input {
+      width: 350px;
+    }
+  }
+  .action-button {
+    width: 65px;
+  }
+
+  .el-dialog__header {
+    margin-right: -1px;
+    padding: 10px 20px 10px;
+    background: $background-gradient;
+
+    .el-dialog__title,
+    .el-dialog__headerbtn .el-dialog__close {
+      color: white;
+    }
   }
 }

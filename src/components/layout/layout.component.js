@@ -18,7 +18,7 @@ class LayoutComponent extends Component {
                 <span className="float-right login-name">
                     Login as <span className="text-info">{UserInfoStorage.getUserEmail()}</span>
                 </span>
-                <div className="layout-content">
+                <div className="layout-content private">
                     {this.props.children}
                 </div>
                 <FooterComponent/>

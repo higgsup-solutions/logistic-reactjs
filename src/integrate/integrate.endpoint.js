@@ -5,12 +5,14 @@ export const LOGOUT = '/logout';
 export const REGISTER = '/auth/create';
 export const DASHBOARD = '/profile';
 export const BUY_SALE = '/school';
-export const GET_ADDRESS_BOOK = '/user/{userId}/addresses';
 export const LIST_CITY = '/countries/{id}/cities';
 export const LIST_CARRIER = '/carrier';
 export const LIST_DIMENSION = '/user/{userId}/dimensions?limit={amountLimited}';
 export const BOOKING_HISTORY_LIST = '/transaction/search';
-export const SAVE_ADDRESS = '/user/{userId}/addresses';
+export const GET_ADDRESS_LIST = '/user/{userId}/addresses';
+export const ADD_ADDRESS = '/user/{userId}/addresses';
+export const UPDATE_ADDRESS = '/user/{userId}/addresses/{addressId}';
+export const DELETE_ADDRESS = '/user/{userId}/addresses/{addressId}';
 export const QUOTE = '/carrier/{carrierId}/quote';
 export const CONFIRM_BOOKING = '/transaction/confirmBooking';
 
