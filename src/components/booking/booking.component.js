@@ -76,12 +76,14 @@ class Booking extends Component {
             package: {
                 shippingDate: new Date(),
                 carrierId: null,
+                carrierType: null,
                 serviceType: '1',
                 packageType: null,
                 contentType: 'Documents',
                 documentInfos: [
                     {
                         weights: null,
+                        type: '',
                         l: null,
                         w: null,
                         h: null,
@@ -101,40 +103,21 @@ class Booking extends Component {
     componentWillMount() {
         listDataSuggest().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.listData = res.data;
                 this.setState(newState);
             }
         });
-        listDataCity(this.state.sender.country.value).then(res => {
-            if (res.status == 'OK') {
-                let newState = this.state;
-                if (!res.data) {
-                    newState.listCitySender = [];
-                } else {
-                    newState.listCitySender = res.data;
-                }
-                this.setState(newState);
-            }
-        });
-        listDataCity(this.state.recipient.country.value).then(res => {
-            if (res.status == 'OK') {
-                let newState = this.state;
-                if (!res.data) {
-                    newState.listCityRecipient = [];
-                } else {
-                    newState.listCityRecipient = res.data;
-                }
-                this.setState(newState);
-            }
-        });
+        this.getListCity(this.state.sender.country.value, 'listCitySender');
+        this.getListCity(this.state.recipient.country.value, 'listCityRecipient');
         listCarrier().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.allCarrier = res.data;
                 newState.listCarrier.push(newState.allCarrier[0]);
                 newState.listCarrier.push(newState.allCarrier[1]);
                 newState.package.carrierId = newState.listCarrier[0].id;
+                newState.package.carrierType = newState.listCarrier[0].carrierType;
                 newState.listPackageType = newState.listCarrier[0].packageDTO;
                 newState.package.packageType = newState.listPackageType[0].id;
                 this.setState(newState);
@@ -142,8 +125,22 @@ class Booking extends Component {
         });
         listDimension().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.listDimension = res.data;
+                this.setState(newState);
+            }
+        });
+    }
+
+    getListCity(countryId, who) {
+        listDataCity(countryId).then(res => {
+            if (res.status == 'OK') {
+                let newState = Object.assign({}, this.state);
+                if (!res.data) {
+                    newState[who] = [];
+                } else {
+                    newState[who] = res.data;
+                }
                 this.setState(newState);
             }
         });
@@ -156,7 +153,7 @@ class Booking extends Component {
         if (inputName == 'postalCode' && processNumber.checkExistNotNumber(value)) {
             return;
         }
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < newState[`${who}Errors`].length; i++) {
             if (inputName == newState[`${who}Errors`][i]) {
                 newState[`${who}Errors`].splice(i, 1);
@@ -164,21 +161,17 @@ class Booking extends Component {
             }
         }
         if (inputName == 'country') {
+            let whichList = '';
+            if(who == 'sender') {
+                whichList = 'listCitySender';
+            } else {
+                whichList = 'listCityRecipient';
+            }
+            this.getListCity(value.value, whichList);
             newState[who].cityName = '';
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
-            newState.listCarrier = [];
-            if (value.value != 288) {
-                newState.listCarrier.push(newState.allCarrier[2]);
-                newState.listCarrier.push(newState.allCarrier[3]);
-            } else {
-                newState.listCarrier.push(newState.allCarrier[0]);
-                newState.listCarrier.push(newState.allCarrier[1]);
-            }
-            newState.package.carrierId = newState.listCarrier[0].id;
-            newState.listPackageType = newState.listCarrier[0].packageDTO;
-            newState.package.packageType = newState.listPackageType[0].id;
         }
         if (inputName == 'carrierId') {
             for (let i = 0; i < this.state.listCarrier.length; i++) {
@@ -190,11 +183,43 @@ class Booking extends Component {
             }
         }
         newState[who][inputName] = value;
+        if(inputName == 'country') {
+            newState.listCarrier = [];
+            if (this.getTypeCarrier(newState) == 'in') {
+                newState.listCarrier.push(newState.allCarrier[2]);
+                newState.listCarrier.push(newState.allCarrier[3]);
+            } else {
+                newState.listCarrier.push(newState.allCarrier[0]);
+                newState.listCarrier.push(newState.allCarrier[1]);
+            }
+            newState.package.carrierId = newState.listCarrier[0].id;
+            newState.package.carrierType = newState.listCarrier[0].carrierType;
+            newState.listPackageType = newState.listCarrier[0].packageDTO;
+            newState.package.packageType = newState.listPackageType[0].id;
+        }
         this.setState(newState);
     };
 
+    getTypeCarrier(newState) {
+        let result = 'in';
+        if(newState.sender.country.value == 288 && newState.recipient.country.value == 288) {
+            result = 'dos';
+        }
+        return result;
+    }
+
+    compareAddress() {
+        if(this.state.sender.country.value == this.state.recipient.country.value &&
+            this.state.sender.address1.trim().toLocaleLowerCase() == this.state.recipient.address1.trim().toLocaleLowerCase() &&
+            this.state.sender.cityName.trim().toLocaleLowerCase() == this.state.recipient.cityName.trim().toLocaleLowerCase() &&
+            this.state.sender.postalCode == this.state.recipient.postalCode)  {
+            return true;
+        }
+        return false;
+    }
+
     onContinueBooking = (e) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.whichButtonClick = 'continueBooking';
         this.setState(newState);
 
@@ -210,10 +235,10 @@ class Booking extends Component {
         });
         let pat = new RegExp(REGEX_EMAIL);
         let patPhone = new RegExp(REGEX_PHONE_NUMBER);
-        if (!pat.test(newState.sender.emailAddress)) {
+        if (newState.sender.emailAddress && !pat.test(newState.sender.emailAddress)) {
             newState.senderErrors.push('emailAddress');
         }
-        if (!pat.test(newState.recipient.emailAddress)) {
+        if (newState.recipient.emailAddress &&!pat.test(newState.recipient.emailAddress)) {
             newState.recipientErrors.push('emailAddress');
         }
         if (!newState.senderErrors.includes('phoneNumber') && !patPhone.test(newState.sender.phoneNumber)) {
@@ -271,8 +296,7 @@ class Booking extends Component {
                 errMessage.push(<div className="text-danger">Sender country or recipient country must is Viet
                     Nam</div>);
             }
-            if (`${this.state.sender.countryId}@${this.state.sender.address1}@${this.state.sender.cityId}@${this.state.sender.postalCode}`
-                == `${this.state.recipient.countryId}@${this.state.recipient.address1}@${this.state.recipient.cityId}@${this.state.recipient.postalCode}`) {
+            if (this.compareAddress()) {
                 errMessage.push(<div className="text-danger">Sender address and Recipient address must is not
                     same</div>);
             }
@@ -316,6 +340,7 @@ class Booking extends Component {
         }
         const data = {
             carrierId: this.state.package.carrierId,
+            carrierType: this.state.package.carrierType,
             contentType: this.state.package.contentType,
             countryId: 288,
             dangerousGoods: this.state.package.dangerousGoods,
@@ -324,9 +349,9 @@ class Booking extends Component {
             recipientCityName: this.state.sender.cityName,
             senderCityName: this.state.recipient.cityName
         };
-        quote(data).then(res => {
+        quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.quote.baseCharge = res.data.baseCharge;
                 newState.quote.fuelSurcharge = res.data.fuelSurcharge;
                 newState.quote.totalWeight = res.data.totalWeight;
@@ -339,8 +364,14 @@ class Booking extends Component {
                                 data: {
                                     sender: this.state.sender,
                                     recipient: this.state.recipient,
-                                    package: this.state.package,
-                                    chargeInfo: res.data
+                                    package: {
+                                        ...this.state.package,
+                                        packageTypeName: this.state.listPackageType
+                                            .filter(item => item.id === this.state.package.packageType)
+                                            .map(item => item.packageType)
+                                    },
+                                    chargeInfo: res.data,
+                                    quoteRequest: data
                                 }
                             }
                         }
@@ -367,7 +398,7 @@ class Booking extends Component {
     }
 
     checkError(formError, field, listError) {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         if (!this.state[formError][field]) {
             newState[listError].push(field);
         }
@@ -375,7 +406,7 @@ class Booking extends Component {
     }
 
     checkErrorDimension() {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.package.documentInfos.length; i++) {
             let item = [];
             for (let dimension in this.state.package.documentInfos[i]) {
@@ -390,7 +421,7 @@ class Booking extends Component {
 
     onSelectCity = (who) => (id) => {
         const list = `listCity${who.charAt(0).toUpperCase() + who.slice(1)}`;
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state[list].length; i++) {
             if (id == this.state[list][i].id) {
                 newState[who].cityId = this.state[list][i].id;
@@ -410,7 +441,7 @@ class Booking extends Component {
     };
 
     onSelectAuto = (who) => (id) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.listData.length; i++) {
             if (this.state.listData[i].id == id) {
                 newState[who].company = this.state.listData[i].company;
@@ -435,9 +466,10 @@ class Booking extends Component {
     };
 
     onChangeDimension = (index, value) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.listDimension.length; i++) {
             if (value == this.state.listDimension[i].id) {
+                newState.package.documentInfos[index].type = value;
                 newState.package.documentInfos[index].l = this.state.listDimension[i].length;
                 newState.package.documentInfos[index].w = this.state.listDimension[i].width;
                 newState.package.documentInfos[index].h = this.state.listDimension[i].height;
@@ -451,7 +483,7 @@ class Booking extends Component {
         if (processNumber.checkExistNotNumberFloat(value)) {
             return;
         }
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos[index][field] = value;
         for (let i = 0; i < newState.packageErrors[index].length; i++) {
             if (field == newState.packageErrors[index][i]) {
@@ -463,9 +495,10 @@ class Booking extends Component {
     };
 
     onAddPiece = () => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos.push({
             weights: null,
+            type: '',
             l: null,
             w: null,
             h: null,
@@ -476,14 +509,14 @@ class Booking extends Component {
     };
 
     onDeleteRowDocument = (index) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos.splice(index, 1);
         newState.packageErrors.splice(index, 1);
         this.setState(newState);
     };
 
     onQuote = (e) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.whichButtonClick = 'quote';
         this.setState(newState);
 
@@ -529,7 +562,7 @@ class Booking extends Component {
     };
 
     onCloseQuote = () => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.showQuote = false;
         this.setState(newState);
     };
@@ -549,6 +582,8 @@ class Booking extends Component {
                                        selectCompany={this.onSelectAuto('sender')}
                                        fieldErrors={this.state.senderErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
                         <SenderAddress data={this.state.listData}
                                        listCity={this.state.listCityRecipient}
                                        form={this.state.recipient}
@@ -559,7 +594,7 @@ class Booking extends Component {
                                        fieldErrors={this.state.recipientErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </div>
-                    <div className="col-sm-12 col-md-6">
+                    <div className="col-12 mt-4">
                         <PackageShipment form={this.state.package}
                                          listCarrier={this.state.listCarrier}
                                          listPackageType={this.state.listPackageType}
@@ -571,7 +606,7 @@ class Booking extends Component {
                                          changeDimension={this.onChangeDimension}
                                          changeRowDimension={this.onChangeRowDimension}
                                          changeField={this.onChangeFieldInput('package')}/>
-                        <div className="text-right pr-3">
+                        <div className="text-right pr-3 pt-3">
                             <Button type="primary" onClick={this.onQuote}><FormattedMessage
                                 id='booking.quote'/></Button>
                             <Button type="primary" onClick={this.onContinueBooking}><FormattedMessage

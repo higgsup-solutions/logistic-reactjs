@@ -1,5 +1,5 @@
 import integrate from './integrate';
-import {LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, ADD_ADDRESS, GET_ADDRESS_LIST} from "./integrate.endpoint";
+import {LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, ADD_ADDRESS, GET_ADDRESS_LIST, CONFIRM_BOOKING} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 import UserInfoStorage from "../utils/user-info";
 
@@ -36,10 +36,18 @@ export const saveAddressToBook = (data) => {
     });
 };
 
-export const quote = (data) => {
+export const quote = (carrierId, data) => {
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(QUOTE),
+        url: processString.parseUrl(QUOTE, {carrierId}),
         method: 'POST',
         data: data
     });
+};
+
+export const confirmBooking = data => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(CONFIRM_BOOKING),
+        method: 'POST',
+        data: data
+    })
 };

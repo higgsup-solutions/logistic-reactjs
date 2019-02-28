@@ -16,6 +16,7 @@
       border-radius: 4px;
       z-index: 9;
       padding-top: 6px;
+      padding-left: 20px;
       i{
         color: #bfcbd9;
         font-size: 20px;
@@ -31,7 +32,6 @@
 }
 .table-wrap{
   width: 100%;
-  overflow: auto;
   position: relative;
   .cover{
     position: absolute;
