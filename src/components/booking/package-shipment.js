@@ -97,7 +97,8 @@ class PackageShipment extends Component {
                     <div className="row mb-3 pl-3">
                         <div className="col-xs-12 text-left">
                             <div className="label"><FormattedMessage id='booking.shippingDate'/></div>
-                            <DatePicker disabledDate={time => time.getTime() < Date.now() - 8.64e7}
+                            <DatePicker value={this.props.form.shippingDate}
+                                        disabledDate={time => time.getTime() < Date.now() - 8.64e7}
                                         onChange={this.onChangeShippingDate}
                                         placeholder={this.props.intl.formatMessage({id: 'booking.chooseOneShippingDate'})}
                             />
