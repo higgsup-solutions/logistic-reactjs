@@ -6,6 +6,7 @@ import Select from 'react-select';
 import {listDataCity} from "../../integrate/booking";
 import {addAddress, updateAddress} from "../../integrate/address-book";
 import {FormattedMessage, injectIntl} from "react-intl";
+import {REGEX_PHONE_NUMBER} from "../../App.constant";
 
 class AddEditAddressBook extends Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class AddEditAddressBook extends Component {
                         {
                             validator: (rule, value, callback) => {
                                 setTimeout(() => {
-                                    if (!/^[+]*\d+$/.test(value)) {
+                                    if (!REGEX_PHONE_NUMBER.test(value)) {
                                         callback(new Error(this.props.intl.formatMessage({id: 'ab.addEdit.validation.phoneNumber.invalid'})));
                                     } else {
                                         callback();
