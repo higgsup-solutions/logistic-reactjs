@@ -5,6 +5,7 @@ import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
 import {listDataCity} from "../../integrate/booking";
 import {addAddress, updateAddress} from "../../integrate/address-book";
+import {FormattedMessage, injectIntl} from "react-intl";
 
 class AddEditAddressBook extends Component {
     constructor(props) {
@@ -16,35 +17,35 @@ class AddEditAddressBook extends Component {
                     contactName: [
                         {
                             required: true,
-                            message: "Contact name is required",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.contactName.required'}),
                             trigger: 'change'
                         }
                     ],
                     address1: [
                         {
                             required: true,
-                            message: "Address is required",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.address.required'}),
                             trigger: 'change'
                         }
                     ],
                     countryName: [
                         {
                             required: true,
-                            message: "Country is required",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.country.required'}),
                             trigger: 'change'
                         }
                     ],
                     phoneNumber: [
                         {
                             required: true,
-                            message: "Phone number is required",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.phoneNumber.required'}),
                             trigger: 'change'
                         },
                         {
                             validator: (rule, value, callback) => {
                                 setTimeout(() => {
                                     if (!/^[+]*\d+$/.test(value)) {
-                                        callback(new Error('Invalid phone number'));
+                                        callback(new Error(this.props.intl.formatMessage({id: 'ab.addEdit.validation.phoneNumber.invalid'})));
                                     } else {
                                         callback();
                                     }
@@ -55,14 +56,14 @@ class AddEditAddressBook extends Component {
                     email: [
                         {
                             type: 'email',
-                            message: "Email is invalid",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.email.invalid'}),
                             trigger: 'blur'
                         }
                     ],
                     cityName: [
                         {
                             required: true,
-                            message: "City is required",
+                            message: this.props.intl.formatMessage({id: 'ab.addEdit.validation.city.required'}),
                             trigger: 'change'
                         }
                     ],
@@ -167,7 +168,11 @@ class AddEditAddressBook extends Component {
         return (
             <Dialog
                 visible={this.props.visible}
-                title={this.state.mode === 'add' ? "Add Address" : "Edit Address"}
+                title={
+                    this.state.mode === 'add' ?
+                        this.props.intl.formatMessage({id: 'ab.add.title'}) :
+                        this.props.intl.formatMessage({id: 'ab.edit.title'})
+                }
                 onCancel={ this.props.onCancel }>
                 <Dialog.Body>
                     <Form ref="addressForm"
@@ -176,7 +181,7 @@ class AddEditAddressBook extends Component {
                         <Layout.Row gutter="20">
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Contact"
+                                    label={this.props.intl.formatMessage({id: 'ab.contactName'})}
                                     prop="contactName">
                                     <Input
                                         value={this.state.addressData.contactName}
@@ -185,7 +190,7 @@ class AddEditAddressBook extends Component {
                             </Layout.Col>
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="State/Province"
+                                    label={this.props.intl.formatMessage({id: 'ab.stateProvince'})}
                                     prop="stateProvince">
                                     <Input
                                         value={this.state.addressData.stateProvince}
@@ -195,7 +200,7 @@ class AddEditAddressBook extends Component {
 
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Company"
+                                    label={this.props.intl.formatMessage({id: 'ab.company'})}
                                     prop="company">
                                     <Input
                                         value={this.state.addressData.company}
@@ -204,7 +209,7 @@ class AddEditAddressBook extends Component {
                             </Layout.Col>
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Postal Code"
+                                    label={this.props.intl.formatMessage({id: 'ab.postalCode'})}
                                     prop="postalCode">
                                     <Input
                                         value={this.state.addressData.postalCode}
@@ -214,7 +219,7 @@ class AddEditAddressBook extends Component {
 
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Address"
+                                    label={this.props.intl.formatMessage({id: 'ab.address1'})}
                                     prop="address1">
                                     <Input
                                         value={this.state.addressData.address1}
@@ -223,7 +228,7 @@ class AddEditAddressBook extends Component {
                             </Layout.Col>
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Address 2"
+                                    label={this.props.intl.formatMessage({id: 'ab.address2'})}
                                     prop="address2">
                                     <Input
                                         value={this.state.addressData.address2}
@@ -233,7 +238,7 @@ class AddEditAddressBook extends Component {
 
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Phone"
+                                    label={this.props.intl.formatMessage({id: 'ab.phoneNumber'})}
                                     prop="phoneNumber">
                                     <Input
                                         value={this.state.addressData.phoneNumber}
@@ -242,7 +247,7 @@ class AddEditAddressBook extends Component {
                             </Layout.Col>
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Email"
+                                    label={this.props.intl.formatMessage({id: 'ab.email'})}
                                     prop="email">
                                     <Input
                                         value={this.state.addressData.email}
@@ -252,7 +257,7 @@ class AddEditAddressBook extends Component {
 
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="Country"
+                                    label={this.props.intl.formatMessage({id: 'ab.countryName'})}
                                     prop="countryName">
                                     <Select
                                         value={
@@ -267,7 +272,7 @@ class AddEditAddressBook extends Component {
                             </Layout.Col>
                             <Layout.Col span="12">
                                 <Form.Item
-                                    label="City"
+                                    label={this.props.intl.formatMessage({id: 'ab.cityName'})}
                                     prop="cityName">
                                     <Select
                                         value={
@@ -285,12 +290,16 @@ class AddEditAddressBook extends Component {
                 </Dialog.Body>
 
                 <Dialog.Footer className="dialog-footer">
-                    <Button onClick={ this.props.onCancel }>Cancel</Button>
-                    <Button onClick={ this.saveAddress } type="primary" >Save</Button>
+                    <Button onClick={ this.props.onCancel }>
+                        <FormattedMessage id="cancel"/>
+                    </Button>
+                    <Button onClick={ this.saveAddress } type="primary" >
+                        <FormattedMessage id="save"/>
+                    </Button>
                 </Dialog.Footer>
             </Dialog>
         );
     }
 }
 
-export default AddEditAddressBook;
+export default injectIntl(AddEditAddressBook);
