@@ -12,3 +12,4 @@ export const LIST_DIMENSION = '/user/{userId}/dimensions?limit={amountLimited}';
 export const BOOKING_HISTORY_LIST = '/transaction/search';
 export const SAVE_ADDRESS = '/user/{userId}/addresses';
 export const QUOTE = '/carrier/{carrierId}/quote';
+export const CONFIRM_BOOKING = '/transaction/confirmBooking';
