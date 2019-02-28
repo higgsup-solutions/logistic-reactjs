@@ -3,6 +3,7 @@ import {
     USER,
     CHANGE_PASSWORD,
     DIMENSION_LIST,
+    DIMENSION_MODIFY,
     DIMENSION
 } from "./integrate.endpoint";
 import {processString} from "../utils/string";
@@ -38,8 +39,31 @@ export const deleteDimensionList = (dimensionId) => {
         dimensionId
     };
     return integrate.makeAuthRequest({
-        url: processString.parseUrl(DIMENSION, params),
+        url: processString.parseUrl(DIMENSION_MODIFY, params),
         method: 'DELETE'
+    });
+};
+
+export const addDimension = (data) => {
+    const params = {
+        userId: UserInfoStorage.getUserId(),
+    };
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(DIMENSION, params),
+        method: 'POST',
+        data
+    });
+};
+
+export const updateDimension = (dimensionId, data) => {
+    const params = {
+        userId: UserInfoStorage.getUserId(),
+        dimensionId
+    };
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(DIMENSION_MODIFY, params),
+        method: 'PUT',
+        data
     });
 };
 

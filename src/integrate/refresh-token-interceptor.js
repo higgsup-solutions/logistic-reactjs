@@ -50,7 +50,7 @@ function createAuthRefreshInterceptor (axios, options = {}) {
             axios.interceptors.request.eject(requestQueueInterceptorId);
 
             const data = error.response.data || null;
-            if (data && data.errorCode == 10 && data.status == 401) {
+            if (data && data.errorCode === 10 && data.status === 401) {
                 Notification.error({
                     title: 'Error',
                     message: 'Session timeout, please login to application!'

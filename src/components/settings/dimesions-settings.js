@@ -6,6 +6,7 @@ import {
     deleteDimensionList
 } from "../../integrate/settings";
 import DimensionDetails from "./dimension-details";
+import {MODIFY_MODE} from "../../App.constant";
 
 class DimensionsSettings extends Component {
 
@@ -37,7 +38,8 @@ class DimensionsSettings extends Component {
             ],
             data: [],
             selectedItem: {},
-            isClickItem: false
+            isClickItem: false,
+            mode: MODIFY_MODE.ADD_MODE
         }
     }
 
@@ -54,20 +56,26 @@ class DimensionsSettings extends Component {
     }
 
     onAddDimension() {
-        console.log('Add Dimension');
         this.setState({
-            isClickItem: true
+            isClickItem: true,
+            mode: MODIFY_MODE.ADD_MODE
         })
     }
 
     onEditDimension() {
-        console.log('Edit Dimension');
         this.setState({
-            isClickItem: true
+            isClickItem: true,
+            mode: MODIFY_MODE.EDIT_MODE
         })
     }
 
-    onCloseDimensionDetails() {
+    onCloseDimensionDetails({isUpdatedDimensionList}) {
+        // Update List
+        if (isUpdatedDimensionList) {
+            this.fetchDimensionList()
+        }
+
+        // Close Dialog
         this.setState({
             isClickItem: false
         });
@@ -150,6 +158,7 @@ class DimensionsSettings extends Component {
                     <DimensionDetails
                         data={this.state.selectedItem}
                         isClickItem={this.state.isClickItem}
+                        mode={this.state.mode}
                         onCloseDimensionDetail={this.onCloseDimensionDetails.bind(this)}
                     />
                 </div>

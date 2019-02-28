@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {FormattedMessage, injectIntl} from "react-intl";
-import {Dialog, Button, Layout, Input} from "element-react";
-import dateUtil from "../../utils/datetime";
+import {Dialog, Button, Input, Notification} from "element-react";
+import {MODIFY_MODE} from "../../App.constant";
+import {addDimension, updateDimension} from "../../integrate/settings";
 
 class DimensionDetails extends Component {
 
@@ -9,7 +10,8 @@ class DimensionDetails extends Component {
         super(props);
 
         this.state = {
-            dialogVisible: true,
+            mode: MODIFY_MODE.ADD_MODE,
+            dialogVisible: false,
             dimensionItem: {
                 name: '',
                 weight: '',
@@ -17,19 +19,26 @@ class DimensionDetails extends Component {
                 length: '',
                 height: '',
                 comment: ''
-            },
-            shipmentDetail: {},
-            bookingDetailData: [],
-            dimensionDTOList: [],
-            addressData: [],
-            quoteDetailData: []
+            }
         }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        const {data, isClickItem} = nextProps;
+        const {data, isClickItem, mode} = nextProps;
         if (isClickItem && data) {
-            this.collectDataFromSelectedItem(data)
+            let newState = {
+                mode,
+                dialogVisible: true,
+            };
+
+            // if edit mode => set data item
+            if (mode === MODIFY_MODE.EDIT_MODE) {
+                newState = {
+                    ...newState,
+                    dimensionItem: {...data}    // prevent ref
+                }
+            }
+            this.setState(newState);
         } else {
             this.setState({
                 dialogVisible: false
@@ -43,25 +52,67 @@ class DimensionDetails extends Component {
         this.setState(newState);
     };
 
-    collectDataFromSelectedItem(data) {
+    onDialogDismiss = (isUpdatedDimensionList = false) => {
         this.setState({
-            dialogVisible: true,
-            dimensionItem: data
-        })
-    }
+            dimensionItem: {
+                name: '',
+                weight: '',
+                width: '',
+                length: '',
+                height: '',
+                comment: ''
+            }
+        });
+        this.props.onCloseDimensionDetail({isUpdatedDimensionList})
+    };
 
-    onDialogDismiss() {
-        this.props.onCloseDimensionDetail()
+    onClickSaveBtn() {
+        console.log(this.state.mode);
+        if (this.state.mode === MODIFY_MODE.ADD_MODE) {
+            addDimension(this.state.dimensionItem)
+                .then(res => {
+                    if (res.status === 'OK') {
+                        Notification.success({
+                            title: 'Success',
+                            message: this.props.intl.formatMessage({id: 'settings.dimensions.addSuccess'})
+                        });
+                        // close dialog and reload list
+                        this.onDialogDismiss(true)
+                    } else {
+                        Notification.error({
+                            title: 'Error',
+                            message: res.messageString
+                        });
+                    }
+                })
+        } else {
+            updateDimension(this.state.dimensionItem.id, this.state.dimensionItem)
+                .then(res => {
+                    if (res.status === 'OK') {
+                        Notification.success({
+                            title: 'Success',
+                            message: this.props.intl.formatMessage({id: 'settings.dimensions.editSuccess'})
+                        });
+                        // close dialog and reload list
+                        this.onDialogDismiss(true)
+                    } else {
+                        Notification.error({
+                            title: 'Error',
+                            message: res.messageString
+                        });
+                    }
+                })
+        }
     }
 
     render() {
         return (
             <div className="text-left shipment-detail-container">
                 <Dialog
-                    title={this.props.intl.formatMessage({id: 'settings.dimensions.editDimensions'})}
+                    title={this.props.intl.formatMessage({id: 'settings.dimensions.addDimension'})}
                     size="tiny"
                     visible={this.state.dialogVisible}
-                    onCancel={this.onDialogDismiss.bind(this)}
+                    onCancel={() => this.onDialogDismiss()}
                     lockScroll={false}>
                     <Dialog.Body>
                         <div className="row">
@@ -120,9 +171,13 @@ class DimensionDetails extends Component {
 
                     </Dialog.Body>
                     <Dialog.Footer className="dialog-footer">
-                        <Button onClick={this.onDialogDismiss.bind(this)}
+                        <Button onClick={this.onClickSaveBtn.bind(this)}
                                 type="primary">
-                            <FormattedMessage id='close'/>
+                            <FormattedMessage id='save'/>
+                        </Button>
+                        <Button onClick={() => this.onDialogDismiss()}
+                                type="primary">
+                            <FormattedMessage id='cancel'/>
                         </Button>
                     </Dialog.Footer>
                 </Dialog>
