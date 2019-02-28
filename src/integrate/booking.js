@@ -1,5 +1,13 @@
 import integrate from './integrate';
-import {LIST_CARRIER, LIST_CITY, LIST_DIMENSION, QUOTE, ADD_ADDRESS, GET_ADDRESS_LIST, CONFIRM_BOOKING} from "./integrate.endpoint";
+import {
+    ADD_ADDRESS,
+    CONFIRM_BOOKING,
+    GET_ADDRESS_LIST,
+    LIST_CARRIER,
+    LIST_CITY,
+    LIST_DIMENSION,
+    QUOTE
+} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 import UserInfoStorage from "../utils/user-info";
 
