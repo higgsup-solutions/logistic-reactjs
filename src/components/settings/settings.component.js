@@ -5,6 +5,7 @@ import UserSettings from "./user-settings";
 import AddressDefaultSettings from "./address-default-settings";
 import './settings.scss';
 import ChangePassword from "./change-password";
+import DimensionsSettings from "./dimesions-settings";
 
 class Settings extends Component {
 
@@ -21,7 +22,7 @@ class Settings extends Component {
                                       <FormattedMessage id='settings.title'/>
                                   </div>
                               }>
-                            <Tabs type="card" value="user-setting">
+                            <Tabs type="card" value="dimensions">
                                 <Tabs.Pane
                                     name="user-setting"
                                     label={
@@ -59,7 +60,7 @@ class Settings extends Component {
                                     label={
                                         this.props.intl.formatMessage({id: 'settings.tab.dimensions'}).toUpperCase()
                                     }>
-                                    User
+                                    <DimensionsSettings/>
                                 </Tabs.Pane>
                             </Tabs>
                         </Card>

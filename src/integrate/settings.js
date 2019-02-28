@@ -1,5 +1,10 @@
 import integrate from './integrate';
-import {USER, CHANGE_PASSWORD} from "./integrate.endpoint";
+import {
+    USER,
+    CHANGE_PASSWORD,
+    DIMENSION_LIST,
+    DIMENSION
+} from "./integrate.endpoint";
 import {processString} from "../utils/string";
 import UserInfoStorage from "../utils/user-info";
 
@@ -20,7 +25,23 @@ export const updateUserInfo = (data) => {
 };
 
 // Address default
+export const getDimensionList = () => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(DIMENSION_LIST, {userId: UserInfoStorage.getUserId()}),
+        method: 'GET'
+    });
+};
 
+export const deleteDimensionList = (dimensionId) => {
+    const params = {
+        userId: UserInfoStorage.getUserId(),
+        dimensionId
+    };
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(DIMENSION, params),
+        method: 'DELETE'
+    });
+};
 
 // Change password
 export const changePassword = (data) => {

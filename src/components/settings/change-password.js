@@ -113,7 +113,7 @@ class ChangePassword extends Component {
                                 <div><FormattedMessage id='settings.changePass.note'/>:</div>
                                 <div><FormattedMessage id='settings.changePass.noteDes'/></div>
                             </div>
-                            <div className="row mb-4">
+                            <div className="row">
                                 <div className="col-md-12">
                                     <div className="label">
                                         <FormattedMessage id='settings.changePass.oldPass'/>
