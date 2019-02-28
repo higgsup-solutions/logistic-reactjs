@@ -24,7 +24,6 @@ class RemoveAddressBook extends Component {
                 <Dialog
                     title="Delete address"
                     size="tiny"
-
                     visible={ this.props.visible }
                     onCancel={ this.props.onCancel }
                 >
