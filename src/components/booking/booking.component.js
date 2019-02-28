@@ -172,18 +172,6 @@ class Booking extends Component {
             newState[who].cityId = -1;
             newState[who].postalCode = '';
             newState[who].stateProvince = '';
-            newState.listCarrier = [];
-            if (this.getTypeCarrier(who, value.value) == 'in') {
-                newState.listCarrier.push(newState.allCarrier[2]);
-                newState.listCarrier.push(newState.allCarrier[3]);
-            } else {
-                newState.listCarrier.push(newState.allCarrier[0]);
-                newState.listCarrier.push(newState.allCarrier[1]);
-            }
-            newState.package.carrierId = newState.listCarrier[0].id;
-            newState.package.carrierType = newState.listCarrier[0].carrierType;
-            newState.listPackageType = newState.listCarrier[0].packageDTO;
-            newState.package.packageType = newState.listPackageType[0].id;
         }
         if (inputName == 'carrierId') {
             for (let i = 0; i < this.state.listCarrier.length; i++) {
@@ -195,20 +183,27 @@ class Booking extends Component {
             }
         }
         newState[who][inputName] = value;
+        if(inputName == 'country') {
+            newState.listCarrier = [];
+            if (this.getTypeCarrier(newState) == 'in') {
+                newState.listCarrier.push(newState.allCarrier[2]);
+                newState.listCarrier.push(newState.allCarrier[3]);
+            } else {
+                newState.listCarrier.push(newState.allCarrier[0]);
+                newState.listCarrier.push(newState.allCarrier[1]);
+            }
+            newState.package.carrierId = newState.listCarrier[0].id;
+            newState.package.carrierType = newState.listCarrier[0].carrierType;
+            newState.listPackageType = newState.listCarrier[0].packageDTO;
+            newState.package.packageType = newState.listPackageType[0].id;
+        }
         this.setState(newState);
     };
 
-    getTypeCarrier(who, value) {
+    getTypeCarrier(newState) {
         let result = 'in';
-        if(who == 'sender') {
-            if(value == 288 && this.state.recipient.country.value == 288) {
-                result = 'dos';
-            }
-        }
-        if(who == 'recipient') {
-            if(value == 288 && this.state.sender.country.value == 288) {
-                result = 'dos';
-            }
+        if(newState.sender.country.value == 288 && newState.recipient.country.value == 288) {
+            result = 'dos';
         }
         return result;
     }
