@@ -103,7 +103,7 @@ class Booking extends Component {
     componentWillMount() {
         listDataSuggest().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.listData = res.data;
                 this.setState(newState);
             }
@@ -112,7 +112,7 @@ class Booking extends Component {
         this.getListCity(this.state.recipient.country.value, 'listCityRecipient');
         listCarrier().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.allCarrier = res.data;
                 newState.listCarrier.push(newState.allCarrier[0]);
                 newState.listCarrier.push(newState.allCarrier[1]);
@@ -125,7 +125,7 @@ class Booking extends Component {
         });
         listDimension().then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.listDimension = res.data;
                 this.setState(newState);
             }
@@ -135,7 +135,7 @@ class Booking extends Component {
     getListCity(countryId, who) {
         listDataCity(countryId).then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 if (!res.data) {
                     newState[who] = [];
                 } else {
@@ -153,7 +153,7 @@ class Booking extends Component {
         if (inputName == 'postalCode' && processNumber.checkExistNotNumber(value)) {
             return;
         }
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < newState[`${who}Errors`].length; i++) {
             if (inputName == newState[`${who}Errors`][i]) {
                 newState[`${who}Errors`].splice(i, 1);
@@ -224,7 +224,7 @@ class Booking extends Component {
     }
 
     onContinueBooking = (e) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.whichButtonClick = 'continueBooking';
         this.setState(newState);
 
@@ -356,7 +356,7 @@ class Booking extends Component {
         };
         quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
-                let newState = this.state;
+                let newState = Object.assign({}, this.state);
                 newState.quote.baseCharge = res.data.baseCharge;
                 newState.quote.fuelSurcharge = res.data.fuelSurcharge;
                 newState.quote.totalWeight = res.data.totalWeight;
@@ -403,7 +403,7 @@ class Booking extends Component {
     }
 
     checkError(formError, field, listError) {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         if (!this.state[formError][field]) {
             newState[listError].push(field);
         }
@@ -411,7 +411,7 @@ class Booking extends Component {
     }
 
     checkErrorDimension() {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.package.documentInfos.length; i++) {
             let item = [];
             for (let dimension in this.state.package.documentInfos[i]) {
@@ -426,7 +426,7 @@ class Booking extends Component {
 
     onSelectCity = (who) => (id) => {
         const list = `listCity${who.charAt(0).toUpperCase() + who.slice(1)}`;
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state[list].length; i++) {
             if (id == this.state[list][i].id) {
                 newState[who].cityId = this.state[list][i].id;
@@ -446,7 +446,7 @@ class Booking extends Component {
     };
 
     onSelectAuto = (who) => (id) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.listData.length; i++) {
             if (this.state.listData[i].id == id) {
                 newState[who].company = this.state.listData[i].company;
@@ -471,7 +471,7 @@ class Booking extends Component {
     };
 
     onChangeDimension = (index, value) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.listDimension.length; i++) {
             if (value == this.state.listDimension[i].id) {
                 newState.package.documentInfos[index].type = value;
@@ -488,7 +488,7 @@ class Booking extends Component {
         if (processNumber.checkExistNotNumberFloat(value)) {
             return;
         }
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos[index][field] = value;
         for (let i = 0; i < newState.packageErrors[index].length; i++) {
             if (field == newState.packageErrors[index][i]) {
@@ -500,7 +500,7 @@ class Booking extends Component {
     };
 
     onAddPiece = () => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos.push({
             weights: null,
             type: '',
@@ -514,14 +514,14 @@ class Booking extends Component {
     };
 
     onDeleteRowDocument = (index) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.package.documentInfos.splice(index, 1);
         newState.packageErrors.splice(index, 1);
         this.setState(newState);
     };
 
     onQuote = (e) => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.whichButtonClick = 'quote';
         this.setState(newState);
 
@@ -567,7 +567,7 @@ class Booking extends Component {
     };
 
     onCloseQuote = () => {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         newState.showQuote = false;
         this.setState(newState);
     };
