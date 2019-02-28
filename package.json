@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "http://192.168.1.10:8088/logistic",
+  "homepage": "http://192.168.1.10:8088/logistic",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "axios": "^0.18.0",

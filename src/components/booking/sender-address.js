@@ -15,7 +15,7 @@ class SenderAddress extends Component {
     }
 
     componentWillMount() {
-        let newState = this.state;
+        let newState = Object.assign({}, this.state);
         for (let i = 0; i < LIST_COUNTRY.length; i++) {
             newState.listCountry.push({
                 value: LIST_COUNTRY[i].id, label: LIST_COUNTRY[i].country_name

@@ -13,7 +13,9 @@ class PublicLayoutComponent extends Component {
         return (
             <div>
                 <PublicHeaderComponent pathname={this.props.location.pathname}/>
-                {this.props.children}
+                <div className="layout-content public">
+                    {this.props.children}
+                </div>
                 <PublicFooterComponent/>
             </div>
         );
