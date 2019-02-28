@@ -79,7 +79,7 @@ class LoginComponent extends Component {
     render() {
 
         return (
-            <Card className="login-container mb-5 box-card">
+            <Card className="login-container">
                 <h3 className="pb-4">
                     <FormattedMessage id="login"/>
                 </h3>

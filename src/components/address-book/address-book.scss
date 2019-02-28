@@ -1,5 +1,10 @@
-.el-input {
-  &.search-address-input {
-    width: 350px;
+.address-book {
+  .el-input {
+    &.search-address-input {
+      width: 350px;
+    }
+  }
+  .action-button {
+    width: 65px;
   }
 }

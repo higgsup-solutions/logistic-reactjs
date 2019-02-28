@@ -65,7 +65,7 @@ class RegisterComponent extends Component {
 
     render() {
         return (
-            <Card className="register-container mb-5">
+            <Card className="register-container">
                 <h3 className="pb-4">
                     <FormattedMessage id="register"/>
                 </h3>

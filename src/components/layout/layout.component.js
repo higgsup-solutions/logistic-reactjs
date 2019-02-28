@@ -14,7 +14,7 @@ class LayoutComponent extends Component {
         return (
             <div>
                 <Header pathname={this.props.location.pathname}/>
-                <div className="layout-content">
+                <div className="layout-content private">
                     {this.props.children}
                 </div>
                 <FooterComponent/>

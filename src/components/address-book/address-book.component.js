@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Button, Card, Form, Input, Pagination, Table} from 'element-react';
+import {Button, Card, Form, Input, Layout, Pagination, Table} from 'element-react';
 import './address-book.scss';
 import {getAddressBook} from "../../integrate/address-book";
 import {FormattedMessage, injectIntl} from "react-intl";
+import AddEditAddressBook from "./add-edit-address-book.component";
 
 class AddressBook extends Component {
 
@@ -59,7 +60,14 @@ class AddressBook extends Component {
                 pageSize: 10,
                 currentPage: 1,
                 data: []
-            }
+            },
+
+            addEditForm: {
+                show: false,
+                mode: '' // 'add' or 'edit'
+            },
+
+            selectedAddress: null
         }
     }
 
@@ -78,22 +86,10 @@ class AddressBook extends Component {
         });
     }
 
-    onSearch = e => {
+    search = e => {
         e.preventDefault();
 
-        let searchTermLowercase = this.state.searchForm.searchTerm.toLowerCase();
-        let filteredAddressBook = this.state.addressBook.filter(
-            item => (item.contactName != null && item.contactName.toLowerCase().includes(searchTermLowercase)) ||
-                (item.company != null && item.company.toLowerCase().includes(searchTermLowercase)) ||
-                (item.address1 != null && item.address1.toLowerCase().includes(searchTermLowercase)) ||
-                (item.address2 != null && item.address2.toLowerCase().includes(searchTermLowercase)) ||
-                (item.cityName != null && item.cityName.toLowerCase().includes(searchTermLowercase)) ||
-                (item.stateProvince != null && item.stateProvince.toLowerCase().includes(searchTermLowercase)) ||
-                (item.postalCode != null && item.postalCode.toLowerCase().includes(searchTermLowercase)) ||
-                (item.countryName != null && item.countryName.toLowerCase().includes(searchTermLowercase)) ||
-                (item.phoneNumber != null && item.phoneNumber.toLowerCase().includes(searchTermLowercase))
-        );
-
+        let filteredAddressBook = this.state.addressBook.filter(item => this.isItemMatchingFilter(item));
         this.setState(
             Object.assign({},
                 this.state,
@@ -101,6 +97,19 @@ class AddressBook extends Component {
             () => this.goToPage(1)
         );
     };
+
+    isItemMatchingFilter(item) {
+        let searchTermLowercase = this.state.searchForm.searchTerm.toLowerCase();
+        return (item.contactName != null && item.contactName.toLowerCase().includes(searchTermLowercase)) ||
+            (item.company != null && item.company.toLowerCase().includes(searchTermLowercase)) ||
+            (item.address1 != null && item.address1.toLowerCase().includes(searchTermLowercase)) ||
+            (item.address2 != null && item.address2.toLowerCase().includes(searchTermLowercase)) ||
+            (item.cityName != null && item.cityName.toLowerCase().includes(searchTermLowercase)) ||
+            (item.stateProvince != null && item.stateProvince.toLowerCase().includes(searchTermLowercase)) ||
+            (item.postalCode != null && item.postalCode.toLowerCase().includes(searchTermLowercase)) ||
+            (item.countryName != null && item.countryName.toLowerCase().includes(searchTermLowercase)) ||
+            (item.phoneNumber != null && item.phoneNumber.toLowerCase().includes(searchTermLowercase));
+    }
 
     goToPage = pageIndex => {
         let start = (pageIndex - 1) * this.state.pagination.pageSize;
@@ -122,44 +131,138 @@ class AddressBook extends Component {
         );
     };
 
+    changeSelectedAddress = (newAddress) => {
+        this.setState(
+            Object.assign({}, this.state, {selectedAddress: newAddress})
+        );
+    };
+
+    openAddEditForm = (mode) => {
+        this.setState(
+            Object.assign({},
+                this.state,
+                {
+                    addEditForm: {
+                        show: true,
+                        mode: mode
+                    }
+                })
+        );
+    };
+
+    closeAddEditForm = (addressData) => {
+        console.log(addressData);
+        if (addressData) {
+            let newAddressBook = [];
+            if (this.state.addEditForm.mode === 'add') {
+                newAddressBook = this.state.addressBook.slice();
+                newAddressBook.push(addressData);
+            } else if (this.state.addEditForm.mode === 'edit') {
+                let oldAddressIndex = this.state.addressBook.findIndex(address => address.id === addressData.id);
+
+                newAddressBook = this.state.addressBook.slice();
+                newAddressBook.splice(oldAddressIndex, 1, addressData);
+            }
+
+            let newState = Object.assign({}, this.state, {
+                addressBook: newAddressBook,
+                searchForm: {
+                    searchTerm: '',
+                },
+                filteredAddressBook: newAddressBook,
+                selectedAddress: null,
+                addEditForm: {
+                    show: false,
+                    mode: ''
+                }
+            });
+
+            this.setState(newState, () => this.goToPage(1));
+        } else {
+            this.setState(
+                Object.assign({},
+                    this.state,
+                    {
+                        addEditForm: {
+                            show: false,
+                            mode: ''
+                        }
+                    })
+            );
+        }
+    };
+
     render() {
         return (
-            <Card
-                className="mycard"
-                header={
-                    <div className="clearfix pl-3">
-                        <span><FormattedMessage id="ab.title"/></span>
-                    </div>
-                }
-            >
-                <Form inline={true} model={this.state.searchForm} onSubmit={this.onSearch}>
-                    <Form.Item>
-                        <Input
-                            className="search-address-input"
-                            value={this.state.searchForm.searchTerm}
-                            placeholder={this.props.intl.formatMessage({id: 'ab.searchInput.placeHolder'})}
-                            onChange={this.onChangeInput}
-                            append={
-                                <Button nativeType="submit" type="primary" icon="search"/>
-                            }/>
-                    </Form.Item>
-                </Form>
+            <div className="address-book">
+                <Card
+                    className="mycard"
+                    header={
+                        <div className="clearfix pl-3">
+                            <span><FormattedMessage id="ab.title"/></span>
+                        </div>
+                    }
+                >
+                    <Form inline={true} model={this.state.searchForm} onSubmit={this.search}>
+                        <Form.Item>
+                            <Input
+                                className="search-address-input"
+                                value={this.state.searchForm.searchTerm}
+                                placeholder={this.props.intl.formatMessage({id: 'ab.searchInput.placeHolder'})}
+                                onChange={this.onChangeInput}
+                                append={
+                                    <Button nativeType="submit" type="primary" icon="search"/>
+                                }/>
+                        </Form.Item>
+                    </Form>
 
-                <Table
-                    emptyText={this.props.intl.formatMessage({id: 'emptyData'})}
-                    columns={this.state.columns}
-                    data={this.state.pagination.data}
-                    stripe={true}
-                />
+                    <Table
+                        emptyText={this.props.intl.formatMessage({id: 'emptyData'})}
+                        columns={this.state.columns}
+                        data={this.state.pagination.data}
+                        highlightCurrentRow={true}
+                        onCurrentChange={this.changeSelectedAddress}
+                    />
 
-                <Pagination
-                    className="text-right pr-0 pt-3"
-                    layout="prev, pager, next"
-                    pageSize={this.state.pagination.pageSize}
-                    currentPage={this.state.pagination.currentPage}
-                    total={this.state.filteredAddressBook.length}
-                    onCurrentChange={this.goToPage}/>
-            </Card>
+                    <Layout.Row>
+                        <Layout.Col span="12">
+                            <div className="pt-3">
+                                <Button
+                                    className="action-button"
+                                    type="primary" size="small"
+                                    onClick={() => this.openAddEditForm('add')}>Add</Button>
+
+                                <Button
+                                    className="action-button"
+                                    type="primary" size="small"
+                                    disabled={!this.state.selectedAddress}
+                                    onClick={() => this.openAddEditForm('edit')}>Edit</Button>
+
+                                <Button
+                                    className="action-button"
+                                    type="primary" size="small"
+                                    disabled={!this.state.selectedAddress}>Remove</Button>
+                            </div>
+                        </Layout.Col>
+
+                        <Layout.Col span="12">
+                            <Pagination
+                                className="text-right pr-0 pt-3"
+                                layout="prev, pager, next"
+                                pageSize={this.state.pagination.pageSize}
+                                currentPage={this.state.pagination.currentPage}
+                                total={this.state.filteredAddressBook.length}
+                                onCurrentChange={this.goToPage}/>
+                        </Layout.Col>
+                    </Layout.Row>
+                </Card>
+                {this.state.addEditForm.show ?
+                    <AddEditAddressBook
+                        visible={this.state.addEditForm.show}
+                        mode={this.state.addEditForm.mode}
+                        addressData={this.state.addEditForm.mode === 'add' ? null : this.state.selectedAddress}
+                        close={this.closeAddEditForm}/> : ''}
+            </div>
         );
     }
 }

@@ -1,3 +1,10 @@
 .layout-content {
-  padding: 50px 20px;
+  &.private {
+    min-height: 630px;
+    padding: 50px 20px;
+  }
+
+  &.public {
+    min-height: 550px;
+  }
 }
