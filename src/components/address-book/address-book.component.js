@@ -4,6 +4,7 @@ import './address-book.scss';
 import {getAddressBook} from "../../integrate/address-book";
 import {FormattedMessage, injectIntl} from "react-intl";
 import AddEditAddressBook from "./add-edit-address-book.component";
+import RemoveAddressBook from "./remove-address-book.component";
 
 class AddressBook extends Component {
 
@@ -63,8 +64,12 @@ class AddressBook extends Component {
             },
 
             addEditForm: {
-                show: false,
+                visible: false,
                 mode: '' // 'add' or 'edit'
+            },
+
+            removeForm: {
+                visible: false
             },
 
             selectedAddress: null
@@ -143,53 +148,99 @@ class AddressBook extends Component {
                 this.state,
                 {
                     addEditForm: {
-                        show: true,
+                        visible: true,
                         mode: mode
                     }
                 })
         );
     };
 
-    closeAddEditForm = (addressData) => {
-        console.log(addressData);
-        if (addressData) {
-            let newAddressBook = [];
-            if (this.state.addEditForm.mode === 'add') {
-                newAddressBook = this.state.addressBook.slice();
-                newAddressBook.push(addressData);
-            } else if (this.state.addEditForm.mode === 'edit') {
-                let oldAddressIndex = this.state.addressBook.findIndex(address => address.id === addressData.id);
+    closeAddEditForm = () => {
+        this.setState(
+            Object.assign({},
+                this.state,
+                {
+                    addEditForm: {
+                        visible: false,
+                        mode: ''
+                    }
+                })
+        );
+    };
 
-                newAddressBook = this.state.addressBook.slice();
-                newAddressBook.splice(oldAddressIndex, 1, addressData);
-            }
+    submitAddEditForm = (addressData) => {
+        let newAddressBook = [];
+        if (this.state.addEditForm.mode === 'add') {
+            newAddressBook = this.state.addressBook.slice();
+            newAddressBook.push(addressData);
+        } else if (this.state.addEditForm.mode === 'edit') {
+            let oldAddressIndex = this.state.addressBook.findIndex(address => address.id === addressData.id);
 
-            let newState = Object.assign({}, this.state, {
-                addressBook: newAddressBook,
-                searchForm: {
-                    searchTerm: '',
-                },
-                filteredAddressBook: newAddressBook,
-                selectedAddress: null,
-                addEditForm: {
-                    show: false,
-                    mode: ''
-                }
-            });
-
-            this.setState(newState, () => this.goToPage(1));
-        } else {
-            this.setState(
-                Object.assign({},
-                    this.state,
-                    {
-                        addEditForm: {
-                            show: false,
-                            mode: ''
-                        }
-                    })
-            );
+            newAddressBook = this.state.addressBook.slice();
+            newAddressBook.splice(oldAddressIndex, 1, addressData);
         }
+
+        let newState = Object.assign({}, this.state, {
+            addressBook: newAddressBook,
+            searchForm: {
+                searchTerm: '',
+            },
+            filteredAddressBook: newAddressBook,
+            selectedAddress: null,
+            addEditForm: {
+                visible: false,
+                mode: ''
+            }
+        });
+
+        this.setState(newState, () => this.goToPage(1));
+    };
+
+    openRemoveForm = () => {
+        this.setState(
+            Object.assign({},
+                this.state,
+                {
+                    removeForm: {
+                        visible: true
+                    }
+                })
+        );
+    };
+
+    closeRemoveForm = () => {
+        this.setState(
+            Object.assign({},
+                this.state,
+                {
+                    removeForm: {
+                        visible: false
+                    }
+                })
+        );
+    };
+
+    submitRemoveForm = () => {
+        let removedAddressId = this.state.selectedAddress.id;
+
+        let removedIndex = this.state.addressBook.findIndex(address => address.id === removedAddressId);
+        let newAddressBook = this.state.addressBook.slice();
+        newAddressBook.splice(removedIndex, 1);
+
+        removedIndex = this.state.filteredAddressBook.findIndex(address => address.id === removedAddressId);
+        let newFilteredAddressBook = this.state.filteredAddressBook.slice();
+        newFilteredAddressBook.splice(removedIndex, 1);
+
+        let newState = Object.assign({}, this.state, {
+            addressBook: newAddressBook,
+            filteredAddressBook: newFilteredAddressBook,
+            selectedAddress: null,
+            removeForm: {
+                visible: false
+            }
+        });
+
+        this.setState(newState, () => this.goToPage(1));
     };
 
     render() {
@@ -241,7 +292,8 @@ class AddressBook extends Component {
                                 <Button
                                     className="action-button"
                                     type="primary" size="small"
-                                    disabled={!this.state.selectedAddress}>Remove</Button>
+                                    disabled={!this.state.selectedAddress}
+                                    onClick={this.openRemoveForm}>Remove</Button>
                             </div>
                         </Layout.Col>
 
@@ -256,12 +308,25 @@ class AddressBook extends Component {
                         </Layout.Col>
                     </Layout.Row>
                 </Card>
-                {this.state.addEditForm.show ?
-                    <AddEditAddressBook
-                        visible={this.state.addEditForm.show}
-                        mode={this.state.addEditForm.mode}
-                        addressData={this.state.addEditForm.mode === 'add' ? null : this.state.selectedAddress}
-                        close={this.closeAddEditForm}/> : ''}
+
+                {
+                    this.state.addEditForm.visible ?
+                        <AddEditAddressBook
+                            visible={this.state.addEditForm.visible}
+                            mode={this.state.addEditForm.mode}
+                            addressData={this.state.addEditForm.mode === 'add' ? null : this.state.selectedAddress}
+                            onCancel={this.closeAddEditForm}
+                            onSubmit={this.submitAddEditForm}/> : ''
+                }
+
+                {
+                    this.state.removeForm.visible ?
+                        <RemoveAddressBook
+                            visible={this.state.removeForm.visible}
+                            addressData={this.state.selectedAddress}
+                            onCancel={this.closeRemoveForm}
+                            onSubmit={this.submitRemoveForm} /> : ''
+                }
             </div>
         );
     }

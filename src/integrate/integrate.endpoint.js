@@ -11,4 +11,5 @@ export const BOOKING_HISTORY_LIST = '/transaction/search';
 export const GET_ADDRESS_LIST = '/user/{userId}/addresses';
 export const ADD_ADDRESS = '/user/{userId}/addresses';
 export const UPDATE_ADDRESS = '/user/{userId}/addresses/{addressId}';
+export const DELETE_ADDRESS = '/user/{userId}/addresses/{addressId}';
 export const QUOTE = '/carrier/quote';

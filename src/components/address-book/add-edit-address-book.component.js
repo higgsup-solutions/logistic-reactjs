@@ -4,9 +4,6 @@ import './address-book.scss';
 import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
 import {listDataCity} from "../../integrate/booking";
-import {login} from "../../integrate/auth";
-import TokenStorage from "../../utils/token";
-import {navigate} from "@reach/router";
 import {addAddress, updateAddress} from "../../integrate/address-book";
 
 class AddEditAddressBook extends Component {
@@ -156,11 +153,11 @@ class AddEditAddressBook extends Component {
 
             if (this.state.mode === 'add') {
                 addAddress(this.state.addressData).then(res => {
-                    this.props.close(res.data);
+                    this.props.onSubmit(res.data);
                 });
             } else if (this.state.mode === 'edit') {
                 updateAddress(this.state.addressData).then(res => {
-                    this.props.close(res.data);
+                    this.props.onSubmit(res.data);
                 });
             }
         });
@@ -171,7 +168,7 @@ class AddEditAddressBook extends Component {
             <Dialog
                 visible={this.props.visible}
                 title={this.state.mode === 'add' ? "Add Address" : "Edit Address"}
-                onCancel={() => this.props.close(null)}>
+                onCancel={ this.props.onCancel }>
                 <Dialog.Body>
                     <Form ref="addressForm"
                           labelPosition="top" labelWidth="100"
@@ -288,8 +285,8 @@ class AddEditAddressBook extends Component {
                 </Dialog.Body>
 
                 <Dialog.Footer className="dialog-footer">
-                    <Button onClick={() => this.props.close(null)}>Cancel</Button>
-                    <Button onClick={this.saveAddress} type="primary" >Save</Button>
+                    <Button onClick={ this.props.onCancel }>Cancel</Button>
+                    <Button onClick={ this.saveAddress } type="primary" >Save</Button>
                 </Dialog.Footer>
             </Dialog>
         );

@@ -1,6 +1,6 @@
 import integrate from "./integrate";
 import {processString} from "../utils/string";
-import {ADD_ADDRESS, GET_ADDRESS_LIST, UPDATE_ADDRESS} from "./integrate.endpoint";
+import {ADD_ADDRESS, GET_ADDRESS_LIST, UPDATE_ADDRESS, DELETE_ADDRESS} from "./integrate.endpoint";
 import UserInfoStorage from "../utils/user-info";
 
 export const getAddressBook = () => {
@@ -23,5 +23,12 @@ export const updateAddress = (data) => {
         url: processString.parseUrl(UPDATE_ADDRESS, {userId: UserInfoStorage.getUserId(), addressId: data.id}),
         method: 'PUT',
         data: data
+    });
+};
+
+export const removeAddress = (addressId) => {
+    return integrate.makeAuthRequest({
+        url: processString.parseUrl(DELETE_ADDRESS, {userId: UserInfoStorage.getUserId(), addressId: addressId}),
+        method: 'DELETE'
     });
 };
