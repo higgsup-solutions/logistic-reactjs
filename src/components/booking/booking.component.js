@@ -577,7 +577,8 @@ class Booking extends Component {
                                        selectCompany={this.onSelectAuto('sender')}
                                        fieldErrors={this.state.senderErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.senderAddress'})}/>
-                        <div className="pb-3"></div>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
                         <SenderAddress data={this.state.listData}
                                        listCity={this.state.listCityRecipient}
                                        form={this.state.recipient}
@@ -588,7 +589,7 @@ class Booking extends Component {
                                        fieldErrors={this.state.recipientErrors}
                                        name={this.props.intl.formatMessage({id: 'booking.recipientAddress'})}/>
                     </div>
-                    <div className="col-sm-12 col-md-6">
+                    <div className="col-12 mt-4">
                         <PackageShipment form={this.state.package}
                                          listCarrier={this.state.listCarrier}
                                          listPackageType={this.state.listPackageType}

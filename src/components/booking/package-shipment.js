@@ -104,7 +104,7 @@ class PackageShipment extends Component {
                         </div>
                     </div>
                     <div className="row mb-3">
-                        <div className="col-xs-12 col-sm-6 pr-2">
+                        <div className="col-xs-12 col-sm-4 pr-2">
                             <div className="label"><FormattedMessage id='booking.carrier'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
@@ -114,7 +114,7 @@ class PackageShipment extends Component {
                                 {this.props.listCarrier.map(item => <Select.Option key={item.id} label={item.carrierType} value={item.id}></Select.Option>)}
                             </Select>
                         </div>
-                        <div className="col-xs-12 col-sm-6 pl-2">
+                        <div className="col-xs-12 col-sm-4 pl-2">
                             <div className="label"><FormattedMessage id='booking.serviceType'/><span
                                 className="required ml-2">*</span></div>
                             <Select className="w-100"
@@ -128,9 +128,7 @@ class PackageShipment extends Component {
                                 <Select.Option label="Express Saver" value="5"></Select.Option>
                             </Select>
                         </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col-sm-12 col-sm-6">
+                        <div className="col-xs-12 col-sm-4 pr-2">
                             <div className="label"><FormattedMessage id='booking.packageType'/></div>
                             <Select className="w-100"
                                     value={this.props.form.packageType}
