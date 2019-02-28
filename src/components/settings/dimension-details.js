@@ -67,7 +67,6 @@ class DimensionDetails extends Component {
     };
 
     onClickSaveBtn() {
-        console.log(this.state.mode);
         if (this.state.mode === MODIFY_MODE.ADD_MODE) {
             addDimension(this.state.dimensionItem)
                 .then(res => {

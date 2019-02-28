@@ -82,8 +82,6 @@ class DimensionsSettings extends Component {
     }
 
     onDeleteDimension() {
-        console.log('Delete Dimension');
-        console.log(this.state.selectedItem);
         if (this.state.selectedItem.id) {
             deleteDimensionList(this.state.selectedItem.id)
                 .then(res => {
