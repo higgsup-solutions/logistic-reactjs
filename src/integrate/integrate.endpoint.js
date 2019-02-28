@@ -13,3 +13,7 @@ export const BOOKING_HISTORY_LIST = '/transaction/search';
 export const SAVE_ADDRESS = '/user/{userId}/addresses';
 export const QUOTE = '/carrier/{carrierId}/quote';
 export const CONFIRM_BOOKING = '/transaction/confirmBooking';
+
+// Settings Page
+export const USER = '/user/{userId}';
+export const CHANGE_PASSWORD = USER + '/change_pass';

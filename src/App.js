@@ -13,10 +13,21 @@ import RegisterComponent from "./components/register/register.component";
 import Booking from "./components/booking/booking.component";
 import BookingHistory from "./components/booking-history/booking-history.component";
 import NotFound from "./components/notfound/notfound.component";
-import {ADDRESS_BOOK, BOOKING, BOOKING_HISTORY, LOGIN, LOGIN_URL, PUBLIC, REGISTER_URL, CONFIRM} from "./App.url";
+import {
+    ADDRESS_BOOK,
+    BOOKING,
+    BOOKING_HISTORY,
+    LOGIN,
+    LOGIN_URL,
+    PUBLIC,
+    REGISTER_URL,
+    CONFIRM,
+    SETTING
+} from "./App.url";
 import 'font-awesome/css/font-awesome.min.css';
 import AddressBook from "./components/address-book/address-book.component";
 import ConfirmComponent from "./components/confirm-page/confirm.component";
+import Settings from "./components/settings/settings.component";
 
 i18n.use(locale);
 
@@ -48,6 +59,7 @@ class App extends Component {
                         <BookingHistory path={BOOKING_HISTORY} />
                         <AddressBook path={ADDRESS_BOOK} />
                         <ConfirmComponent path={CONFIRM} />
+                        <Settings path={SETTING} />
                         <NotFound default />
                     </PrivateRoute>
                     <PublicLayoutComponent path={PUBLIC}>

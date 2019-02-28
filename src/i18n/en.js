@@ -18,6 +18,8 @@ export const ENGLISH = {
         "emptyData": "No data available",
         "cancel": "Cancel",
         "booking": "Booking",
+        "save": "Save",
+        "reset": "Reset",
 
         // Menu
         "menu.login": "Login",
@@ -136,5 +138,35 @@ export const ENGLISH = {
         "confirm.sender.address": "Sender Address",
         "confirm.receiver.address": "Receiver Address",
         "confirm.bookingSuccess": "Booking success!",
+
+        // Settings
+        "settings.title": "Settings",
+        "settings.tab.userSettings": "User Settings",
+        "settings.tab.addressDefault": "Address Default",
+        "settings.tab.changePassword": "Change Password",
+        "settings.tab.dimensions": "Dimensions",
+        "settings.info.title": "User Information",
+        "settings.info.firstName": "First Name",
+        "settings.info.lastName": "Last Name",
+        "settings.info.phone": "Phone",
+        "settings.info.email": "Email",
+        "settings.info.country": "Country",
+        "settings.info.city": "City",
+        "settings.info.address": "Address",
+        "settings.info.updateSuccess": "User Information is updated successfully",
+        "settings.defaultAddress.from": "Default From Address",
+        "settings.defaultAddress.to": "Default To Address",
+        "settings.defaultAddress.findCompany": "Find By Company",
+        "settings.defaultAddress.findContact": "Find By Contact",
+        "settings.changePass.title": "Password",
+        "settings.changePass.note": "Note",
+        "settings.changePass.noteDes": "- Password should contain minimum 8 characters, with at least one letter and one number.",
+        "settings.changePass.oldPass": "Old Password",
+        "settings.changePass.newPass": "New Password",
+        "settings.changePass.confirmPass": "Confirm Password",
+        "settings.changePass.error.isRequire": " is required",
+        "settings.changePass.error.isNotMatch": " is not matched to ",
+        "settings.changePass.changePassSuccess": "Change Password successfully!",
+
     }
 };
