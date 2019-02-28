@@ -21,6 +21,9 @@ export const ENGLISH = {
         "booking": "Booking",
         "save": "Save",
         "reset": "Reset",
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
 
         // Menu
         "menu.login": "Login",
@@ -180,6 +183,16 @@ export const ENGLISH = {
         "settings.changePass.error.isRequire": " is required",
         "settings.changePass.error.isNotMatch": " is not matched to ",
         "settings.changePass.changePassSuccess": "Change Password successfully!",
+        "settings.dimensions.deleteSuccess": "Delete Dimension successfully!",
+        "settings.dimensions.addSuccess": "Add Dimension successfully!",
+        "settings.dimensions.editSuccess": "Edit Dimension successfully!",
+        "settings.dimensions.editDimension": "Edit Dimension",
+        "settings.dimensions.addDimension": "Add Dimension",
+        "settings.dimensions.name": "Name",
+        "settings.dimensions.lengthDenote": "L",
+        "settings.dimensions.widthDenote": "W",
+        "settings.dimensions.heightDenote": "H",
+        "settings.dimensions.comment": "Comment",
 
     }
 };

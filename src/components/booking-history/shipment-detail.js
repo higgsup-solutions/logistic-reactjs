@@ -212,7 +212,7 @@ class ShipmentDetail extends Component {
                                     </thead>
                                     <tbody>
                                     {
-                                        this.state.quoteDetailData.map((quoteDetailItem, i) => {
+                                        this.state.quoteDetailData.map((quoteDetailItem) => {
                                             return (
                                                 <tr key={quoteDetailItem.key}>
                                                     <td>- <FormattedMessage id={`sd.${quoteDetailItem.key}`}/>:</td>
