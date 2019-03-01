@@ -269,7 +269,6 @@ class Booking extends Component {
         });
 
         if (this.state.package.contentType == 'Parcel') {
-            newState.packageErrors = [];
             this.checkErrorDimension();
             let checkHaveErrorDimension = false;
             for (let i = 0; i < newState.packageErrors.length; i++) {
@@ -346,8 +345,8 @@ class Booking extends Component {
             dangerousGoods: this.state.package.dangerousGoods,
             dimensionDTOList: dimensionDTOList,
             packageId: this.state.package.packageType,
-            recipientCityName: this.state.sender.cityName,
-            senderCityName: this.state.recipient.cityName
+            recipientCityName: this.state.recipient.cityName,
+            senderCityName: this.state.sender.cityName
         };
         quote(this.state.package.carrierId, data).then(res => {
             if (res.status == 'OK') {
@@ -408,13 +407,12 @@ class Booking extends Component {
     checkErrorDimension() {
         let newState = Object.assign({}, this.state);
         for (let i = 0; i < this.state.package.documentInfos.length; i++) {
-            let item = [];
+            newState.packageErrors[i] = [];
             for (let dimension in this.state.package.documentInfos[i]) {
-                if (!this.state.package.documentInfos[i][dimension]) {
-                    item.push(dimension);
+                if (!this.state.package.documentInfos[i][dimension] && dimension != 'type') {
+                    newState.packageErrors[i].push(dimension);
                 }
             }
-            this.state.packageErrors.push(item);
         }
         this.setState(newState);
     }
@@ -533,7 +531,6 @@ class Booking extends Component {
         }
 
         if (newState.package.contentType == 'Parcel') {
-            newState.packageErrors = [];
             this.checkErrorDimension();
             let checkHaveErrorDimension = false;
             for (let i = 0; i < newState.packageErrors.length; i++) {
