@@ -4,7 +4,6 @@ export const REFRESH_TOKEN = '/auth/token';
 export const LOGOUT = '/logout';
 export const REGISTER = '/auth/create';
 export const DASHBOARD = '/profile';
-export const BUY_SALE = '/school';
 export const LIST_CITY = '/countries/{id}/cities';
 export const LIST_CARRIER = '/carrier';
 export const LIST_DIMENSION = '/user/{userId}/dimensions?limit={amountLimited}';

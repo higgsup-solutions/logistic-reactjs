@@ -22,7 +22,7 @@ class Settings extends Component {
                                       <FormattedMessage id='settings.title'/>
                                   </div>
                               }>
-                            <Tabs type="card" value="dimensions">
+                            <Tabs type="card" value="user-setting">
                                 <Tabs.Pane
                                     name="user-setting"
                                     label={
@@ -35,7 +35,7 @@ class Settings extends Component {
                                     label={
                                         this.props.intl.formatMessage({id: 'settings.tab.addressDefault'}).toUpperCase()
                                     }>
-                                    <div className="user-settings">
+                                    <div className="address-default-settings" style={{height: '530px'}}>
                                         <div className="row">
                                             <div className="col-md-6 col-sm-12">
                                                 <AddressDefaultSettings
