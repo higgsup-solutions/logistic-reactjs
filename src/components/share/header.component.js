@@ -37,7 +37,6 @@ class HeaderComponent extends Component {
 
     onLogout = (e) => {
         logout();
-        TokenStorage.clear();
         navigate('/');
     };
 

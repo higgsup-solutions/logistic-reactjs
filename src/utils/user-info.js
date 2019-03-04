@@ -19,6 +19,10 @@ class UserInfoStorage {
     static getUserEmail() {
         return this.getUserInfo().sub;
     }
+
+    static clearUserInfo() {
+        USER_INFO = null;
+    }
 }
 
 export default UserInfoStorage;
