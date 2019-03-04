@@ -5,6 +5,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import {LIST_COUNTRY} from "../../App.constant.country";
 import Select from 'react-select';
 import Autocomplete from 'react-autocomplete';
+import {processString} from "../../utils/string";
 
 class SenderAddress extends Component {
     constructor(props) {
@@ -42,7 +43,9 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCity = (item, value) => {
-        return item.cityName.toLowerCase().indexOf(value.toLowerCase()) > -1;
+        const itemRemoveSign = processString.removeSign(item.cityName).toLowerCase();
+        const valueRemoveSign = processString.removeSign(value).toLowerCase();
+        return itemRemoveSign.indexOf(valueRemoveSign) > -1;
     };
 
     onChangeCity = (event, value) => {
