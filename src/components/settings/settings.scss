@@ -1,3 +1,5 @@
+@import '../../style/style';
+
 .el-tabs__content {
   padding: 8px;
 }
@@ -14,4 +16,11 @@
     color: #ff4949;
   }
 
+}
+
+.default-address-card {
+
+  .address-line {
+    margin-bottom: .75em;
+  }
 }

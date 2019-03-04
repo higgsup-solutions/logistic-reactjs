@@ -4,7 +4,7 @@ import {Button, Card, Notification, Table} from "element-react";
 import {
     getDimensionList,
     deleteDimensionList
-} from "../../integrate/settings";
+} from "../../integrate/dimension";
 import DimensionDetails from "./dimension-details";
 import {MODIFY_MODE} from "../../App.constant";
 
