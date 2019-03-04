@@ -57,7 +57,6 @@ function createAuthRefreshInterceptor (axios, options = {}) {
                 });
                 // logout
                 logout();
-                TokenStorage.clear();
                 navigate('/');
             }
             return Promise.reject(error)

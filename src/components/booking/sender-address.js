@@ -43,8 +43,8 @@ class SenderAddress extends Component {
     };
 
     shouldItemRenderCity = (item, value) => {
-        const itemRemoveSign = processString.removeSign(item.cityName).toLowerCase();
-        const valueRemoveSign = processString.removeSign(value).toLowerCase();
+        const itemRemoveSign = processString.removeSign(item.cityName).toLowerCase() || '';
+        const valueRemoveSign = processString.removeSign(value).toLowerCase() || '';
         return itemRemoveSign.indexOf(valueRemoveSign) > -1;
     };
 
