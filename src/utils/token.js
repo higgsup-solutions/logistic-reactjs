@@ -11,15 +11,23 @@ class TokenStorage {
     }
 
     static getAccessToken() {
-        return JSON.parse(localStorage.getItem(TOKEN_STORAGE_KEY)).accessToken
+        return this._getToken().accessToken;
     }
 
     static getRefreshToken() {
-        return JSON.parse(localStorage.getItem(TOKEN_STORAGE_KEY)).refreshToken
+        return this._getToken().refreshToken;
     }
 
     static isTokenPresent() {
-        return localStorage.getItem(TOKEN_STORAGE_KEY) != null;
+        if (!this._getToken()) return false;
+        if (!this.getAccessToken()) return false;
+        if (!this.getRefreshToken()) return false;
+
+        return true;
+    }
+
+    static _getToken() {
+        return JSON.parse(localStorage.getItem(TOKEN_STORAGE_KEY) || '{}');
     }
 }
 
