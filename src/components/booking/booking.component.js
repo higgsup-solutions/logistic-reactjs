@@ -162,7 +162,7 @@ class Booking extends Component {
         }
         if (inputName == 'country') {
             let whichList = '';
-            if(who == 'sender') {
+            if (who == 'sender') {
                 whichList = 'listCitySender';
             } else {
                 whichList = 'listCityRecipient';
@@ -183,7 +183,7 @@ class Booking extends Component {
             }
         }
         newState[who][inputName] = value;
-        if(inputName == 'country') {
+        if (inputName == 'country') {
             newState.listCarrier = [];
             if (this.getTypeCarrier(newState) == 'in') {
                 newState.listCarrier.push(newState.allCarrier[2]);
@@ -202,43 +202,36 @@ class Booking extends Component {
 
     getTypeCarrier(newState) {
         let result = 'in';
-        if(newState.sender.country.value == 288 && newState.recipient.country.value == 288) {
+        if (newState.sender.country.value == 288 && newState.recipient.country.value == 288) {
             result = 'dos';
         }
         return result;
     }
 
     compareAddress() {
-        if(this.state.sender.country.value == this.state.recipient.country.value &&
+        if (this.state.sender.country.value == this.state.recipient.country.value &&
             this.state.sender.address1.trim().toLocaleLowerCase() == this.state.recipient.address1.trim().toLocaleLowerCase() &&
             this.state.sender.cityName.trim().toLocaleLowerCase() == this.state.recipient.cityName.trim().toLocaleLowerCase() &&
-            this.state.sender.postalCode == this.state.recipient.postalCode)  {
+            this.state.sender.postalCode == this.state.recipient.postalCode) {
             return true;
         }
         return false;
     }
 
     onContinueBooking = (e) => {
-        let newState = Object.assign({}, this.state);
-        newState.whichButtonClick = 'continueBooking';
-        this.setState(newState);
+        const newState = {
+            ...this.state,
+            whichButtonClick: 'continueBooking',
+            senderErrors: this.checkError('sender'),
+            recipientErrors: this.checkError('recipient')
+        };
 
-        newState.senderErrors = [];
-        newState.recipientErrors = [];
-
-        const arrError = ['company', 'phoneNumber', 'contactName', 'address1', 'cityName'];
-        arrError.forEach(item => {
-            this.checkError('sender', item, 'senderErrors');
-        });
-        arrError.forEach(item => {
-            this.checkError('recipient', item, 'recipientErrors');
-        });
         let pat = new RegExp(REGEX_EMAIL);
         let patPhone = new RegExp(REGEX_PHONE_NUMBER);
         if (newState.sender.emailAddress && !pat.test(newState.sender.emailAddress)) {
             newState.senderErrors.push('emailAddress');
         }
-        if (newState.recipient.emailAddress &&!pat.test(newState.recipient.emailAddress)) {
+        if (newState.recipient.emailAddress && !pat.test(newState.recipient.emailAddress)) {
             newState.recipientErrors.push('emailAddress');
         }
         if (!newState.senderErrors.includes('phoneNumber') && !patPhone.test(newState.sender.phoneNumber)) {
@@ -249,7 +242,10 @@ class Booking extends Component {
         }
         let errMessage = [];
         newState.senderErrors.forEach(item => {
-            if (item == 'emailAddress' || item == 'phoneNumber') {
+            if (item == 'emailAddress') {
+                errMessage.push(<div className="text-danger">Sender {fieldName.mappingBookingPage(item)} is
+                    invalid</div>)
+            } else if (item == 'phoneNumber' && newState.sender.phoneNumber) {
                 errMessage.push(<div className="text-danger">Sender {fieldName.mappingBookingPage(item)} is
                     invalid</div>)
             } else {
@@ -260,6 +256,9 @@ class Booking extends Component {
 
         newState.recipientErrors.forEach(item => {
             if (item == 'emailAddress') {
+                errMessage.push(<div className="text-danger">Recipient {fieldName.mappingBookingPage(item)} is
+                    invalid</div>)
+            } else if(item == 'phoneNumber' && newState.recipient.phoneNumber) {
                 errMessage.push(<div className="text-danger">Recipient {fieldName.mappingBookingPage(item)} is
                     invalid</div>)
             } else {
@@ -396,12 +395,15 @@ class Booking extends Component {
         }
     }
 
-    checkError(formError, field, listError) {
-        let newState = Object.assign({}, this.state);
-        if (!this.state[formError][field]) {
-            newState[listError].push(field);
-        }
-        this.setState(newState);
+    checkError(formError) {
+        let result = [];
+        const arrError = ['company', 'phoneNumber', 'contactName', 'address1', 'cityName'];
+        arrError.forEach(item => {
+            if (!this.state[formError][item]) {
+                result.push(item);
+            }
+        });
+        return result;
     }
 
     checkErrorDimension() {
