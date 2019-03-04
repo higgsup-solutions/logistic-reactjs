@@ -177,7 +177,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
  and catch error for all request to backend
  
   - Each screen has a file `<screen-name>.js` in `integrate` folder. 
-  E.g: `auth.js`, `dashboard.js`, `buy-sale.js`, ...
+  E.g: `auth.js`, `dashboard.js`, ...
   
   - In that file, each action was displayed by a function which uses `integrate` 
   to call api. In that, we have to defines `url`, `method`, `data` in request.

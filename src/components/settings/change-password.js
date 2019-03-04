@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Button, Card, Input, Notification} from "element-react";
-import {changePassword} from "../../integrate/settings";
+import {changePassword} from "../../integrate/user";
 
 class ChangePassword extends Component {
 

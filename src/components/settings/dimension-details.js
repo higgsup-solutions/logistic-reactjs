@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Dialog, Button, Input, Notification} from "element-react";
 import {MODIFY_MODE} from "../../App.constant";
-import {addDimension, updateDimension} from "../../integrate/settings";
+import {addDimension, updateDimension} from "../../integrate/dimension";
 
 class DimensionDetails extends Component {
 

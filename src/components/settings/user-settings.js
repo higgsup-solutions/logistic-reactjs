@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Button, Card, Input, Notification} from "element-react";
-import {getUserInfo, updateUserInfo} from "../../integrate/settings";
+import {getUserInfo, updateUserInfo} from "../../integrate/user";
 import {processString} from "../../utils/string";
 import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
 
