@@ -3,6 +3,7 @@ import {FormattedMessage, injectIntl} from "react-intl";
 import {Dialog, Button, Input, Notification} from "element-react";
 import {MODIFY_MODE} from "../../App.constant";
 import {addDimension, updateDimension} from "../../integrate/dimension";
+import {processNumber} from "../../utils/number";
 
 class DimensionDetails extends Component {
 
@@ -46,10 +47,29 @@ class DimensionDetails extends Component {
         }
     }
 
-    onChangeInput = (fieldName) => (e) => {
+    onChangeInput = (fieldName) => (value) => {
+        if (fieldName === 'length' && processNumber.checkExistNotNumber(value)) {
+            return;
+        }
+        if (fieldName === 'width' && processNumber.checkExistNotNumber(value)) {
+            return;
+        }
+        if (fieldName === 'height' && processNumber.checkExistNotNumber(value)) {
+            return;
+        }
+
         let newState = {...this.state};
-        newState.dimensionItem[fieldName] = e;
+        newState.dimensionItem[fieldName] = value;
         this.setState(newState);
+    };
+
+    isFilled = () => {
+        if (!this.state.dimensionItem.name) return false;
+        if (!this.state.dimensionItem.width) return false;
+        if (!this.state.dimensionItem.height) return false;
+        if (!this.state.dimensionItem.length) return false;
+
+        return true;
     };
 
     onDialogDismiss = (isUpdatedDimensionList = false) => {
@@ -171,6 +191,7 @@ class DimensionDetails extends Component {
                     </Dialog.Body>
                     <Dialog.Footer className="dialog-footer">
                         <Button onClick={this.onClickSaveBtn.bind(this)}
+                                disabled={!this.isFilled()}
                                 type="primary">
                             <FormattedMessage id='save'/>
                         </Button>

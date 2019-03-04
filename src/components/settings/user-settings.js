@@ -4,6 +4,7 @@ import {Button, Card, Input, Notification} from "element-react";
 import {getUserInfo, updateUserInfo} from "../../integrate/user";
 import {processString} from "../../utils/string";
 import {REGEX_EMAIL, REGEX_PHONE_NUMBER} from "../../App.constant";
+import {processNumber} from "../../utils/number";
 
 class UserSettings extends Component {
 
@@ -29,6 +30,10 @@ class UserSettings extends Component {
     }
 
     onChangeInput = (fieldName) => (e) => {
+        if (fieldName === 'phone' && processNumber.checkExistNotNumber(e)) {
+            return;
+        }
+
         let newState = {...this.state};
         newState.form[fieldName] = e;
         newState.isChanged = this.isUserInfoUpdated(newState);

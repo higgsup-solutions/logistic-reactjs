@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {FormattedMessage, injectIntl} from "react-intl";
 import {Button, Card, Input, Notification} from "element-react";
 import {changePassword} from "../../integrate/user";
+import {REGEX_PASSWORD} from "../../App.constant";
+import {getErrorMessageFromCode} from "../../utils/errors";
 
 class ChangePassword extends Component {
 
@@ -28,6 +30,14 @@ class ChangePassword extends Component {
         this.setState(newState);
     };
 
+    isAllFieldsFilled = () => {
+        if (!this.state.form.oldPassword) return false;
+        if (!this.state.form.newPassword) return false;
+        if (!this.state.form.confirmPassword) return false;
+
+        return true
+    };
+
     onFocusInput = (fieldName) => (e) => {
         let newState = {...this.state};
         newState.error[fieldName] = '';
@@ -52,7 +62,7 @@ class ChangePassword extends Component {
                 } else {
                     Notification.error({
                         title: 'Error',
-                        message: res.messageString
+                        message: getErrorMessageFromCode(this, res.responseMessage.messageCode)
                     });
                 }
             })
@@ -90,6 +100,14 @@ class ChangePassword extends Component {
             result =  false;
         }
 
+        let patNewPass = new RegExp(REGEX_PASSWORD);
+        if (newPassword && !patNewPass.test(newPassword)) {
+            newErrorState.newPassword =
+                newErrorState.confirmPassword =
+                    this.props.intl.formatMessage({id: 'settings.changePass.noteDes'});
+            result = false;
+        }
+
         this.setState({
             error: newErrorState
         });
@@ -111,7 +129,7 @@ class ChangePassword extends Component {
                               }>
                             <div className="note-content mb-3">
                                 <div><FormattedMessage id='settings.changePass.note'/>:</div>
-                                <div><FormattedMessage id='settings.changePass.noteDes'/></div>
+                                <div>- <FormattedMessage id='settings.changePass.noteDes'/></div>
                             </div>
                             <div className="row">
                                 <div className="col-md-12">
@@ -160,6 +178,7 @@ class ChangePassword extends Component {
                             <div className="text-right">
                                 <Button
                                     type="primary"
+                                    disabled={!this.isAllFieldsFilled()}
                                     onClick={this.onChangePassword.bind(this)}>
                                     <FormattedMessage id='save'/>
                                 </Button>
