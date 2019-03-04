@@ -171,7 +171,6 @@ export const ENGLISH = {
         "settings.info.city": "City",
         "settings.info.address": "Address",
         "settings.info.updateSuccess": "User Information is updated successfully",
-        //      // Default Address
         "settings.defaultAddress.from": "Default From Address",
         "settings.defaultAddress.to": "Default To Address",
         "settings.defaultAddress.findCompany": "Find By Company",
@@ -187,7 +186,6 @@ export const ENGLISH = {
         "settings.changePass.error.isRequire": " is required",
         "settings.changePass.error.isNotMatch": " is not matched to ",
         "settings.changePass.changePassSuccess": "Change Password successfully!",
-        //      // Dimensions
         "settings.dimensions.deleteSuccess": "Delete Dimension successfully!",
         "settings.dimensions.addSuccess": "Add Dimension successfully!",
         "settings.dimensions.editSuccess": "Edit Dimension successfully!",
@@ -199,5 +197,18 @@ export const ENGLISH = {
         "settings.dimensions.heightDenote": "H",
         "settings.dimensions.comment": "Comment",
 
+        // Error message
+        "error.VALIDATION": "Validation fail!",
+        "error.GLOBAL": "Have an error in the system!",
+        "error.AUTHENTICATION": "Authentication fail!",
+        "error.JWT_TOKEN_EXPIRED": "Session expired, please login again!",
+        "error.DUPPLICATE_EMAIL": "Email is used by another one!",
+        "error.DUPPLICATE_USERNAME": "Username is exited!",
+        "error.DUPPLICATE_ADDRESS": "Address is existed!",
+        "error.USER_NOT_FOUND": "User not found!",
+        "error.OLD_PASSWORD_OR_NEW_PASSWORD_INVALID": "Old password or new password is invalid!",
+        "error.DIMENSION_IS_EMPTY": "Dimension is empty!",
+        "error.CARRIER_NOT_FOUND": "Carrier not found!",
+        "error.JWT_TOKEN_INVALID": "Token invalid!"
     }
 };
